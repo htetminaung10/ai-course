@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -1689,7 +1689,7 @@ function showPFI(){
 
 // ─── PDP CANVAS ──────────────────────────────────────
 const pdpData={
-  age:{fn:x=>0.55-0.3*Math.exp(-(x-25)**2/200)+0.1*(x-50)/50,xmin:18,xmax:80,xlab:'Age (years)',note:'Age effect: risk decreases sharply until ~35, then increases slightly with age. The U-shaped curve suggests middle-aged applicants are lowest risk.'},
+  age:{fn:x=>0.55-0.3*Math.exp(-((x-25)**2)/200)+0.1*(x-50)/50,xmin:18,xmax:80,xlab:'Age (years)',note:'Age effect: risk decreases sharply until ~35, then increases slightly with age. The U-shaped curve suggests middle-aged applicants are lowest risk.'},
   income:{fn:x=>0.75-0.5/(1+Math.exp(-(x-40000)/8000)),xmin:15000,xmax:100000,xlab:'Annual income ($)',note:'Income effect: monotone decrease in risk as income increases, with the steepest change between $30k–$50k. Above $60k the effect plateaus.'},
   debt:{fn:x=>0.1+0.7/(1+Math.exp(-(x-55)/10)),xmin:0,xmax:100,xlab:'Debt ratio (%)',note:'Debt ratio effect: monotone increase in risk as debt grows, with a sharp inflection around 55%. Below 30% nearly all applicants are low-risk.'},
 };
