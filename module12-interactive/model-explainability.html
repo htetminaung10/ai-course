@@ -186,46 +186,46 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
      ═══════════════════════════════════════ -->
 <div class="page active" id="page-in">
   <div class="page-header">
-    <h1>🗺️ Intro to XAI & Interpretability</h1>
-    <p>Why black-box models aren't enough — and the landscape of tools to open them up.</p>
+    <h1>🗺️ Introduction to Explainability &amp; Interpretability</h1>
+    <p>What it is, why it matters, who needs it, and the landscape of approaches.</p>
   </div>
 
-  <!-- Why XAI -->
+  <!-- Job Done? -->
   <div class="card">
-    <h2>Why Does Explainability Matter?</h2>
-    <p>A model with 99% accuracy is useless if you can't trust, audit, debug, or legally justify its decisions. XAI addresses four core needs:</p>
-    <div class="reveal-grid" id="whyCards">
-      <div class="reveal-card" onclick="revealCard(this)">
-        <div class="rc-icon">⚖️</div>
-        <div class="rc-label">Legal & Compliance</div>
-        <div class="rc-body">GDPR Article 22 gives people the right to an explanation for automated decisions. Finance, healthcare, and hiring are regulated sectors where "the model said so" is not acceptable.</div>
+    <h2>You've Trained a Great Model… but is the Job Done?</h2>
+    <p>Imagine a data scientist who has:</p>
+    <ul style="color:var(--muted);line-height:2;padding-left:1.25rem;margin:.75rem 0">
+      <li>Cleaned and preprocessed <strong>messy data</strong></li>
+      <li>Engineered fancy new <strong>features</strong></li>
+      <li>Identified the <strong>best model</strong> by tuning hyperparameters</li>
+      <li>Got <strong>great performance</strong> on the test set</li>
+    </ul>
+    <p>Does great predictive performance alone qualify as a "job well done"? In many applications — <strong>no</strong>. When AI impacts real people's lives, we also need to understand <em>why</em> the model makes its decisions.</p>
+    <div class="info-box"><p>In high-stakes domains — medicine, finance, law — being able to <strong>explain and understand how a prediction is made</strong> can be just as important as accuracy.</p></div>
+  </div>
+
+  <!-- Black Box Models -->
+  <div class="card">
+    <h2>The Complexity Problem — Black Box Models</h2>
+    <p>Modern ML models achieve extraordinary accuracy, but complexity makes them hard to understand and trust.</p>
+    <div class="three-col" style="margin:1rem 0">
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem;text-align:center">
+        <div style="font-size:2rem;margin-bottom:.5rem">📈</div>
+        <strong style="color:var(--p)">Easy to Interpret</strong>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:.5rem">Linear / Logistic Regression — weights directly show feature contributions.<br>e.g. <em>y = 3.5x₁ + 4.2x₂</em></p>
       </div>
-      <div class="reveal-card" onclick="revealCard(this)">
-        <div class="rc-icon">🐛</div>
-        <div class="rc-label">Debugging</div>
-        <div class="rc-body">If your model is using the wrong features (e.g. predicting pneumonia risk from "no asthma" — because asthmatics are fast-tracked), explainability reveals the spurious correlation.</div>
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem;text-align:center">
+        <div style="font-size:2rem;margin-bottom:.5rem">🌲</div>
+        <strong style="color:var(--warn)">Harder to Interpret</strong>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:.5rem">Ensemble models (Random Forests, GBMs) — complex structure, need feature importance to understand role of each feature.</p>
       </div>
-      <div class="reveal-card" onclick="revealCard(this)">
-        <div class="rc-icon">🤝</div>
-        <div class="rc-label">Trust & Adoption</div>
-        <div class="rc-body">Doctors, judges, and loan officers won't trust and use a system they can't understand. Explanations build the human trust needed for real-world deployment.</div>
-      </div>
-      <div class="reveal-card" onclick="revealCard(this)">
-        <div class="rc-icon">🔬</div>
-        <div class="rc-label">Scientific Discovery</div>
-        <div class="rc-body">In drug discovery and genomics, we want to learn from the model — which molecular features predict binding? Explainability turns the model into a hypothesis generator.</div>
-      </div>
-      <div class="reveal-card" onclick="revealCard(this)">
-        <div class="rc-icon">⚡</div>
-        <div class="rc-label">Bias Detection</div>
-        <div class="rc-body">Models trained on historical data inherit societal biases. XAI reveals if gender or race (or proxies) drive predictions in hiring, lending, or criminal justice models.</div>
-      </div>
-      <div class="reveal-card" onclick="revealCard(this)">
-        <div class="rc-icon">🎯</div>
-        <div class="rc-label">Model Improvement</div>
-        <div class="rc-body">Understanding what drives predictions reveals data quality issues, feature engineering opportunities, and failure modes you'd never find by looking at accuracy metrics alone.</div>
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem;text-align:center">
+        <div style="font-size:2rem;margin-bottom:.5rem">🧠</div>
+        <strong style="color:var(--danger)">Really Hard (Black Box)</strong>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:.5rem">Deep Neural Networks — millions/billions of parameters, no straightforward input→output explanation.</p>
       </div>
     </div>
+    <div class="warn-box"><p>Complexity gives extraordinary accuracy — but complexity makes it difficult to understand and hence <strong>trust</strong> the models.</p></div>
   </div>
 
   <!-- Interpretability vs Explainability -->
@@ -233,54 +233,20 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
     <h2>Interpretability vs Explainability</h2>
     <div class="two-col">
       <div style="background:#020f0d;border:1px solid var(--p);border-radius:.5rem;padding:1rem">
-        <h3>Interpretability</h3>
-        <p style="color:var(--muted)">The degree to which a human can <strong>understand the model's mechanism</strong> directly. An intrinsic property of the model itself.</p>
-        <p style="color:var(--muted);font-size:.85rem">e.g. A linear regression model: you can read off coefficients and understand exactly why each prediction was made.</p>
+        <h3>🔍 Interpretable Model</h3>
+        <p style="color:var(--muted)">A model that can be <strong>directly explained and interpreted</strong> by human experts. Uses "white box" models. Trade-off: limited complexity reduces performance.</p>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:.5rem"><em>Examples: Linear Regression, Logistic Regression, single Decision Tree</em></p>
       </div>
       <div style="background:#020f0d;border:1px solid var(--s);border-radius:.5rem;padding:1rem">
-        <h3>Explainability</h3>
-        <p style="color:var(--muted)">A <strong>post-hoc approximation</strong> or summary of a model's behaviour, generated after training using a separate explanation method.</p>
-        <p style="color:var(--muted);font-size:.85rem">e.g. SHAP values applied to a trained XGBoost model: you get an approximation of what drove each prediction.</p>
+        <h3>💡 Explainable Model</h3>
+        <p style="color:var(--muted)">A model that is <strong>too complex</strong> for a human to understand directly. Additional tools/techniques are needed to "explain" how the model makes predictions.</p>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:.5rem"><em>Examples: Random Forest + SHAP, Neural Network + LIME</em></p>
       </div>
     </div>
-    <div class="info-box" style="margin-top:1rem"><p>There is often an <strong>accuracy-interpretability trade-off</strong>: simpler, interpretable models (linear, shallow trees) are easier to understand but may be less accurate than complex black-box models (deep nets, random forests).</p></div>
+    <div class="info-box" style="margin-top:1rem"><p>There is an inherent <strong>accuracy–interpretability trade-off</strong>: simpler, interpretable models are easier to understand but often less accurate than complex black-box models.</p></div>
   </div>
 
-  <!-- XAI Taxonomy Canvas -->
-  <div class="card">
-    <h2>The XAI Taxonomy — Two Axes</h2>
-    <p>All XAI methods can be classified along two dimensions. Click a cell to learn about each category.</p>
-    <div class="two-col" style="margin-bottom:1rem">
-      <div>
-        <h3>Axis 1: Scope</h3>
-        <ul>
-          <li><strong>Local</strong> — explains a single prediction ("why did this patient get denied?")</li>
-          <li><strong>Global</strong> — explains the model overall ("what features matter most?")</li>
-        </ul>
-      </div>
-      <div>
-        <h3>Axis 2: Method Type</h3>
-        <ul>
-          <li><strong>Intrinsic</strong> — interpretable by design (linear models, shallow trees)</li>
-          <li><strong>Post-hoc</strong> — explanation applied after training to any black-box</li>
-        </ul>
-      </div>
-    </div>
-    <div class="matrix">
-      <div class="matrix-cell header"></div>
-      <div class="matrix-cell header">Intrinsic</div>
-      <div class="matrix-cell header">Post-hoc</div>
-      <div class="matrix-cell header">Local</div>
-      <div class="matrix-cell" onclick="showTaxCell('li')" style="cursor:pointer;border:1px solid var(--border)">Decision tree path<br><small style="color:var(--muted)">click for example</small></div>
-      <div class="matrix-cell" onclick="showTaxCell('lp')" style="cursor:pointer;border:1px solid var(--border)">LIME, SHAP local,<br>Anchors, Counterfactuals<br><small style="color:var(--muted)">click for example</small></div>
-      <div class="matrix-cell header">Global</div>
-      <div class="matrix-cell" onclick="showTaxCell('gi')" style="cursor:pointer;border:1px solid var(--border)">Linear coefficients,<br>Decision tree visualisation<br><small style="color:var(--muted)">click for example</small></div>
-      <div class="matrix-cell" onclick="showTaxCell('gp')" style="cursor:pointer;border:1px solid var(--border)">SHAP global, PFI,<br>PDPs, ICE plots<br><small style="color:var(--muted)">click for example</small></div>
-    </div>
-    <div class="info-box" id="taxDetail"><p>Click a cell above to see an example and details.</p></div>
-  </div>
-
-  <!-- Model Complexity Spectrum -->
+  <!-- The Complexity Spectrum -->
   <div class="card">
     <h2>The Accuracy–Interpretability Spectrum</h2>
     <canvas id="spectrumCanvas" width="840" height="180" style="width:100%;max-width:840px"></canvas>
@@ -292,72 +258,302 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
     <div class="formula" id="specDetail">y = β₀ + β₁x₁ + … + βₙxₙ — coefficients ARE the explanation</div>
   </div>
 
+  <!-- AI Impacts Human Life -->
+  <div class="card">
+    <h2>AI Impacts Human Life</h2>
+    <p>Algorithms increasingly make or inform decisions that directly affect people. This creates demand for transparency:</p>
+    <div class="three-col" style="margin:1rem 0">
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem">
+        <div style="font-size:1.5rem;margin-bottom:.5rem">🏦</div>
+        <strong>Banking</strong>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:.4rem">Controls individuals' ability to get a mortgage, car loan, or business funding. A rejected applicant deserves to know why.</p>
+      </div>
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem">
+        <div style="font-size:1.5rem;margin-bottom:.5rem">🏥</div>
+        <strong>Healthcare</strong>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:.4rem">A model predicting disease risk informs a doctor's diagnosis. Doctors need to understand <em>why</em> the model flags a patient before taking action.</p>
+      </div>
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem">
+        <div style="font-size:1.5rem;margin-bottom:.5rem">⚖️</div>
+        <strong>Criminal Justice</strong>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:.4rem">Risk-assessment tools determine bail, sentencing, and parole. Opaque decisions here have profound human rights implications.</p>
+      </div>
+    </div>
+    <div class="warn-box"><p><strong>Bias Example:</strong> A model trained on historical employee data may learn that men are promoted more than women — and then reinforce that bias in future promotion decisions. Explainability is how we detect this.</p></div>
+  </div>
+
+  <!-- Drivers -->
+  <div class="card">
+    <h2>Drivers of Model Explainability</h2>
+    <p>The need for explainability is driven by multiple factors. Click each driver to expand:</p>
+    <div style="display:flex;flex-direction:column;gap:.75rem;margin-top:1rem">
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;overflow:hidden">
+        <div onclick="toggleDriver('d1')" style="padding:.85rem 1rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center">
+          <strong>⚖️ Regulatory Compliance</strong><span id="d1-arrow" style="transition:transform .2s">▼</span>
+        </div>
+        <div id="d1" style="display:none;padding:.75rem 1rem;border-top:1px solid var(--border)">
+          <p style="color:var(--muted)">Governments and recognised bodies impose regulations requiring transparency in automated decision-making.</p>
+          <ul style="color:var(--muted);line-height:1.9;padding-left:1.25rem;margin-top:.5rem;font-size:.88rem">
+            <li><strong>GDPR Article 22</strong> — EU citizens have a right to explanation for automated decisions</li>
+            <li><strong>EU AI Act (2024)</strong> — High-risk AI systems must be transparent and auditable</li>
+            <li><strong>Fair Credit Reporting Act</strong> — US lenders must provide reasons for credit denials</li>
+          </ul>
+        </div>
+      </div>
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;overflow:hidden">
+        <div onclick="toggleDriver('d2')" style="padding:.85rem 1rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center">
+          <strong>🎯 Accountability &amp; Control</strong><span id="d2-arrow" style="transition:transform .2s">▼</span>
+        </div>
+        <div id="d2" style="display:none;padding:.75rem 1rem;border-top:1px solid var(--border)">
+          <p style="color:var(--muted)">High-stakes applications demand transparency. Explanations help humans identify where predictions are coming from — and where the model is going wrong.</p>
+          <p style="color:var(--muted);font-size:.88rem;margin-top:.5rem"><em>Example: A hospital using a diagnostic model needs to be able to scrutinise and override it if it behaves unexpectedly.</em></p>
+        </div>
+      </div>
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;overflow:hidden">
+        <div onclick="toggleDriver('d3')" style="padding:.85rem 1rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center">
+          <strong>🤝 Ethics &amp; Trust</strong><span id="d3-arrow" style="transition:transform .2s">▼</span>
+        </div>
+        <div id="d3" style="display:none;padding:.75rem 1rem;border-top:1px solid var(--border)">
+          <p style="color:var(--muted)">Explainability ties directly to ethical implications: equal opportunity, fairness, human rights.</p>
+          <ul style="color:var(--muted);line-height:1.9;padding-left:1.25rem;margin-top:.5rem;font-size:.88rem">
+            <li>Recommendation systems: explanations detect bias towards certain content</li>
+            <li>Classifiers: explanations reveal unfair behaviour towards protected groups</li>
+            <li>In Education, Healthcare and Defence: transparency builds <strong>trust</strong> between stakeholders and AI systems</li>
+          </ul>
+        </div>
+      </div>
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;overflow:hidden">
+        <div onclick="toggleDriver('d4')" style="padding:.85rem 1rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center">
+          <strong>🐛 Debugging Models</strong><span id="d4-arrow" style="transition:transform .2s">▼</span>
+        </div>
+        <div id="d4" style="display:none;padding:.75rem 1rem;border-top:1px solid var(--border)">
+          <p style="color:var(--muted)">If a model is using the wrong features, you'll never find out by looking at accuracy alone. Explainability reveals spurious correlations.</p>
+          <p style="color:var(--muted);font-size:.88rem;margin-top:.5rem"><em>Classic example: A pneumonia risk model learned that "no asthma" = lower risk — because asthmatics were fast-tracked to intensive care and survived. The model was wrong for the right-looking reasons.</em></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Who Finds it Useful -->
+  <div class="card">
+    <h2>Who Finds Model Understanding Useful?</h2>
+    <div class="three-col" style="margin:.75rem 0">
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem;text-align:center">
+        <div style="font-size:1.8rem">👩‍💻</div>
+        <strong style="color:var(--p)">Data Scientists</strong>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:.4rem">Model insights lead to verification, communication of results, and future model improvements.</p>
+      </div>
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem;text-align:center">
+        <div style="font-size:1.8rem">👤</div>
+        <strong style="color:var(--s)">End Users</strong>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:.4rem">Need to understand the impact and root cause of predictions that affect them personally.</p>
+      </div>
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem;text-align:center">
+        <div style="font-size:1.8rem">🏛️</div>
+        <strong style="color:var(--success)">Regulators</strong>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:.4rem">Want to make ML decisions fair and transparent to preserve ethics, laws, and societal wellbeing.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Across ML Pipeline -->
+  <div class="card">
+    <h2>Explainability Across the ML Pipeline</h2>
+    <p>Explainability is relevant at every stage — not just after training. Click each stage:</p>
+    <div class="pipeline" style="margin:1rem 0">
+      <div class="pipe-step active" onclick="showPipeStage(0)">📊 Pre-Modelling</div>
+      <div class="pipe-step" onclick="showPipeStage(1)">🔧 Model Selection</div>
+      <div class="pipe-step" onclick="showPipeStage(2)">🔍 Post-Hoc</div>
+    </div>
+    <div id="pipe-detail-0" class="pipe-detail active">
+      <strong style="color:var(--p)">Pre-Modelling Explainability</strong>
+      <ul style="color:var(--muted);line-height:1.9;padding-left:1.25rem;margin-top:.5rem;font-size:.9rem">
+        <li>Analysing the <strong>dataset</strong>: class imbalances, feature distributions, biases</li>
+        <li>Analysing <strong>features</strong>: important features, sparse features, correlations</li>
+        <li>Choice of <strong>humanly intuitive</strong> features that domain experts can validate</li>
+      </ul>
+    </div>
+    <div id="pipe-detail-1" class="pipe-detail">
+      <strong style="color:var(--s)">Model Selection</strong>
+      <ul style="color:var(--muted);line-height:1.9;padding-left:1.25rem;margin-top:.5rem;font-size:.9rem">
+        <li><strong>White Box Models</strong>: Preserve transparency → improving model interpretability (at the cost of accuracy)</li>
+        <li><strong>Black Box Models</strong>: Improving predictive performance → requires post-hoc explainability techniques</li>
+        <li>Some models are inherently complex → not straightforward to understand → need external explanation tools</li>
+      </ul>
+    </div>
+    <div id="pipe-detail-2" class="pipe-detail">
+      <strong style="color:var(--success)">Post-Hoc Modelling</strong>
+      <ul style="color:var(--muted);line-height:1.9;padding-left:1.25rem;margin-top:.5rem;font-size:.9rem">
+        <li>Apply explanation methods <em>after</em> training to understand model behaviour</li>
+        <li>LIME, SHAP, Anchors, PFI, PDPs — all post-hoc techniques</li>
+        <li>Higher accuracy (complex models) → more need for post-hoc explainability</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Taxonomy -->
+  <div class="card">
+    <h2>Taxonomy of Model Interpretability &amp; Explainability</h2>
+    <p>XAI methods can be classified along multiple dimensions. All methods can be placed on this 2×2 matrix:</p>
+    <div class="two-col" style="margin:1rem 0">
+      <div>
+        <h3>Intrinsic vs Post-Hoc</h3>
+        <ul style="color:var(--muted);line-height:1.8;padding-left:1.25rem;font-size:.88rem">
+          <li><strong>Intrinsic</strong>: Achieve explainability by using <em>less complex models</em> — white box, interpretable by design</li>
+          <li><strong>Post-Hoc</strong>: Applied after training when model complexity prohibits direct interpretation</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Model-Specific vs Model-Agnostic</h3>
+        <ul style="color:var(--muted);line-height:1.8;padding-left:1.25rem;font-size:.88rem">
+          <li><strong>Model-Specific</strong>: Tools limited to specific model types (e.g. feature importance for trees)</li>
+          <li><strong>Model-Agnostic</strong>: Tools that can explain <em>any</em> ML model (LIME, SHAP)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="two-col" style="margin:.75rem 0">
+      <div>
+        <h3>Local vs Global</h3>
+        <ul style="color:var(--muted);line-height:1.8;padding-left:1.25rem;font-size:.88rem">
+          <li><strong>Local</strong>: Explains individual predictions — important for case-by-case analysis</li>
+          <li><strong>Global</strong>: Explains overall model behaviour — important for understanding the whole model</li>
+        </ul>
+      </div>
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem">
+        <h3 style="margin-bottom:.75rem">The 2×2 Matrix</h3>
+        <div class="matrix">
+          <div class="matrix-cell header"></div>
+          <div class="matrix-cell header">Intrinsic</div>
+          <div class="matrix-cell header">Post-hoc</div>
+          <div class="matrix-cell header">Local</div>
+          <div class="matrix-cell" onclick="showTaxCell('li')" style="cursor:pointer;border:1px solid var(--border)">Decision tree<br>path<br><small style="color:var(--muted)">click ▸</small></div>
+          <div class="matrix-cell" onclick="showTaxCell('lp')" style="cursor:pointer;border:1px solid var(--border)">LIME, SHAP<br>local, Anchors<br><small style="color:var(--muted)">click ▸</small></div>
+          <div class="matrix-cell header">Global</div>
+          <div class="matrix-cell" onclick="showTaxCell('gi')" style="cursor:pointer;border:1px solid var(--border)">Linear coefs,<br>Tree visual<br><small style="color:var(--muted)">click ▸</small></div>
+          <div class="matrix-cell" onclick="showTaxCell('gp')" style="cursor:pointer;border:1px solid var(--border)">SHAP global,<br>PFI, PDPs<br><small style="color:var(--muted)">click ▸</small></div>
+        </div>
+      </div>
+    </div>
+    <div class="info-box" id="taxDetail"><p>Click a matrix cell above to see an example and details.</p></div>
+  </div>
+
   <!-- Quiz -->
   <div class="quiz-section">
     <h2>🎯 Lesson 1 Quiz — Intro to XAI</h2>
     <div class="question" id="q1">
-      <p>1. What distinguishes a "post-hoc" explanation from an "intrinsic" one?</p>
+      <p>1. A model trained on historical hiring data learns to favour male candidates. Which <em>driver</em> of explainability is most directly relevant here?</p>
       <div class="options">
-        <button class="option" onclick="answer('q1',this,'wrong')">Post-hoc methods are less accurate than intrinsic ones</button>
-        <button class="option" onclick="answer('q1',this,'correct')">Post-hoc explanations are generated after training and can be applied to any model; intrinsic methods are interpretable by design</button>
-        <button class="option" onclick="answer('q1',this,'wrong')">Intrinsic methods only work on neural networks</button>
-        <button class="option" onclick="answer('q1',this,'wrong')">Post-hoc explanations are legally binding; intrinsic ones are not</button>
+        <button class="option" onclick="answer('q1',this,'wrong')">Debugging — to improve accuracy</button>
+        <button class="option" onclick="answer('q1',this,'wrong')">Regulatory compliance — because a law was broken</button>
+        <button class="option" onclick="answer('q1',this,'correct')">Ethics &amp; Trust — detecting bias and ensuring fairness</button>
+        <button class="option" onclick="answer('q1',this,'wrong')">Model selection — because a simpler model should have been chosen</button>
       </div>
       <div class="q-feedback" id="fb1"></div>
     </div>
     <div class="question" id="q2">
-      <p>2. LIME and SHAP are classified as which type of XAI method?</p>
+      <p>2. What distinguishes an "intrinsic" explanation from a "post-hoc" one?</p>
       <div class="options">
-        <button class="option" onclick="answer('q2',this,'wrong')">Intrinsic, global</button>
-        <button class="option" onclick="answer('q2',this,'wrong')">Intrinsic, local</button>
-        <button class="option" onclick="answer('q2',this,'correct')">Post-hoc (can be local or global)</button>
-        <button class="option" onclick="answer('q2',this,'wrong')">Model-agnostic, intrinsic</button>
+        <button class="option" onclick="answer('q2',this,'wrong')">Post-hoc methods are less accurate than intrinsic ones</button>
+        <button class="option" onclick="answer('q2',this,'correct')">Intrinsic methods use interpretable-by-design models; post-hoc methods are applied after training to any black-box</button>
+        <button class="option" onclick="answer('q2',this,'wrong')">Intrinsic methods only work on neural networks</button>
+        <button class="option" onclick="answer('q2',this,'wrong')">Post-hoc explanations are legally binding; intrinsic ones are not</button>
       </div>
       <div class="q-feedback" id="fb2"></div>
     </div>
+    <div class="question" id="q3">
+      <p>3. A doctor wants to understand why the model flagged a <em>specific patient</em> as high-risk. This is a…</p>
+      <div class="options">
+        <button class="option" onclick="answer('q3',this,'wrong')">Global, intrinsic explanation</button>
+        <button class="option" onclick="answer('q3',this,'correct')">Local explanation</button>
+        <button class="option" onclick="answer('q3',this,'wrong')">Global, post-hoc explanation</button>
+        <button class="option" onclick="answer('q3',this,'wrong')">Model-specific explanation</button>
+      </div>
+      <div class="q-feedback" id="fb3"></div>
+    </div>
+    <div class="question" id="q4">
+      <p>4. LIME and SHAP can be applied to any type of trained model — Random Forest, Neural Network, SVM. This makes them…</p>
+      <div class="options">
+        <button class="option" onclick="answer('q4',this,'wrong')">Model-specific methods</button>
+        <button class="option" onclick="answer('q4',this,'correct')">Model-agnostic methods</button>
+        <button class="option" onclick="answer('q4',this,'wrong')">Intrinsic methods</button>
+        <button class="option" onclick="answer('q4',this,'wrong')">Pre-modelling methods</button>
+      </div>
+      <div class="q-feedback" id="fb4"></div>
+    </div>
     <div class="quiz-score" id="qscore-in">
       <div class="big" id="qs-in-val"></div>
-      <div style="color:var(--muted)">4 more lessons to go!</div>
+      <div style="color:var(--muted)">Move to Lesson 2: Local Explanations →</div>
     </div>
   </div>
 </div>
-
 <!-- ═══════════════════════════════════════
      LESSON 2 — LOCAL EXPLANATIONS
      ═══════════════════════════════════════ -->
 <div class="page" id="page-local">
   <div class="page-header">
     <h1>🔬 Local Explanations</h1>
-    <p>LIME, Anchors, and counterfactuals — explaining one prediction at a time.</p>
+    <p>LIME and Anchors — explaining one prediction at a time, in a model-agnostic way.</p>
   </div>
 
   <!-- What is a local explanation -->
   <div class="card">
     <h2>What is a Local Explanation?</h2>
-    <p>A local explanation answers: <em>"Why did the model make <strong>this specific prediction</strong> for <strong>this specific input</strong>?"</em> It does not describe the model overall — only behaviour in the neighbourhood of one data point.</p>
-    <div class="info-box"><p>Analogy: you don't need to understand how an aircraft engine works globally — you need to know why <em>this alarm is going off right now</em>. Local explanations are actionable and specific.</p></div>
+    <p>A local explanation explains a <strong>single output</strong> of a machine learning model — not how the model behaves generally, but why it made <em>this specific prediction</em> for <em>this specific input</em>.</p>
+    <div class="three-col" style="margin:1rem 0">
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem">
+        <div style="font-size:1.4rem">🏥</div>
+        <p style="color:var(--muted);font-size:.88rem;margin-top:.4rem">Why did a medical AI recommend this diagnosis for <em>this patient</em>?</p>
+      </div>
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem">
+        <div style="font-size:1.4rem">🏦</div>
+        <p style="color:var(--muted);font-size:.88rem;margin-top:.4rem">Why was <em>this applicant</em> denied a loan by their bank?</p>
+      </div>
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem">
+        <div style="font-size:1.4rem">⚖️</div>
+        <p style="color:var(--muted);font-size:.88rem;margin-top:.4rem">Why was bail denied for <em>this defendant</em>?</p>
+      </div>
+    </div>
+    <div class="info-box"><p>Local explanations are often <strong>personal explanations</strong>. When individuals are personally affected by model outputs — in Law, Medicine, and Finance — those specific predictions are subject to greater scrutiny. GDPR Art. 22 gives EU citizens the right to a local explanation.</p></div>
+
+    <h3 style="margin:1rem 0 .5rem">Types of Local Explanations</h3>
+    <div class="three-col">
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem">
+        <strong style="color:var(--p)">Feature Weighting</strong>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:.4rem">Each input feature receives a weight showing how much it contributed to the prediction. e.g. LIME coefficients.</p>
+      </div>
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem">
+        <strong style="color:var(--s)">Feature Subsets</strong>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:.4rem">Return only the most important features (without weights). Useful when the feature space is very large or not human-friendly.</p>
+      </div>
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem">
+        <strong style="color:var(--success)">Rule-Based</strong>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:.4rem">An if-then rule: "IF income &gt; 45k AND late_payments = 0 THEN Approved." Best of both worlds — reduces features AND adds context. e.g. Anchors.</p>
+      </div>
+    </div>
   </div>
 
   <!-- LIME -->
   <div class="card">
     <h2>LIME — Local Interpretable Model-agnostic Explanations</h2>
-    <p>LIME fits a <strong>simple surrogate model</strong> (e.g. linear regression) in the <em>local neighbourhood</em> of the prediction being explained. The surrogate's coefficients become the explanation.</p>
+    <p>LIME is a <strong>feature weighting</strong> explanation method. The core intuition: even if a black-box model has a complex global decision boundary, it can often be <strong>approximated locally by a simple linear model</strong>.</p>
+    <div class="info-box"><p><em>"The decisions of a black box classifier with a complex global decision boundary can be explained locally by the weights of a linear approximation to the boundary in a neighbourhood around the point of interest."</em></p></div>
+
+    <h3 style="margin:1rem 0 .5rem">The LIME Algorithm</h3>
     <div class="pipeline">
       <div class="pipe-step active" onclick="showLimeStep(0,this)">① Pick point</div>
       <div class="pipe-step" onclick="showLimeStep(1,this)">② Perturb</div>
       <div class="pipe-step" onclick="showLimeStep(2,this)">③ Black-box predict</div>
-      <div class="pipe-step" onclick="showLimeStep(3,this)">④ Weight by distance</div>
+      <div class="pipe-step" onclick="showLimeStep(3,this)">④ Weight</div>
       <div class="pipe-step" onclick="showLimeStep(4,this)">⑤ Fit surrogate</div>
-      <div class="pipe-step" onclick="showLimeStep(5,this)">⑥ Read coefficients</div>
+      <div class="pipe-step" onclick="showLimeStep(5,this)">⑥ Explain</div>
     </div>
-    <div class="pipe-detail active" id="lime-0">Select the instance x you want to explain — e.g. a loan application that was denied.</div>
-    <div class="pipe-detail" id="lime-1">Generate many perturbed samples x' around x by randomly turning features on/off (for text/images) or adding noise (for tabular data). ~1,000–5,000 samples.</div>
-    <div class="pipe-detail" id="lime-2">Run all perturbed samples x' through the black-box model f(x') to get predictions. This treats the model as a function we can query but not inspect.</div>
-    <div class="pipe-detail" id="lime-3">Weight each perturbed sample by its distance from x: nearby samples matter more. Typically use exponential kernel: weight = exp(−d(x,x')²/σ²).</div>
-    <div class="pipe-detail" id="lime-4">Fit a weighted linear regression on {x', f(x'), weights}. The linear model is now a local approximation of the black-box around x.</div>
-    <div class="pipe-detail" id="lime-5">The linear regression coefficients βᵢ are the LIME explanation: positive β means feature i pushed the prediction up; negative means it pushed it down. These are shown as a bar chart to the user.</div>
+    <div class="pipe-detail active" id="lime-0"><strong>Step 1:</strong> Choose an interpretable data representation x′ of instance x (e.g. word presence/absence for text, super-pixels for images, continuous features for tabular). Choose a class of interpretable models G (e.g. linear models, decision trees). Choose a kernel π_x that defines what "local" means around x′.</div>
+    <div class="pipe-detail" id="lime-1"><strong>Step 2:</strong> Sample around x′ by perturbing it — ~1,000–5,000 samples. For tabular data: add Gaussian noise. For text: zero words randomly. For images: zero out super-pixels. This gives us a dataset z′ of perturbed interpretable inputs.</div>
+    <div class="pipe-detail" id="lime-2"><strong>Step 3:</strong> Get predictions f(z) for all perturbed samples using the black-box model. We treat f as a function we can query but cannot inspect. Each perturbed sample z now has a predicted label f(z).</div>
+    <div class="pipe-detail" id="lime-3"><strong>Step 4:</strong> Weight each perturbed sample by its proximity to x using the kernel π_x. For an exponential kernel: <em>π_x(z) = exp(−D(x,z)²/σ²)</em>. Nearby samples get high weights; distant ones get low weights.</div>
+    <div class="pipe-detail" id="lime-4"><strong>Step 5:</strong> Fit the interpretable model g ∈ G on the weighted dataset {z′, f(z), π_x(z)}. Use locally-weighted squared loss: L(f, g, π_x) = Σ π_x(z)(f(z) − g(z′))². This gives a linear model that approximates f near x.</div>
+    <div class="pipe-detail" id="lime-5"><strong>Step 6:</strong> The linear regression coefficients w_g are the explanation — positive w means the feature pushed the prediction up; negative means it pushed it down. Only the K largest coefficients are reported (for readability).</div>
 
-    <!-- LIME canvas -->
     <canvas id="limeCanvas" width="840" height="300" style="width:100%;max-width:840px;margin-top:1rem"></canvas>
     <div class="slider-row">
       <label>Explain instance x =</label>
@@ -367,254 +563,341 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
     <div class="formula" id="limeResult">LIME coefficients at x=0.30: feature₁=+0.72, feature₂=−0.41</div>
   </div>
 
-  <!-- LIME feature bar chart -->
+  <!-- LIME Maths -->
   <div class="card">
-    <h2>LIME Output — Feature Attribution Bar Chart</h2>
-    <p>Select a scenario to see what LIME would produce for a credit risk model. Positive bars = pushed toward "high risk", negative = pushed toward "low risk".</p>
+    <h2>LIME — The Maths</h2>
+    <p>For a continuous feature space (e.g. tabular data), the LIME objective is:</p>
+    <div class="formula">ξ(x) = argmin<sub>g∈G</sub> L(f, g, π_x) + Ω(g)</div>
+    <p style="color:var(--muted);font-size:.9rem;margin:.75rem 0">where Ω(g) is a complexity penalty (e.g. number of features in the linear model). Using an exponential kernel and locally-weighted squared loss:</p>
+    <div class="formula">π_x(z) = exp(−D(x,z)² / σ²)</div>
+    <div class="formula">L(f, g, π_x) = Σ<sub>z,z′∈Z</sub> π_x(z) (f(z) − g(z′))²</div>
+    <p style="color:var(--muted);font-size:.9rem;margin:.75rem 0">The local surrogate model is linear: g(z′) = w_g<sup>T</sup> · z′ — and we train it on the perturbed samples weighted by their proximity to x.</p>
+
+    <h3 style="margin:1rem 0 .5rem">LIME Output — Feature Attribution Bar Chart</h3>
+    <p style="color:var(--muted)">Select a scenario to see what LIME would produce for a credit risk model. Positive bars = pushed toward "high risk"; negative = pushed toward "low risk".</p>
     <div class="tab-row" id="limeCaseTabs">
       <button class="tab-btn active" onclick="showLimeCase('deny',this)">Denied Loan</button>
       <button class="tab-btn" onclick="showLimeCase('approve',this)">Approved Loan</button>
       <button class="tab-btn" onclick="showLimeCase('medical',this)">Medical Diagnosis</button>
     </div>
     <canvas id="limeBarCanvas" width="840" height="280" style="width:100%;max-width:840px"></canvas>
-    <div class="info-box" id="limeCaseNote"><p>This applicant was denied. The main drivers are late payment history (+0.62) and high debt-to-income ratio (+0.41), while their long employment history partially offset these (−0.28).</p></div>
+    <div class="info-box" id="limeCaseNote"><p>This applicant was denied. The main drivers are late payment history (+0.62) and high debt-to-income ratio (+0.41), while long employment history partially offsets these (−0.28).</p></div>
+  </div>
+
+  <!-- LIME Advantages & Disadvantages -->
+  <div class="card">
+    <h2>LIME — Advantages &amp; Disadvantages</h2>
+    <div class="two-col">
+      <div style="background:#06040f;border:1px solid var(--success);border-radius:.5rem;padding:1rem">
+        <strong style="color:var(--success)">✅ Advantages</strong>
+        <ul style="color:var(--muted);line-height:1.9;padding-left:1.25rem;margin-top:.5rem;font-size:.88rem">
+          <li>Same explanation method for <strong>any</strong> underlying model — consistency for lay audiences</li>
+          <li>Simple, intuitive explanations (bar charts)</li>
+          <li>Works on tabular, image, and text data</li>
+          <li>Well-maintained Python library (<code>lime</code>)</li>
+          <li>Model-agnostic: no need to understand the black-box internals</li>
+        </ul>
+      </div>
+      <div style="background:#06040f;border:1px solid var(--danger);border-radius:.5rem;padding:1rem">
+        <strong style="color:var(--danger)">❌ Disadvantages</strong>
+        <ul style="color:var(--muted);line-height:1.9;padding-left:1.25rem;margin-top:.5rem;font-size:.88rem">
+          <li><strong>High variability</strong>: two adjacent points can produce quite different explanations — results are not stable</li>
+          <li><strong>Kernel choice</strong> substantially impacts the explanation and is hard to justify precisely</li>
+          <li>Relies on the assumption that the decision boundary is locally linear — this may not hold</li>
+          <li>The "neighbourhood" definition is ambiguous for high-dimensional data</li>
+        </ul>
+      </div>
+    </div>
   </div>
 
   <!-- Anchors -->
   <div class="card">
     <h2>Anchors — Rule-Based Local Explanations</h2>
-    <p>Anchors finds an <strong>if-then rule</strong> (an "anchor") that is sufficient to guarantee the prediction, regardless of other feature values.</p>
+    <p>Anchors (by the same authors as LIME) is a <strong>rule-based</strong> explanation method. Instead of fitting a surrogate model, it finds an <strong>if-then rule</strong> that is sufficient to lock in a prediction.</p>
     <div class="formula">IF income &gt; 45k AND no_late_payments = True THEN prediction = "Approved" (precision ≥ 95%)</div>
-    <div class="two-col">
-      <div>
-        <h3>How Anchors Works</h3>
-        <ul>
-          <li>Start with the most important feature</li>
-          <li>Iteratively add features to the rule</li>
-          <li>Stop when the rule has sufficient <em>precision</em> (fraction of times it's correct)</li>
-          <li>Measures <em>coverage</em>: how often the anchor applies to the input space</li>
-        </ul>
+
+    <h3 style="margin:1rem 0 .5rem">The Parts of an Anchor</h3>
+    <div class="three-col" style="margin:.75rem 0">
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem">
+        <strong style="color:var(--p)">Predicates</strong>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:.4rem">A <strong>feature predicate</strong> is a rule about a feature: e.g. A₁: x₁ ≥ 3.4 and A₂: x₂ ∈ [0,3]. The anchor A = {A₁, A₂} — if all rules are satisfied, A(x)=1.</p>
       </div>
-      <div>
-        <h3>Anchors vs LIME</h3>
-        <ul>
-          <li>Anchors gives a <strong>rule</strong> (binary, discrete) — easy for non-experts to understand</li>
-          <li>LIME gives <strong>coefficients</strong> — shows direction & magnitude of each feature</li>
-          <li>Anchors is <strong>sufficient</strong>: rule guarantees prediction holds even if other features change</li>
-          <li>LIME is a <strong>linear approximation</strong>: only valid locally</li>
-        </ul>
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem">
+        <strong style="color:var(--s)">Coverage</strong>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:.4rem">The region of input space where all predicates are true. A larger coverage means the anchor applies to more inputs — making it a more general explanation.</p>
+      </div>
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem">
+        <strong style="color:var(--success)">Precision</strong>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:.4rem">Prec(A) = proportion of perturbed samples z where A(z)=1 <em>and</em> f(z)=f(x). A precision of 0.95 means the rule guarantees the prediction 95% of the time.</p>
       </div>
     </div>
-    <div class="reveal-grid" style="margin-top:1rem">
-      <div class="reveal-card" onclick="revealCard(this)">
-        <div class="rc-icon">🎯</div>
-        <div class="rc-label">Precision</div>
-        <div class="rc-body">How often does the anchor correctly predict the class? A precision of 0.95 means the rule holds 95% of the time when its conditions are met.</div>
-      </div>
-      <div class="reveal-card" onclick="revealCard(this)">
-        <div class="rc-icon">🗺️</div>
-        <div class="rc-label">Coverage</div>
-        <div class="rc-body">What fraction of the input space does the anchor apply to? High coverage = more generally useful rule. Anchors trades off precision vs coverage.</div>
-      </div>
-      <div class="reveal-card" onclick="revealCard(this)">
-        <div class="rc-icon">🏝️</div>
-        <div class="rc-label">Beam Search</div>
-        <div class="rc-body">Anchors uses beam search (with bandit algorithms for efficiency) to find rules that maximise coverage subject to a precision threshold.</div>
-      </div>
+
+    <h3 style="margin:1rem 0 .5rem">Choosing the Anchor</h3>
+    <div class="info-box"><p>Of all anchors with sufficient precision (Prec(A) ≥ τ), choose the one with the <strong>largest coverage</strong>. The set of predicates with the largest coverage around the point are the rules which best explain its classification. Anchors uses <strong>beam search + reinforcement learning</strong> to efficiently find this anchor.</p></div>
+
+    <div class="pipeline" style="margin:1rem 0">
+      <div class="pipe-step active" onclick="showAnchorStep(0,this)">① Point of interest</div>
+      <div class="pipe-step" onclick="showAnchorStep(1,this)">② Perturb</div>
+      <div class="pipe-step" onclick="showAnchorStep(2,this)">③ Build candidates</div>
+      <div class="pipe-step" onclick="showAnchorStep(3,this)">④ Beam search</div>
+      <div class="pipe-step" onclick="showAnchorStep(4,this)">⑤ Return anchor</div>
     </div>
+    <div class="pipe-detail active" id="anchor-0">Start with a point of interest x and a desired precision threshold τ (e.g. 0.95).</div>
+    <div class="pipe-detail" id="anchor-1">Sample perturbations z around x using distribution P(z). Each z is a neighbour of x (with some features changed).</div>
+    <div class="pipe-detail" id="anchor-2">Generate candidate anchors — all possible combinations of feature predicates. Check each against the perturbed samples using the black-box model f(z).</div>
+    <div class="pipe-detail" id="anchor-3">Use beam search to efficiently explore the space of possible anchors — keeping only the best candidates at each step. Bandits are used to estimate precision efficiently without exhaustive sampling.</div>
+    <div class="pipe-detail" id="anchor-4">Return the anchor A with precision ≥ τ and maximum coverage. This is the rule that best explains the prediction — it applies to the widest area while still being reliable.</div>
   </div>
 
-  <!-- Counterfactuals -->
+  <!-- Anchors Advantages & Disadvantages -->
   <div class="card">
-    <h2>Counterfactual Explanations — "What Would Need to Change?"</h2>
-    <p>A counterfactual explanation answers: <em>"What is the smallest change to the input that would flip the prediction?"</em></p>
-    <div class="formula">Original: income=35k, debt=80%, late_payments=2 → DENIED</div>
-    <div class="formula" style="border-color:var(--success);color:#34d399">Counterfactual: income=35k, debt=<strong>55%</strong>, late_payments=<strong>0</strong> → APPROVED</div>
+    <h2>Anchors — Advantages &amp; Disadvantages</h2>
     <div class="two-col">
-      <div>
-        <h3>Desirable Properties</h3>
-        <ul>
-          <li><strong>Proximity</strong> — small change from original input</li>
-          <li><strong>Sparsity</strong> — change as few features as possible</li>
-          <li><strong>Actionability</strong> — changes must be feasible (can't change age)</li>
-          <li><strong>Plausibility</strong> — result should be a realistic data point</li>
+      <div style="background:#06040f;border:1px solid var(--success);border-radius:.5rem;padding:1rem">
+        <strong style="color:var(--success)">✅ Advantages</strong>
+        <ul style="color:var(--muted);line-height:1.9;padding-left:1.25rem;margin-top:.5rem;font-size:.88rem">
+          <li><strong>Easy to understand</strong> — if-then rules are intuitive for non-experts</li>
+          <li>Coverage allows you to compare how <strong>general</strong> different explanations are</li>
+          <li>Model-agnostic — works with any black-box</li>
+          <li>Well-implemented in the <code>anchor-exp</code> library</li>
         </ul>
       </div>
-      <div>
-        <h3>Methods</h3>
-        <ul>
-          <li><strong>DICE</strong> (Diverse Counterfactual Explanations) — generates multiple diverse counterfactuals</li>
-          <li><strong>Wachter et al.</strong> — minimise loss + distance objective</li>
-          <li><strong>FACE</strong> — finds feasible, actionable counterfactuals along data manifold</li>
-          <li><strong>Growing Spheres</strong> — searches expanding neighbourhood for flipped predictions</li>
+      <div style="background:#06040f;border:1px solid var(--danger);border-radius:.5rem;padding:1rem">
+        <strong style="color:var(--danger)">❌ Disadvantages</strong>
+        <ul style="color:var(--muted);line-height:1.9;padding-left:1.25rem;margin-top:.5rem;font-size:.88rem">
+          <li>Currently primarily implemented for <strong>tabular data</strong> only</li>
+          <li>Coverage may not be meaningful in high-dimensional/image domains</li>
+          <li>Runtime depends on black-box efficiency — every perturbation requires a call to f(z)</li>
+          <li>Highly complex decision boundaries may result in anchors that cover very little of the input space</li>
         </ul>
       </div>
     </div>
-    <!-- Counterfactual canvas -->
-    <canvas id="cfCanvas" width="840" height="240" style="width:100%;max-width:840px;margin-top:1rem"></canvas>
-    <div class="slider-row">
-      <label>Debt ratio (%)</label>
-      <input type="range" id="cfDebt" min="20" max="95" value="80" oninput="drawCFCanvas()">
-      <span id="cfDebtVal">80%</span>
-    </div>
-    <div class="formula" id="cfResult">Current prediction: DENIED</div>
+    <div class="info-box" style="margin-top:1rem"><p><strong>LIME vs Anchors in summary:</strong> LIME gives you <em>how much</em> each feature contributed (weights/magnitudes). Anchors gives you <em>which conditions</em> lock in a prediction (rules/coverage). Use LIME when you want to understand feature contributions; use Anchors when you want actionable, interpretable rules.</p></div>
   </div>
 
   <!-- Quiz -->
   <div class="quiz-section">
     <h2>🎯 Lesson 2 Quiz — Local Explanations</h2>
-    <div class="question" id="q3">
-      <p>3. In LIME, what is the purpose of the surrogate model?</p>
+    <div class="question" id="q5">
+      <p>5. In LIME, what is the role of the exponential kernel π_x(z)?</p>
       <div class="options">
-        <button class="option" onclick="answer('q3',this,'wrong')">To replace the black-box model with a simpler one for deployment</button>
-        <button class="option" onclick="answer('q3',this,'correct')">To approximate the black-box locally around one instance so its coefficients can be used as an explanation</button>
-        <button class="option" onclick="answer('q3',this,'wrong')">To improve the black-box model's accuracy on the training set</button>
-        <button class="option" onclick="answer('q3',this,'wrong')">To generate synthetic training data for the black-box</button>
+        <button class="option" onclick="answer('q5',this,'wrong')">It selects which features to include in the explanation</button>
+        <button class="option" onclick="answer('q5',this,'correct')">It weights perturbed samples by their proximity to the point of interest, so nearby samples matter more when fitting the surrogate</button>
+        <button class="option" onclick="answer('q5',this,'wrong')">It determines how many features appear in the final bar chart</button>
+        <button class="option" onclick="answer('q5',this,'wrong')">It transforms the black-box output into a probability</button>
       </div>
-      <div class="q-feedback" id="fb3"></div>
+      <div class="q-feedback" id="fb5"></div>
     </div>
-    <div class="question" id="q4">
-      <p>4. A counterfactual explanation is best described as:</p>
+    <div class="question" id="q6">
+      <p>6. In Anchors, among all rules with sufficient precision (Prec ≥ τ), which anchor is chosen?</p>
       <div class="options">
-        <button class="option" onclick="answer('q4',this,'wrong')">A global summary of which features matter most to the model</button>
-        <button class="option" onclick="answer('q4',this,'wrong')">An if-then rule that guarantees a certain prediction</button>
-        <button class="option" onclick="answer('q4',this,'correct')">The smallest change to an input that would flip the model's prediction</button>
-        <button class="option" onclick="answer('q4',this,'wrong')">A linear approximation of the model around a data point</button>
+        <button class="option" onclick="answer('q6',this,'wrong')">The one with the fewest predicates (simplest rule)</button>
+        <button class="option" onclick="answer('q6',this,'wrong')">The one with the highest precision (most accurate rule)</button>
+        <button class="option" onclick="answer('q6',this,'correct')">The one with the largest coverage (applies to the widest region of input space)</button>
+        <button class="option" onclick="answer('q6',this,'wrong')">The one that uses only continuous features</button>
       </div>
-      <div class="q-feedback" id="fb4"></div>
+      <div class="q-feedback" id="fb6"></div>
     </div>
     <div class="quiz-score" id="qscore-local">
       <div class="big" id="qs-local-val"></div>
-      <div style="color:var(--muted)">3 more lessons ahead!</div>
+      <div style="color:var(--muted)">Move to Lesson 3: Global Explanations →</div>
     </div>
   </div>
 </div>
-
 <!-- ═══════════════════════════════════════
      LESSON 3 — GLOBAL EXPLANATIONS
      ═══════════════════════════════════════ -->
 <div class="page" id="page-global">
   <div class="page-header">
     <h1>🌍 Global Explanations</h1>
-    <p>SHAP, Permutation Feature Importance, and Partial Dependence Plots — understanding the model as a whole.</p>
+    <p>Permutation Feature Importance and SHAP — understanding the whole model, not just one prediction.</p>
   </div>
 
   <!-- What is a global explanation -->
   <div class="card">
     <h2>What is a Global Explanation?</h2>
-    <p>A global explanation answers: <em>"How does the model behave <strong>across all inputs</strong>?"</em> — which features does it rely on, and how does changing a feature's value affect the output on average?</p>
-    <div class="two-col">
-      <div style="background:#020f0d;border:1px solid var(--p);border-radius:.5rem;padding:1rem">
-        <h3>Use cases</h3>
-        <ul>
-          <li>Model auditing — what is driving predictions overall?</li>
-          <li>Feature selection — which inputs matter most?</li>
-          <li>Bias detection — is gender or race influencing predictions?</li>
-          <li>Regulatory reporting — explain the model to stakeholders</li>
-        </ul>
+    <p>A global explanation explains the <strong>overall behaviour</strong> of a model — not why it made a specific prediction, but which features it generally relies on and how.</p>
+    <div class="two-col" style="margin:1rem 0">
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem">
+        <strong style="color:var(--p)">Feature Attribution</strong>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:.4rem">"What features of the data is the model generally relying on?" — e.g. PFI, SHAP global</p>
       </div>
-      <div style="background:#020f0d;border:1px solid var(--s);border-radius:.5rem;padding:1rem">
-        <h3>Key methods</h3>
-        <ul>
-          <li><strong>SHAP</strong> — game-theory based attribution, consistent</li>
-          <li><strong>Permutation Feature Importance (PFI)</strong> — shuffle-based</li>
-          <li><strong>Partial Dependence Plots (PDP)</strong> — marginalised effect</li>
-          <li><strong>ICE plots</strong> — individual-level PDP curves</li>
-        </ul>
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem">
+        <strong style="color:var(--s)">Model Distillation</strong>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:.4rem">"What is a simplified version of our model that a human can understand?" — e.g. distilling a neural network into a decision tree</p>
       </div>
     </div>
+    <div class="info-box"><p>In this lesson we focus on <strong>feature attribution</strong> — post-hoc, model-agnostic methods that peer into the black-box model and tease out which features it's using.</p></div>
   </div>
 
-  <!-- SHAP -->
+  <!-- Motivating Example -->
   <div class="card">
-    <h2>SHAP — SHapley Additive exPlanations</h2>
-    <p>SHAP is grounded in cooperative game theory. Each feature is a "player" and SHAP computes their fair contribution to the prediction.</p>
-    <div class="formula">φᵢ = Σ [|S|!(n−|S|−1)/n!] · [f(S∪{i}) − f(S)]   over all subsets S not containing i</div>
-    <div class="info-box"><p><strong>Key SHAP properties:</strong> Efficiency (attributions sum to prediction − baseline), Symmetry (equal features get equal attribution), Dummy (features with no effect get zero), Additivity (can decompose model). These axioms make SHAP the theoretically principled choice.</p></div>
-
-    <!-- SHAP Beeswarm -->
-    <h3 style="margin-top:1rem">SHAP Summary Plot (Beeswarm)</h3>
-    <p style="color:var(--muted)">Each dot is one data point. Horizontal position = SHAP value (impact on prediction). Colour = feature value (red=high, blue=low).</p>
-    <canvas id="shapCanvas" width="840" height="300" style="width:100%;max-width:840px"></canvas>
-    <div class="tab-row" style="margin-top:.75rem" id="shapDataTabs">
-      <button class="tab-btn active" onclick="showShapData('credit',this)">Credit Model</button>
-      <button class="tab-btn" onclick="showShapData('house',this)">House Price Model</button>
-      <button class="tab-btn" onclick="showShapData('churn',this)">Churn Model</button>
+    <h2>Motivating Example: Wisconsin Breast Cancer Dataset</h2>
+    <p>The <strong>Wisconsin Diagnosis Breast Cancer Dataset (WDBCD)</strong> contains 569 samples of breast tissue, each labelled <em>malignant</em> or <em>benign</em>. There are <strong>30 features</strong> computed from a digitised image of each sample's cell nuclei.</p>
+    <div style="overflow-x:auto;margin:.75rem 0">
+      <table style="width:100%;border-collapse:collapse;font-size:.85rem">
+        <thead><tr style="background:var(--card);color:var(--p)">
+          <th style="padding:.6rem 1rem;text-align:left">Feature</th>
+          <th style="padding:.6rem 1rem;text-align:left">Description</th>
+        </tr></thead>
+        <tbody style="color:var(--muted)">
+          <tr style="border-top:1px solid var(--border)"><td style="padding:.5rem 1rem">Mean radius</td><td style="padding:.5rem 1rem">Mean of distances from centre to points on the perimeter</td></tr>
+          <tr style="border-top:1px solid var(--border)"><td style="padding:.5rem 1rem">Mean perimeter</td><td style="padding:.5rem 1rem">Mean average of the nuclei perimeters</td></tr>
+          <tr style="border-top:1px solid var(--border)"><td style="padding:.5rem 1rem">Mean area</td><td style="padding:.5rem 1rem">Mean area of the nuclei</td></tr>
+          <tr style="border-top:1px solid var(--border)"><td style="padding:.5rem 1rem">Mean smoothness</td><td style="padding:.5rem 1rem">Mean local variation in radius lengths</td></tr>
+          <tr style="border-top:1px solid var(--border)"><td style="padding:.5rem 1rem">Worst perimeter</td><td style="padding:.5rem 1rem">Largest (worst) perimeter value across cell nuclei</td></tr>
+        </tbody>
+      </table>
     </div>
+    <div class="warn-box"><p>A <strong>Random Forest</strong> trained on this data achieves ~97% test accuracy. It consists of 100 trees — far too complex for any human to interpret directly. This is why we need global explanation methods.</p></div>
+    <div class="info-box"><p>Use case: An <em>oncologist</em> wants to use the classifier as a diagnostic tool. Before trusting it, she needs to know: "Is this model using sensible features to make its decisions?" A global explanation answers that.</p></div>
   </div>
 
   <!-- PFI -->
   <div class="card">
     <h2>Permutation Feature Importance (PFI)</h2>
-    <p>Shuffle one feature at a time. If accuracy drops a lot — the feature was important. If accuracy barely changes — the feature is unimportant (or redundant).</p>
-    <div class="pipeline">
-      <div class="pipe-step active" onclick="showPFIStep(0,this)">① Baseline score</div>
-      <div class="pipe-step" onclick="showPFIStep(1,this)">② Shuffle feature j</div>
-      <div class="pipe-step" onclick="showPFIStep(2,this)">③ Score again</div>
-      <div class="pipe-step" onclick="showPFIStep(3,this)">④ Importance = drop</div>
+    <p>PFI answers: <em>"What features is the model <strong>generally relying on</strong>?"</em> The intuition: if we randomly shuffle a feature column, a model that depends on that feature will perform much worse.</p>
+
+    <div class="pipeline" style="margin:1rem 0">
+      <div class="pipe-step active" onclick="showPFIStep(0,this)">① Choose feature</div>
+      <div class="pipe-step" onclick="showPFIStep(1,this)">② Shuffle column</div>
+      <div class="pipe-step" onclick="showPFIStep(2,this)">③ Measure drop</div>
+      <div class="pipe-step" onclick="showPFIStep(3,this)">④ Importance score</div>
       <div class="pipe-step" onclick="showPFIStep(4,this)">⑤ Repeat all features</div>
     </div>
-    <div class="pipe-detail active" id="pfi-0">Compute the baseline model score (e.g. AUC=0.87) on the held-out test set without any shuffling.</div>
-    <div class="pipe-detail" id="pfi-1">Randomly shuffle feature j's values across all test samples — breaking any real relationship between that feature and the target.</div>
-    <div class="pipe-detail" id="pfi-2">Re-score the model on the shuffled data. If AUC drops to 0.71, the feature contributed 0.87−0.71=0.16 to performance.</div>
-    <div class="pipe-detail" id="pfi-3">Importance(j) = baseline_score − shuffled_score. Repeat shuffling multiple times and average to reduce variance.</div>
-    <div class="pipe-detail" id="pfi-4">Repeat for every feature. Plot a bar chart ranked by importance. Negative importance = shuffling this feature accidentally improves performance (suggests multicollinearity).</div>
+    <div class="pipe-detail active" id="pfi-0">Choose a feature to compute importance for — e.g. "mean smoothness".</div>
+    <div class="pipe-detail" id="pfi-1">Randomly shuffle the values in that column only, leaving all other columns intact. This breaks the relationship between this feature and the target, while keeping the model unchanged.</div>
+    <div class="pipe-detail" id="pfi-2">Measure model performance before and after shuffling (e.g. accuracy or F1). A large drop means the feature was important.</div>
+    <div class="pipe-detail" id="pfi-3">The importance score = drop in performance = (original accuracy) − (accuracy after shuffle). Repeat N times and average to reduce randomness from shuffling.</div>
+    <div class="pipe-detail" id="pfi-4">Repeat for every feature. Plot the results as a bar chart (or box plot for multiple repetitions) to show relative feature importance across the whole model.</div>
 
-    <canvas id="pfiCanvas" width="840" height="260" style="width:100%;max-width:840px;margin-top:1rem"></canvas>
-    <div class="warn-box" style="margin-top:.75rem"><p>⚠️ PFI can be misleading with correlated features: shuffling one correlated feature still leaves the other as a proxy. Use <strong>conditional permutation importance</strong> to handle correlations properly.</p></div>
+    <canvas id="pfiCanvas" width="840" height="280" style="width:100%;max-width:840px;margin-top:1rem"></canvas>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="showPFI()">Run PFI on WDBCD</button>
+    </div>
+    <div class="info-box" style="margin-top:1rem" id="pfiNote"><p>Click "Run PFI" to see permutation feature importance results on the breast cancer dataset. Features with higher importance scores caused a larger accuracy drop when shuffled.</p></div>
   </div>
 
-  <!-- PDP -->
+  <!-- PFI Advantages & Words of Warning -->
   <div class="card">
-    <h2>Partial Dependence Plots (PDP)</h2>
-    <p>A PDP shows the <strong>marginalised effect</strong> of one feature on the prediction, averaged over all other features. Shows direction and shape of effect across the feature's full range.</p>
-    <div class="formula">PDP(xₛ) = E_{x_c}[f(xₛ, x_c)] ≈ (1/n) Σᵢ f(xₛ, xᵢ_c)</div>
-    <div class="tab-row" id="pdpTabs">
-      <button class="tab-btn active" onclick="showPDP('age',this)">Age</button>
-      <button class="tab-btn" onclick="showPDP('income',this)">Income</button>
-      <button class="tab-btn" onclick="showPDP('debt',this)">Debt Ratio</button>
-    </div>
-    <canvas id="pdpCanvas" width="840" height="260" style="width:100%;max-width:840px"></canvas>
-    <div class="info-box" id="pdpNote"><p>Age effect: risk decreases sharply until ~35, then increases slightly with age. The U-shaped curve suggests middle-aged applicants are lowest risk in this model.</p></div>
-
-    <!-- ICE explanation -->
-    <h3 style="margin-top:1.25rem">ICE Plots — Individual Conditional Expectation</h3>
-    <p style="color:var(--muted)">ICE plots show the PDP curve for <em>each individual data point</em> — revealing heterogeneity that the average (PDP) masks.</p>
+    <h2>PFI — Advantages &amp; Words of Warning</h2>
     <div class="two-col">
-      <div style="background:#020f0d;border:1px solid var(--border);border-radius:.5rem;padding:.75rem">
-        <h3>PDP (average line)</h3>
-        <p style="font-size:.85rem;color:var(--muted)">Shows average effect. Hides subgroup differences. Can be flat even when individual effects vary wildly.</p>
+      <div style="background:#06040f;border:1px solid var(--success);border-radius:.5rem;padding:1rem">
+        <strong style="color:var(--success)">✅ Advantages</strong>
+        <ul style="color:var(--muted);line-height:1.9;padding-left:1.25rem;margin-top:.5rem;font-size:.88rem">
+          <li>Fast to calculate</li>
+          <li>Works with classification and regression</li>
+          <li>Gives very compressed representation of the model</li>
+          <li>Post-hoc, model-agnostic method</li>
+          <li>Available in <code>sklearn.inspection</code> and <code>eli5</code></li>
+        </ul>
       </div>
-      <div style="background:#020f0d;border:1px solid var(--border);border-radius:.5rem;padding:.75rem">
-        <h3>ICE (individual lines)</h3>
-        <p style="font-size:.85rem;color:var(--muted)">Shows every individual's curve. Can reveal: some subgroups increase while others decrease (interaction effects). PDP = mean of ICE curves.</p>
+      <div style="background:#06040f;border:1px solid var(--warn);border-radius:.5rem;padding:1rem">
+        <strong style="color:var(--warn)">⚠️ Words of Warning</strong>
+        <ul style="color:var(--muted);line-height:1.9;padding-left:1.25rem;margin-top:.5rem;font-size:.88rem">
+          <li><strong>Randomness</strong>: shuffling varies each run — repeat and average to stabilise</li>
+          <li><strong>Train vs test</strong>: unclear which to use (see Christoph Molnar's "Interpretable ML" book)</li>
+          <li><strong>Correlated features</strong>: shuffling a feature correlated with another may produce unrealistic samples (e.g. height=2m, weight=40kg) — and importance gets split between them</li>
+        </ul>
       </div>
     </div>
   </div>
 
-  <!-- SHAP vs PFI comparison -->
+  <!-- SHAP - Game Theory -->
   <div class="card">
-    <h2>SHAP vs PFI — When to Use Which</h2>
-    <div class="reveal-grid">
-      <div class="reveal-card" onclick="revealCard(this)">
-        <div class="rc-icon">✅</div>
-        <div class="rc-label">SHAP Strengths</div>
-        <div class="rc-body">Consistent, locally accurate, handles correlated features better. Can be aggregated globally OR used locally per instance. Theoretically grounded via Shapley axioms.</div>
+    <h2>SHAP — The Game Theory Foundation</h2>
+    <p>SHAP uses <strong>Shapley Values</strong> from cooperative game theory. The analogy: a team of superheroes wins a prize. How do we fairly distribute the prize based on each hero's contribution?</p>
+    <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1.25rem;margin:1rem 0">
+      <p style="color:var(--muted);font-size:.9rem">Suppose we have 4 superheroes: <strong style="color:var(--p)">Mastermind (M)</strong>, <strong style="color:var(--s)">Bulletproof (B)</strong>, <strong style="color:var(--success)">Eagle Eyes (EE)</strong>, and <strong style="color:var(--warn)">Lightning Bolt (LB)</strong>. Any subset (coalition) of them can play a game and win a prize y(S).</p>
+      <ul style="color:var(--muted);line-height:1.9;padding-left:1.25rem;margin-top:.5rem;font-size:.88rem">
+        <li>Full team y(M,B,EE,LB) = 17 | Mastermind alone y(M) = 2</li>
+        <li>The <strong>Shapley Value</strong> of Mastermind = his <em>weighted average marginal contribution</em> across all possible coalitions he could join</li>
+        <li>This is a provably <strong>fair</strong> way to attribute contributions</li>
+      </ul>
+    </div>
+    <div class="formula">φᵢ = Σ<sub>S ⊆ N\{i}</sub> |S|!(|N|−|S|−1)! / |N|! × (y(S∪{i}) − y(S))</div>
+    <div class="info-box"><p>In ML: the "players" are <strong>features</strong>; the "prize" is the <strong>model output</strong> (prediction). SHAP computes each feature's fair contribution to the prediction.</p></div>
+  </div>
+
+  <!-- SHAP - House Prices Example -->
+  <div class="card">
+    <h2>SHAP — Computing Marginal Contributions</h2>
+    <p>Consider a model predicting house prices with 3 features: <strong>bedrooms (x₁)</strong>, <strong>floor area (x₂)</strong>, <strong>garden (x₃)</strong>. Average price in training data = £250,000.</p>
+    <p style="color:var(--muted);font-size:.9rem;margin:.5rem 0">A new house has: x₁=6 bedrooms, x₂=200m², x₃=no garden. Model predicts £320,000.</p>
+    <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem;margin:.75rem 0">
+      <p style="color:var(--muted);font-size:.88rem;margin-bottom:.5rem">To compute the Shapley Value of <strong>bedrooms (x₁=6)</strong>, we look at how adding x₁ to different coalitions changes the prediction. We handle "missing" features by substituting their <em>average</em> value:</p>
+      <div class="formula" style="font-size:.8rem;text-align:left;margin:.4rem 0">f(x₁=6, x₂=E[x₂], x₃=E[x₃]) − f(x₁=E[x₁], x₂=E[x₂], x₃=E[x₃])</div>
+      <div class="formula" style="font-size:.8rem;text-align:left;margin:.4rem 0">f(x₁=6, x₂=200, x₃=E[x₃]) − f(x₁=E[x₁], x₂=200, x₃=E[x₃])</div>
+      <div class="formula" style="font-size:.8rem;text-align:left;margin:.4rem 0">f(x₁=6, x₂=E[x₂], x₃=0) − f(x₁=E[x₁], x₂=E[x₂], x₃=0)</div>
+      <div class="formula" style="font-size:.8rem;text-align:left;margin:.4rem 0">f(x₁=6, x₂=200, x₃=0) − f(x₁=E[x₁], x₂=200, x₃=0)</div>
+      <p style="color:var(--muted);font-size:.85rem;margin-top:.5rem">Plug these marginal contributions into the Shapley formula (weighted average) → SHAP value for x₁ for this specific house.</p>
+    </div>
+    <div class="info-box"><p>Because we use the actual value x₁=6 and information about this specific house (x₂=200m², etc.), the SHAP value is <strong>local</strong> to this house. Averaging the <em>magnitude</em> of SHAP values across all houses gives the <strong>global</strong> explanation.</p></div>
+  </div>
+
+  <!-- SHAP Algorithm & Implementation -->
+  <div class="card">
+    <h2>SHAP — Algorithm &amp; Implementation</h2>
+    <p>Formal algorithm: for each sample i and feature j, compute the weighted average marginal contribution:</p>
+    <div class="formula">φᵢⱼ = Σ<sub>S ⊆ P\{xᵢⱼ}</sub> |S|!(p−|S|−1)! / p! × (f(S∪{xᵢⱼ}) − f(S))</div>
+    <p style="color:var(--muted);font-size:.85rem;margin:.75rem 0">where P is the full set of features, S is the coalition (features included), and "missing" features use their expected value E[xⱼ].</p>
+
+    <h3 style="margin:1rem 0 .5rem">Implementation — Three Explainer Types</h3>
+    <div class="three-col" style="margin:.75rem 0">
+      <div style="background:#06040f;border:1px solid var(--p);border-radius:.5rem;padding:1rem;text-align:center">
+        <strong style="color:var(--p)">TreeExplainer</strong>
+        <p style="color:var(--muted);font-size:.82rem;margin-top:.4rem">For tree-based models: Random Forest, XGBoost, LightGBM. Fast exact computation.</p>
       </div>
-      <div class="reveal-card" onclick="revealCard(this)">
-        <div class="rc-icon">⚠️</div>
-        <div class="rc-label">SHAP Weaknesses</div>
-        <div class="rc-body">Slow for large datasets (TreeSHAP is fast for tree models). Can be unstable with highly correlated features. Not universally well-calibrated for all models.</div>
+      <div style="background:#06040f;border:1px solid var(--s);border-radius:.5rem;padding:1rem;text-align:center">
+        <strong style="color:var(--s)">DeepExplainer</strong>
+        <p style="color:var(--muted);font-size:.82rem;margin-top:.4rem">For deep learning models (TensorFlow, PyTorch). Uses backpropagation-based approximation.</p>
       </div>
-      <div class="reveal-card" onclick="revealCard(this)">
-        <div class="rc-icon">✅</div>
-        <div class="rc-label">PFI Strengths</div>
-        <div class="rc-body">Simple to compute, model-agnostic, measures actual impact on performance (not just prediction). Easy to explain to non-technical stakeholders.</div>
+      <div style="background:#06040f;border:1px solid var(--success);border-radius:.5rem;padding:1rem;text-align:center">
+        <strong style="color:var(--success)">KernelExplainer</strong>
+        <p style="color:var(--muted);font-size:.82rem;margin-top:.4rem">Truly model-agnostic. Works with any model but is slower — uses LIME-style sampling to approximate Shapley values.</p>
       </div>
-      <div class="reveal-card" onclick="revealCard(this)">
-        <div class="rc-icon">⚠️</div>
-        <div class="rc-label">PFI Weaknesses</div>
-        <div class="rc-body">Misleading with correlated features (shuffling one leaves others as proxies). Requires labelled test data. Doesn't tell you direction or shape of the effect.</div>
+    </div>
+  </div>
+
+  <!-- SHAP Beeswarm -->
+  <div class="card">
+    <h2>SHAP — Local &amp; Global Explanations</h2>
+    <p>SHAP computes both local (per-sample) and global explanations. The <strong>beeswarm plot</strong> shows local SHAP values for all samples — each dot is one sample, colour shows feature value (red=high, blue=low):</p>
+    <div class="tab-row" id="shapTabs">
+      <button class="tab-btn active" onclick="showShapData('credit',this)">Credit Risk</button>
+      <button class="tab-btn" onclick="showShapData('house',this)">House Prices</button>
+      <button class="tab-btn" onclick="showShapData('churn',this)">Customer Churn</button>
+    </div>
+    <canvas id="shapCanvas" width="840" height="300" style="width:100%;max-width:840px"></canvas>
+    <h3 style="margin-top:1rem">SHAP Global Bar Chart (mean |SHAP|)</h3>
+    <p style="color:var(--muted);font-size:.88rem">The global explanation = mean of the <em>magnitude</em> of SHAP values across all samples. Using magnitude (not mean) captures features that have large effects in either direction.</p>
+
+    <div class="warn-box" style="margin-top:1rem">
+      <p><strong>⚠️ SHAP Word of Warning:</strong> While more sophisticated than PFI, SHAP is not perfect. Research shows it is possible to create <em>intentionally misleading</em> SHAP explanations that hide biases — see <strong>"Fooling LIME and SHAP: Adversarial Attacks on Post hoc Explanation Methods"</strong> (Slack et al., 2020). If you are the data scientist, this is not a problem — but if you are <em>receiving</em> an explanation, verify the methodology.</p>
+    </div>
+  </div>
+
+  <!-- PFI vs SHAP -->
+  <div class="card">
+    <h2>PFI vs SHAP — When to Use Which?</h2>
+    <div class="two-col" style="margin:1rem 0">
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem">
+        <strong style="color:var(--p)">Use PFI when…</strong>
+        <ul style="color:var(--muted);line-height:1.9;padding-left:1.25rem;margin-top:.5rem;font-size:.88rem">
+          <li>You need a quick, approximate global importance</li>
+          <li>Features are relatively uncorrelated</li>
+          <li>You want to use <code>sklearn</code> natively</li>
+          <li>Speed matters more than precision</li>
+        </ul>
+      </div>
+      <div style="background:#06040f;border:1px solid var(--border);border-radius:.5rem;padding:1rem">
+        <strong style="color:var(--s)">Use SHAP when…</strong>
+        <ul style="color:var(--muted);line-height:1.9;padding-left:1.25rem;margin-top:.5rem;font-size:.88rem">
+          <li>You need both local <em>and</em> global explanations</li>
+          <li>You want to see feature interactions and direction of effects</li>
+          <li>Correlated features are present (SHAP handles these better)</li>
+          <li>You need theoretically grounded, fair attribution</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -622,33 +905,32 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
   <!-- Quiz -->
   <div class="quiz-section">
     <h2>🎯 Lesson 3 Quiz — Global Explanations</h2>
-    <div class="question" id="q5">
-      <p>5. What does a high Permutation Feature Importance score for a feature indicate?</p>
+    <div class="question" id="q7">
+      <p>7. In Permutation Feature Importance, what does a large drop in accuracy after shuffling a feature tell you?</p>
       <div class="options">
-        <button class="option" onclick="answer('q5',this,'wrong')">The feature has a positive (upward) effect on predictions</button>
-        <button class="option" onclick="answer('q5',this,'correct')">Shuffling that feature causes a large drop in model performance, indicating it was important</button>
-        <button class="option" onclick="answer('q5',this,'wrong')">The feature appears most frequently in the training data</button>
-        <button class="option" onclick="answer('q5',this,'wrong')">The feature has a large coefficient in the linear surrogate model</button>
+        <button class="option" onclick="answer('q7',this,'wrong')">The feature has a positive (upward) effect on predictions</button>
+        <button class="option" onclick="answer('q7',this,'correct')">Shuffling that feature caused a large performance drop — meaning the model relies heavily on it</button>
+        <button class="option" onclick="answer('q7',this,'wrong')">The feature appears most frequently in the training data</button>
+        <button class="option" onclick="answer('q7',this,'wrong')">The feature has a large coefficient in the linear surrogate model</button>
       </div>
-      <div class="q-feedback" id="fb5"></div>
+      <div class="q-feedback" id="fb7"></div>
     </div>
-    <div class="question" id="q6">
-      <p>6. SHAP values are grounded in which mathematical framework?</p>
+    <div class="question" id="q8">
+      <p>8. SHAP values are grounded in which mathematical theory?</p>
       <div class="options">
-        <button class="option" onclick="answer('q6',this,'wrong')">Linear regression with regularisation</button>
-        <button class="option" onclick="answer('q6',this,'wrong')">Information theory (entropy)</button>
-        <button class="option" onclick="answer('q6',this,'correct')">Cooperative game theory (Shapley values)</button>
-        <button class="option" onclick="answer('q6',this,'wrong')">Bayesian inference</button>
+        <button class="option" onclick="answer('q8',this,'wrong')">Linear regression with regularisation</button>
+        <button class="option" onclick="answer('q8',this,'wrong')">Information theory (entropy)</button>
+        <button class="option" onclick="answer('q8',this,'correct')">Cooperative game theory (Shapley values)</button>
+        <button class="option" onclick="answer('q8',this,'wrong')">Bayesian inference</button>
       </div>
-      <div class="q-feedback" id="fb6"></div>
+      <div class="q-feedback" id="fb8"></div>
     </div>
     <div class="quiz-score" id="qscore-global">
       <div class="big" id="qs-global-val"></div>
-      <div style="color:var(--muted)">2 more lessons to go!</div>
+      <div style="color:var(--muted)">Move to Lesson 4: Model-Specific Methods →</div>
     </div>
   </div>
 </div>
-
 <!-- ═══════════════════════════════════════
      LESSON 4 — MODEL-SPECIFIC METHODS
      ═══════════════════════════════════════ -->
@@ -780,25 +1062,25 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
   <!-- Quiz -->
   <div class="quiz-section">
     <h2>🎯 Lesson 4 Quiz — Model-Specific Methods</h2>
-    <div class="question" id="q7">
+    <div class="question" id="q9">
       <p>7. Why must features be standardised before comparing linear model coefficients?</p>
       <div class="options">
-        <button class="option" onclick="answer('q7',this,'wrong')">Standardisation improves model accuracy</button>
-        <button class="option" onclick="answer('q7',this,'correct')">Raw coefficients depend on feature units — standardising puts all features on the same scale so coefficients are comparable</button>
-        <button class="option" onclick="answer('q7',this,'wrong')">Standardisation reduces overfitting</button>
-        <button class="option" onclick="answer('q7',this,'wrong')">Linear models require normally distributed features to converge</button>
+        <button class="option" onclick="answer('q9',this,'wrong')">Standardisation improves model accuracy</button>
+        <button class="option" onclick="answer('q9',this,'correct')">Raw coefficients depend on feature units — standardising puts all features on the same scale so coefficients are comparable</button>
+        <button class="option" onclick="answer('q9',this,'wrong')">Standardisation reduces overfitting</button>
+        <button class="option" onclick="answer('q9',this,'wrong')">Linear models require normally distributed features to converge</button>
       </div>
-      <div class="q-feedback" id="fb7"></div>
+      <div class="q-feedback" id="fb9"></div>
     </div>
-    <div class="question" id="q8">
+    <div class="question" id="q10">
       <p>8. Why is "high attention weight = important feature" considered a problematic claim?</p>
       <div class="options">
-        <button class="option" onclick="answer('q8',this,'wrong')">Attention weights don't sum to 1</button>
-        <button class="option" onclick="answer('q8',this,'correct')">Attention weights show what the model focuses on computationally, not necessarily what causally drives the prediction</button>
-        <button class="option" onclick="answer('q8',this,'wrong')">Attention is only used in image models, not text</button>
-        <button class="option" onclick="answer('q8',this,'wrong')">Attention weights are always negative</button>
+        <button class="option" onclick="answer('q10',this,'wrong')">Attention weights don't sum to 1</button>
+        <button class="option" onclick="answer('q10',this,'correct')">Attention weights show what the model focuses on computationally, not necessarily what causally drives the prediction</button>
+        <button class="option" onclick="answer('q10',this,'wrong')">Attention is only used in image models, not text</button>
+        <button class="option" onclick="answer('q10',this,'wrong')">Attention weights are always negative</button>
       </div>
-      <div class="q-feedback" id="fb8"></div>
+      <div class="q-feedback" id="fb10"></div>
     </div>
     <div class="quiz-score" id="qscore-model">
       <div class="big" id="qs-model-val"></div>
@@ -921,25 +1203,25 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
   <!-- Quiz -->
   <div class="quiz-section">
     <h2>🎯 Lesson 5 Quiz — Fairness & XAI</h2>
-    <div class="question" id="q9">
+    <div class="question" id="q11">
       <p>9. The "impossibility theorem" in algorithmic fairness states that:</p>
       <div class="options">
-        <button class="option" onclick="answer('q9',this,'wrong')">XAI methods cannot be applied to neural networks</button>
-        <button class="option" onclick="answer('q9',this,'correct')">Most common fairness criteria are mutually incompatible when base rates differ between groups</button>
-        <button class="option" onclick="answer('q9',this,'wrong')">Perfect accuracy and fairness can always be achieved simultaneously with enough data</button>
-        <button class="option" onclick="answer('q9',this,'wrong')">SHAP values cannot satisfy both local accuracy and consistency simultaneously</button>
+        <button class="option" onclick="answer('q11',this,'wrong')">XAI methods cannot be applied to neural networks</button>
+        <button class="option" onclick="answer('q11',this,'correct')">Most common fairness criteria are mutually incompatible when base rates differ between groups</button>
+        <button class="option" onclick="answer('q11',this,'wrong')">Perfect accuracy and fairness can always be achieved simultaneously with enough data</button>
+        <button class="option" onclick="answer('q11',this,'wrong')">SHAP values cannot satisfy both local accuracy and consistency simultaneously</button>
       </div>
-      <div class="q-feedback" id="fb9"></div>
+      <div class="q-feedback" id="fb11"></div>
     </div>
-    <div class="question" id="q10">
+    <div class="question" id="q12">
       <p>10. A model uses only "postcode" as a feature — no race or gender. Is this guaranteed to be fair?</p>
       <div class="options">
-        <button class="option" onclick="answer('q10',this,'wrong')">Yes — protected attributes were excluded so it cannot discriminate</button>
-        <button class="option" onclick="answer('q10',this,'wrong')">Yes — postcode is an objective geographic fact with no social meaning</button>
-        <button class="option" onclick="answer('q10',this,'correct')">No — postcode correlates strongly with race and income due to residential segregation, acting as a proxy</button>
-        <button class="option" onclick="answer('q10',this,'wrong')">Only if the training set had equal numbers of each racial group</button>
+        <button class="option" onclick="answer('q12',this,'wrong')">Yes — protected attributes were excluded so it cannot discriminate</button>
+        <button class="option" onclick="answer('q12',this,'wrong')">Yes — postcode is an objective geographic fact with no social meaning</button>
+        <button class="option" onclick="answer('q12',this,'correct')">No — postcode correlates strongly with race and income due to residential segregation, acting as a proxy</button>
+        <button class="option" onclick="answer('q12',this,'wrong')">Only if the training set had equal numbers of each racial group</button>
       </div>
-      <div class="q-feedback" id="fb10"></div>
+      <div class="q-feedback" id="fb12"></div>
     </div>
     <div class="quiz-score" id="qscore-eth">
       <div class="big" id="qs-eth-val"></div>
@@ -992,9 +1274,9 @@ function goPage(id){
 }
 
 // ─── QUIZ ─────────────────────────────────────────────
-const pageQuizCount={in:2,local:2,global:2,model:2,eth:2};
+const pageQuizCount={in:4,local:2,global:2,model:2,eth:2};
 const pageQuizAnswered={};
-const qPage={q1:'in',q2:'in',q3:'local',q4:'local',q5:'global',q6:'global',q7:'model',q8:'model',q9:'eth',q10:'eth'};
+const qPage={q1:'in',q2:'in',q3:'in',q4:'in',q5:'local',q6:'local',q7:'global',q8:'global',q9:'model',q10:'model',q11:'eth',q12:'eth'};
 function answer(qid,btn,result){
   if(answered[qid]) return;
   answered[qid]=true;
@@ -1028,6 +1310,28 @@ function revealCard(el){
   if(el.classList.contains('shown')) return;
   el.classList.add('shown');
   addXP(8);
+}
+
+// ─── DRIVER TOGGLES (Lesson 1) ────────────────────────
+function toggleDriver(id){
+  const el=document.getElementById(id);
+  const arrow=document.getElementById(id+'-arrow');
+  const open=el.style.display==='block';
+  el.style.display=open?'none':'block';
+  if(arrow) arrow.style.transform=open?'':'rotate(180deg)';
+  if(!open) addXP(5);
+}
+
+// ─── PIPELINE STAGES (Lesson 1) ───────────────────────
+function showPipeStage(idx){
+  document.querySelectorAll('.pipe-step').forEach((s,i)=>{
+    s.classList.toggle('active',i===idx);
+  });
+  document.querySelectorAll('[id^="pipe-detail-"]').forEach(d=>{
+    d.classList.remove('active');
+  });
+  const det=document.getElementById('pipe-detail-'+idx);
+  if(det){det.classList.add('active');addXP(5);}
 }
 
 // ─── TAXONOMY CELLS ──────────────────────────────────
@@ -1264,9 +1568,17 @@ function drawCFCanvas(){
 
 // ─── LIME STEP PIPELINE ──────────────────────────────
 function showLimeStep(n,btn){
-  document.querySelectorAll('#page-local .pipe-step').forEach((s,i)=>s.classList.toggle('active',i===n));
+  // Only affect the LIME pipeline steps (first pipeline in page-local)
+  const limePipe=document.querySelector('#page-local .pipeline');
+  if(limePipe) limePipe.querySelectorAll('.pipe-step').forEach((s,i)=>s.classList.toggle('active',i===n));
   document.querySelectorAll('[id^="lime-"]').forEach((d,i)=>d.classList.toggle('active',i===n));
   if(n===5) addXP(10);
+}
+function showAnchorStep(n,btn){
+  const anchorPipes=document.querySelectorAll('#page-local .pipeline');
+  if(anchorPipes[1]) anchorPipes[1].querySelectorAll('.pipe-step').forEach((s,i)=>s.classList.toggle('active',i===n));
+  document.querySelectorAll('[id^="anchor-"]').forEach((d,i)=>d.classList.toggle('active',i===n));
+  if(n===4) addXP(10);
 }
 
 // ─── SHAP BEESWARM ───────────────────────────────────
@@ -1350,9 +1662,16 @@ function drawPFICanvas(){
 
 // ─── PFI PIPELINE ────────────────────────────────────
 function showPFIStep(n,btn){
-  document.querySelectorAll('#page-global .pipe-step').forEach((s,i)=>s.classList.toggle('active',i===n));
+  const pfiPipe=document.querySelector('#page-global .pipeline');
+  if(pfiPipe) pfiPipe.querySelectorAll('.pipe-step').forEach((s,i)=>s.classList.toggle('active',i===n));
   document.querySelectorAll('[id^="pfi-"]').forEach((d,i)=>d.classList.toggle('active',i===n));
   if(n===4) addXP(10);
+}
+function showPFI(){
+  drawPFICanvas();
+  const note=document.getElementById('pfiNote');
+  if(note) note.innerHTML='<p><strong>WDBCD Results (20 repetitions):</strong> Worst perimeter, worst radius, and worst area show the highest importance — shuffling these caused the largest drop in accuracy. Results show some variability across repetitions (box-plots) due to randomness in shuffling. Note: correlated features (radius, perimeter, area are all highly correlated) may have their importance split.</p>';
+  addXP(15);
 }
 
 // ─── PDP CANVAS ──────────────────────────────────────
