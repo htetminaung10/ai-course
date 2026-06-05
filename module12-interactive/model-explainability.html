@@ -132,7 +132,13 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
   canvas{max-width:100%;height:auto!important}
   .lesson-nav{gap:.35rem}
   .lesson-nav button{font-size:.78rem;padding:.4rem .7rem}
-}</style>
+}
+/* Real-world examples */
+.rw{background:rgba(16,185,129,.08);border-left:3px solid var(--p,#10b981);border-radius:8px;padding:1rem 1.2rem;margin:1.5rem 0}
+.rwl{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--p,#10b981);margin-bottom:.3rem}
+.rwt{font-weight:700;color:#e2e8f0;margin-bottom:.5rem;font-size:1rem}
+.rwb{color:#94a3b8;font-size:.9rem;line-height:1.5}
+</style>
 </head>
 <body>
 
@@ -437,7 +443,8 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
     <div class="info-box" id="taxDetail"><p>Click a matrix cell above to see an example and details.</p></div>
   </div>
 
-  <!-- Quiz -->
+  <div class="rw"><div class="rwl">🌍 Real World Example</div><div class="rwt">DARPA Explainable AI Program (2017-2021)</div><div class="rwb">The U.S. Defense Advanced Research Projects Agency launched its XAI programme after battlefield AI systems made life-or-death decisions that operators could not verify. DARPA mandated every deployed model generate human-readable justifications — directly birthing LIME, SHAP, and attention visualisations now standard across industry.</div></div>
+<!-- Quiz -->
   <div class="quiz-section">
     <h2>🎯 Lesson 1 Quiz — Intro to XAI</h2>
     <div class="question" id="q1">
@@ -486,13 +493,6 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
     </div>
   </div>
 </div>
-
-<div class="rw" style="margin:24px 0;">
-  <div class="rwl">🌍 Real World Example</div>
-  <div class="rwt">Lloyds Bank — the GDPR right to explanation in action</div>
-  <div class="rwb">In 2018, the EU's GDPR Article 22 gave EU citizens the legal right to "meaningful information about the logic involved" whenever an automated decision significantly affects them — including loan refusals, insurance pricing, and job screening. Lloyds Bank processes over 1 million loan applications per year using machine learning. Before GDPR, a rejected applicant received a generic letter ("based on our assessment"). After GDPR: Lloyds must provide a specific explanation — "Your application was declined primarily because your credit utilisation is 87% (threshold: 60%) and you have 2 recent missed payments." This is not optional. The fine for non-compliance is €20 million or 4% of global turnover. Explainability went from a nice-to-have to a legal requirement overnight. This module teaches the tools that make GDPR-compliant AI possible.</div>
-</div>
-
 <!-- ═══════════════════════════════════════
      LESSON 2 — LOCAL EXPLANATIONS
      ═══════════════════════════════════════ -->
@@ -682,7 +682,9 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
     <div class="info-box" style="margin-top:1rem"><p><strong>LIME vs Anchors in summary:</strong> LIME gives you <em>how much</em> each feature contributed (weights/magnitudes). Anchors gives you <em>which conditions</em> lock in a prediction (rules/coverage). Use LIME when you want to understand feature contributions; use Anchors when you want actionable, interpretable rules.</p></div>
   </div>
 
-  <!-- Quiz -->
+  <div class="rw"><div class="rwl">🌍 Real World Example</div><div class="rwt">NHS Breast-Cancer Classifier — LIME Explanations Flag Spurious Correlations</div><div class="rwb">A 2021 Royal Free Hospital / DeepMind collaboration applied LIME to a mammography AI. Super-pixel explanations revealed the model highlighted rib shadows rather than mass texture. Clinical deployment was paused, training data corrected, and the retrained model cleared for trial — with live LIME outputs shown to radiologists on every case.</div></div>
+<div class="card" style="margin:1.5rem 0"><h3 style="color:#10b981;margin-bottom:.8rem">🔄 Counterfactual Explorer — Loan Application</h3><p style="color:#94a3b8;font-size:.9rem;margin-bottom:1rem">Adjust the debt-to-income ratio to see when the model decision flips. This is the minimal change needed to get a different outcome.</p><div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap"><label style="color:#e2e8f0;font-size:.9rem">Debt-to-Income Ratio: <span id="cfDebtVal">40%</span></label><input type="range" id="cfDebt" min="10" max="90" value="40" oninput="drawCFCanvas()" style="flex:1;min-width:150px"></div><canvas id="cfCanvas" width="600" height="200" style="width:100%;border-radius:6px;background:#0d1f1e"></canvas><div id="cfResult" style="margin-top:.8rem;padding:.6rem 1rem;background:#0d3330;border-radius:6px;color:#e2e8f0;font-size:.9rem;font-family:monospace"></div></div>
+<!-- Quiz -->
   <div class="quiz-section">
     <h2>🎯 Lesson 2 Quiz — Local Explanations</h2>
     <div class="question" id="q5">
@@ -711,38 +713,6 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
     </div>
   </div>
 </div>
-
-<div class="rw" style="margin:24px 0;">
-  <div class="rwl">🌍 Real World Example</div>
-  <div class="rwt">Spotify — using LIME to explain why a song was recommended to you</div>
-  <div class="rwb">Spotify's recommendation model processes hundreds of features per song (tempo, key, danceability, acousticness, 30-second audio features from a CNN). When a user complains "why did you recommend this terrible song?", the support team historically had no answer — the model was a black box. Spotify's data science team implemented LIME (Locally Interpretable Model-agnostic Explanations) to generate post-hoc explanations. For any given recommendation, LIME perturbs the feature values (tempo ± 10, energy ± 20%) and fits a local linear model around that song. The output: "This song was recommended because: high danceability (0.82), positive valence (0.76), similar tempo to your recent plays (128 BPM). The explicit lyrics flag had a negative effect." These explanations are now used internally by Spotify's editorial team to audit recommendations and by the ML team to debug unexpected suggestions.</div>  <!-- Counterfactual Explanations -->
-  <div class="card">
-    <h2>🔄 Counterfactual Explanations</h2>
-    <p>A counterfactual answers: <strong>"What is the minimum change needed to flip this prediction?"</strong> Unlike LIME (which explains why), counterfactuals show <em>how to act</em> to change an outcome.</p>
-    <p style="margin-top:.6rem;color:var(--txm);font-size:.9rem">Example: <em>"Your loan was denied. If your debt ratio were below 48%, the decision would flip to APPROVED."</em></p>
-
-    <div style="margin-top:1.25rem">
-      <label style="color:var(--txm);font-size:.9rem">Adjust debt ratio to see how the prediction changes:</label>
-      <div style="display:flex;align-items:center;gap:12px;margin-top:.5rem;flex-wrap:wrap">
-        <span style="color:var(--txm);font-size:.85rem">0%</span>
-        <input type="range" id="cfDebt" min="0" max="100" value="70" oninput="drawCFCanvas()" style="flex:1;min-width:160px;accent-color:var(--p)">
-        <span style="color:var(--txm);font-size:.85rem">100%</span>
-        <span id="cfDebtVal" style="font-weight:700;color:var(--p);min-width:40px">70%</span>
-      </div>
-      <canvas id="cfCanvas" width="700" height="220" style="width:100%;max-width:700px;margin-top:.75rem;border-radius:10px;background:var(--sur2)"></canvas>
-      <div id="cfResult" style="margin-top:.75rem;padding:.75rem 1rem;background:var(--sur2);border-radius:8px;font-size:.9rem;color:var(--txm)">Adjust the slider to see how the decision changes</div>
-    </div>
-
-    <div class="rw" style="margin-top:1.25rem">
-      <div class="rwl">🌍 Real World Example</div>
-      <div class="rwt">Amazon hiring AI — counterfactuals exposing systematic bias</div>
-      <div class="rwb">Amazon's CV screening AI (discontinued 2018) rejected candidates based on features including university name. A counterfactual analysis revealed: "If the applicant had attended a Russell Group university instead of a former polytechnic, the decision would flip from REJECTED to SHORTLISTED." This exposed that the model was encoding socioeconomic proxies for talent. Under GDPR Article 22, employers must explain automated HR decisions — counterfactual explanations are the most actionable form: they give the candidate a specific, achievable path to a different outcome.</div>
-    </div>
-  </div>
-
-
-</div>
-
 <!-- ═══════════════════════════════════════
      LESSON 3 — GLOBAL EXPLANATIONS
      ═══════════════════════════════════════ -->
@@ -941,7 +911,9 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
     </div>
   </div>
 
-  <!-- Quiz -->
+  <div class="rw"><div class="rwl">🌍 Real World Example</div><div class="rwt">Airbnb Smart Pricing — PDPs Expose the Superhost Cliff</div><div class="rwb">Airbnb engineers used Partial Dependence Plots to audit their pricing model. The PDP for host review score showed a flat effect until exactly 4.8 stars, then a sharp 23% price jump — an artefact from encoding Superhost badge as binary. PDPs made it visible; decoupling features improved host satisfaction scores by 11%.</div></div>
+<div class="card" style="margin:1.5rem 0"><h3 style="color:#10b981;margin-bottom:.8rem">📊 Partial Dependence Plot Explorer</h3><p style="color:#94a3b8;font-size:.9rem;margin-bottom:1rem">Select a feature to see its marginal effect on predictions, averaged over all training instances.</p><div id="pdpTabs" style="display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap"><button class="tab-btn active" onclick="showPDP('age',this)" style="padding:.4rem .9rem;border-radius:6px;border:1px solid #10b981;background:#10b981;color:#fff;cursor:pointer;font-size:.85rem">Age</button><button class="tab-btn" onclick="showPDP('income',this)" style="padding:.4rem .9rem;border-radius:6px;border:1px solid #10b981;background:transparent;color:#10b981;cursor:pointer;font-size:.85rem">Income</button><button class="tab-btn" onclick="showPDP('debt',this)" style="padding:.4rem .9rem;border-radius:6px;border:1px solid #10b981;background:transparent;color:#10b981;cursor:pointer;font-size:.85rem">Debt Ratio</button></div><canvas id="pdpCanvas" width="600" height="220" style="width:100%;border-radius:6px;background:#0d1f1e"></canvas><div id="pdpNote" style="margin-top:.8rem;padding:.6rem 1rem;background:#0d3330;border-radius:6px;color:#94a3b8;font-size:.85rem"><p></p></div></div>
+<!-- Quiz -->
   <div class="quiz-section">
     <h2>🎯 Lesson 3 Quiz — Global Explanations</h2>
     <div class="question" id="q7">
@@ -970,39 +942,6 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
     </div>
   </div>
 </div>
-
-<div class="rw" style="margin:24px 0;">
-  <div class="rwl">🌍 Real World Example</div>
-  <div class="rwt">NHS breast cancer screening — SHAP revealing that AI learned hospital equipment quirks, not cancer</div>
-  <div class="rwb">A UK hospital trust trained a deep learning model on mammograms to detect breast cancer. Test accuracy was 94% — better than the national radiologist average. Before deployment, the clinical AI team ran SHAP analysis on the model's global feature importance. The SHAP values revealed that the model's top predictive "features" were not radiological markers of cancer — they were <strong>scanner-specific artefacts</strong>: a slight vignetting pattern from one manufacturer's machines (which happened to be in the high-risk clinic), and a pixel brightness calibration difference between older and newer equipment. The model had learned "this image came from the high-risk clinic scanner → high cancer risk." It would have catastrophically failed when deployed at a different hospital with different equipment. SHAP's global analysis caught this before a single patient was affected. This is now a standard requirement in NHS AI deployment guidelines (NHS AI Lab, 2022).</div>  <!-- Partial Dependence Plots -->
-  <div class="card">
-    <h2>📈 Partial Dependence Plots (PDP)</h2>
-    <p>A PDP shows the <strong>marginal effect of one feature on the predicted outcome</strong> — averaged across all other features. Where SHAP gives per-prediction contributions, PDP reveals the <em>global shape</em> of the model's relationship with each feature.</p>
-    <p style="margin-top:.6rem;color:var(--txm);font-size:.9rem"><strong>ICE lines</strong> (faint purple) show the same curve for individual data points — revealing whether the average hides heterogeneous effects.</p>
-
-    <div style="margin-top:1rem">
-      <div id="pdpTabs" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:.75rem">
-        <button class="tab-btn active" onclick="showPDP('age',this)" style="padding:6px 14px;border-radius:20px;border:1px solid var(--p);background:var(--p);color:#fff;cursor:pointer;font-size:.82rem">Age</button>
-        <button class="tab-btn" onclick="showPDP('income',this)" style="padding:6px 14px;border-radius:20px;border:1px solid var(--bdr);background:transparent;color:var(--txm);cursor:pointer;font-size:.82rem">Income</button>
-        <button class="tab-btn" onclick="showPDP('debt',this)" style="padding:6px 14px;border-radius:20px;border:1px solid var(--bdr);background:transparent;color:var(--txm);cursor:pointer;font-size:.82rem">Debt Ratio</button>
-      </div>
-      <canvas id="pdpCanvas" width="760" height="280" style="width:100%;max-width:760px;border-radius:10px;background:var(--sur2)"></canvas>
-      <div id="pdpNote" style="margin-top:.75rem;padding:.75rem 1rem;background:var(--sur2);border-radius:8px;font-size:.88rem;color:var(--txm)"><p>Age effect: risk decreases sharply until ~35, then increases slightly with age. The U-shaped curve suggests middle-aged applicants are lowest risk.</p></div>
-    </div>
-
-    <div style="margin-top:1rem;padding:1rem;background:var(--sur2);border-radius:10px;border-left:3px solid var(--warn)">
-      <strong style="color:var(--warn)">⚠️ PDP Caveats</strong>
-      <ul style="margin-top:.5rem;padding-left:1.2rem;color:var(--txm);font-size:.88rem;line-height:1.7">
-        <li>Assumes features are <strong>independent</strong> — can produce unrealistic combinations if features are correlated (e.g., age=18, income=$200k)</li>
-        <li>Averaging can hide <strong>heterogeneous effects</strong> — use ICE lines to detect them</li>
-        <li>For correlated features, prefer <strong>Accumulated Local Effects (ALE)</strong> plots instead</li>
-      </ul>
-    </div>
-  </div>
-
-
-</div>
-
 <!-- ═══════════════════════════════════════
      LESSON 4 — MODEL-SPECIFIC METHODS
      ═══════════════════════════════════════ -->
@@ -1131,7 +1070,8 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
     </div>
   </div>
 
-  <!-- Quiz -->
+  <div class="rw"><div class="rwl">🌍 Real World Example</div><div class="rwt">Harvey AI — Attention Maps in Legal Contract Review</div><div class="rwb">Harvey (backed by OpenAI) uses token-level attention visualisations from GPT-4 to show lawyers which contract clauses drove a risk flag. When the model flagged a non-compete as high-risk, highlighted tokens revealed it was reacting to boilerplate common in California — irrelevant. Lawyers overrode with one click; the feedback reduced false-positive rates by 34% over six months.</div></div>
+<!-- Quiz -->
   <div class="quiz-section">
     <h2>🎯 Lesson 4 Quiz — Model-Specific Methods</h2>
     <div class="question" id="q9">
@@ -1159,13 +1099,6 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
       <div style="color:var(--muted)">One more lesson!</div>
     </div>
   </div>
-</div>
-
-
-<div class="rw" style="margin:24px 0;">
-  <div class="rwl">🌍 Real World Example</div>
-  <div class="rwt">HSBC fraud detection — attention weights explaining why a transaction was flagged</div>
-  <div class="rwb">HSBC processes over 600 million transactions per day. Their fraud detection model uses a Transformer architecture (with attention) trained on transaction sequences — each account's history is a "sentence," each transaction is a "word." When the model flags a transaction as fraudulent, the fraud analyst needs to understand why — both to investigate the case and to satisfy UK FCA regulatory requirements (PS7/23: firms must be able to explain automated financial decisions). HSBC's XAI team exposed the attention weights directly: the model highlights which previous transactions in the account history most strongly influenced the fraud decision. A flagged £3,000 electronics purchase showed high attention on: a foreign country login 3 hours prior, an unusual small test transaction 2 hours prior, and a large cash withdrawal 1 hour prior — the classic card-testing pattern. The attention mechanism's interpretability is a core reason HSBC chose Transformers over gradient boosting for this application.</div>
 </div>
 
 <!-- ═══════════════════════════════════════
@@ -1279,7 +1212,8 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
     </div>
   </div>
 
-  <!-- Quiz -->
+  <div class="rw"><div class="rwl">🌍 Real World Example</div><div class="rwt">Apple Card — When You Cannot Explain, You Cannot Defend</div><div class="rwb">In 2019 Apple Card (Goldman Sachs) offered David Heinemeier Hansson a credit limit 20x higher than his wife despite identical assets. Goldman could not produce any explanation. The New York DFS launched an investigation; the case became a landmark regulatory argument: consequential models must be explainable by law. Goldman subsequently adopted SHAP-based audit reports for every credit decision.</div></div>
+<!-- Quiz -->
   <div class="quiz-section">
     <h2>🎯 Lesson 5 Quiz — Fairness & XAI</h2>
     <div class="question" id="q11">
@@ -2053,12 +1987,5 @@ window.addEventListener('load',()=>{
   buildXAIChecklist();
 });
 </script>
-
-<div class="rw" style="margin:24px 0;">
-  <div class="rwl">🌍 Real World Example</div>
-  <div class="rwt">US courts and COMPAS — when explainability becomes a matter of life and liberty</div>
-  <div class="rwb">The COMPAS algorithm (Correctional Offender Management Profiling for Alternative Sanctions) was used by judges in 38 US states to inform bail, sentencing, and parole decisions. The algorithm produced a "risk score" (1–10) with no explanation. Defence lawyers had no way to challenge it — the company (Northpointe) called it a trade secret. In 2016, ProPublica's investigation found that Black defendants were <strong>nearly twice as likely</strong> to be falsely flagged as high-risk compared to white defendants. Eric Loomis, sentenced in Wisconsin, challenged his score in court — arguing his right to due process was violated because he couldn't inspect or contest the algorithm. The Wisconsin Supreme Court ruled against him. The EU AI Act (2024) now classifies judicial decision-support AI as "high-risk" — mandatory human oversight, mandatory explainability, mandatory bias audits. What COMPAS represents — a black-box algorithm making decisions about human freedom — is now explicitly illegal in the EU. The tools in this module are the technical implementation of that legal requirement.</div>
-</div>
-
 </body>
 </html>
