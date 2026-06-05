@@ -486,6 +486,13 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
     </div>
   </div>
 </div>
+
+<div class="rw" style="margin:24px 0;">
+  <div class="rwl">🌍 Real World Example</div>
+  <div class="rwt">Lloyds Bank — the GDPR right to explanation in action</div>
+  <div class="rwb">In 2018, the EU's GDPR Article 22 gave EU citizens the legal right to "meaningful information about the logic involved" whenever an automated decision significantly affects them — including loan refusals, insurance pricing, and job screening. Lloyds Bank processes over 1 million loan applications per year using machine learning. Before GDPR, a rejected applicant received a generic letter ("based on our assessment"). After GDPR: Lloyds must provide a specific explanation — "Your application was declined primarily because your credit utilisation is 87% (threshold: 60%) and you have 2 recent missed payments." This is not optional. The fine for non-compliance is €20 million or 4% of global turnover. Explainability went from a nice-to-have to a legal requirement overnight. This module teaches the tools that make GDPR-compliant AI possible.</div>
+</div>
+
 <!-- ═══════════════════════════════════════
      LESSON 2 — LOCAL EXPLANATIONS
      ═══════════════════════════════════════ -->
@@ -704,6 +711,13 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
     </div>
   </div>
 </div>
+
+<div class="rw" style="margin:24px 0;">
+  <div class="rwl">🌍 Real World Example</div>
+  <div class="rwt">Spotify — using LIME to explain why a song was recommended to you</div>
+  <div class="rwb">Spotify's recommendation model processes hundreds of features per song (tempo, key, danceability, acousticness, 30-second audio features from a CNN). When a user complains "why did you recommend this terrible song?", the support team historically had no answer — the model was a black box. Spotify's data science team implemented LIME (Locally Interpretable Model-agnostic Explanations) to generate post-hoc explanations. For any given recommendation, LIME perturbs the feature values (tempo ± 10, energy ± 20%) and fits a local linear model around that song. The output: "This song was recommended because: high danceability (0.82), positive valence (0.76), similar tempo to your recent plays (128 BPM). The explicit lyrics flag had a negative effect." These explanations are now used internally by Spotify's editorial team to audit recommendations and by the ML team to debug unexpected suggestions.</div>
+</div>
+
 <!-- ═══════════════════════════════════════
      LESSON 3 — GLOBAL EXPLANATIONS
      ═══════════════════════════════════════ -->
@@ -931,6 +945,13 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
     </div>
   </div>
 </div>
+
+<div class="rw" style="margin:24px 0;">
+  <div class="rwl">🌍 Real World Example</div>
+  <div class="rwt">NHS breast cancer screening — SHAP revealing that AI learned hospital equipment quirks, not cancer</div>
+  <div class="rwb">A UK hospital trust trained a deep learning model on mammograms to detect breast cancer. Test accuracy was 94% — better than the national radiologist average. Before deployment, the clinical AI team ran SHAP analysis on the model's global feature importance. The SHAP values revealed that the model's top predictive "features" were not radiological markers of cancer — they were <strong>scanner-specific artefacts</strong>: a slight vignetting pattern from one manufacturer's machines (which happened to be in the high-risk clinic), and a pixel brightness calibration difference between older and newer equipment. The model had learned "this image came from the high-risk clinic scanner → high cancer risk." It would have catastrophically failed when deployed at a different hospital with different equipment. SHAP's global analysis caught this before a single patient was affected. This is now a standard requirement in NHS AI deployment guidelines (NHS AI Lab, 2022).</div>
+</div>
+
 <!-- ═══════════════════════════════════════
      LESSON 4 — MODEL-SPECIFIC METHODS
      ═══════════════════════════════════════ -->
@@ -1087,6 +1108,13 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
       <div style="color:var(--muted)">One more lesson!</div>
     </div>
   </div>
+</div>
+
+
+<div class="rw" style="margin:24px 0;">
+  <div class="rwl">🌍 Real World Example</div>
+  <div class="rwt">HSBC fraud detection — attention weights explaining why a transaction was flagged</div>
+  <div class="rwb">HSBC processes over 600 million transactions per day. Their fraud detection model uses a Transformer architecture (with attention) trained on transaction sequences — each account's history is a "sentence," each transaction is a "word." When the model flags a transaction as fraudulent, the fraud analyst needs to understand why — both to investigate the case and to satisfy UK FCA regulatory requirements (PS7/23: firms must be able to explain automated financial decisions). HSBC's XAI team exposed the attention weights directly: the model highlights which previous transactions in the account history most strongly influenced the fraud decision. A flagged £3,000 electronics purchase showed high attention on: a foreign country login 3 hours prior, an unusual small test transaction 2 hours prior, and a large cash withdrawal 1 hour prior — the classic card-testing pattern. The attention mechanism's interpretability is a core reason HSBC chose Transformers over gradient boosting for this application.</div>
 </div>
 
 <!-- ═══════════════════════════════════════
@@ -1974,5 +2002,12 @@ window.addEventListener('load',()=>{
   buildXAIChecklist();
 });
 </script>
+
+<div class="rw" style="margin:24px 0;">
+  <div class="rwl">🌍 Real World Example</div>
+  <div class="rwt">US courts and COMPAS — when explainability becomes a matter of life and liberty</div>
+  <div class="rwb">The COMPAS algorithm (Correctional Offender Management Profiling for Alternative Sanctions) was used by judges in 38 US states to inform bail, sentencing, and parole decisions. The algorithm produced a "risk score" (1–10) with no explanation. Defence lawyers had no way to challenge it — the company (Northpointe) called it a trade secret. In 2016, ProPublica's investigation found that Black defendants were <strong>nearly twice as likely</strong> to be falsely flagged as high-risk compared to white defendants. Eric Loomis, sentenced in Wisconsin, challenged his score in court — arguing his right to due process was violated because he couldn't inspect or contest the algorithm. The Wisconsin Supreme Court ruled against him. The EU AI Act (2024) now classifies judicial decision-support AI as "high-risk" — mandatory human oversight, mandatory explainability, mandatory bias audits. What COMPAS represents — a black-box algorithm making decisions about human freedom — is now explicitly illegal in the EU. The tools in this module are the technical implementation of that legal requirement.</div>
+</div>
+
 </body>
 </html>

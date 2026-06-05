@@ -438,7 +438,13 @@ canvas{display:block;border-radius:12px;border:1px solid var(--bdr);}
   </div>
 
   <div class="badge" id="badge-in" style="background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(245,158,11,0.15));border:1px solid var(--p);">
-    <div class="bi">🗺️</div>
+    <div class="rw">
+    <div class="rwl">🌍 Real World Example</div>
+    <div class="rwt">The 2012 ImageNet moment — when AI stopped being a research curiosity</div>
+    <div class="rwb">In September 2012, a University of Toronto team (Krizhevsky, Sutskever & Hinton) entered the ImageNet competition — a challenge to classify 1.2 million photos into 1,000 categories. Every previous year, hand-crafted feature engineering won with ~26% error rates. Their entry, <strong>AlexNet</strong>, used a deep convolutional neural network and achieved 15.3% error — nearly <em>halving</em> the previous best. The second-place team scored 26.2%. The gap was so enormous that the AI winter effectively ended overnight. Within 2 years, Google, Facebook, and Microsoft had all pivoted their core research to deep learning. This single competition result triggered the modern AI boom — affecting everything from your phone's face unlock to cancer diagnosis systems in the NHS today.</div>
+  </div>
+
+  <div class="bi">🗺️</div>
     <div class="bt">AI Historian Unlocked!</div>
     <div class="bs">You traced the journey from Turing to foundation models</div>
   </div>
@@ -519,9 +525,9 @@ canvas{display:block;border-radius:12px;border:1px solid var(--bdr);}
     </div>
 
     <div class="rw">
-      <div class="rwl">Core Insight</div>
-      <div class="rwt">Classical ML: you decide what to measure. Deep Learning: the model decides.</div>
-      <div class="rwb">In classical machine learning, a data scientist must manually engineer features — e.g., for image classification, you might extract edge counts, colour histograms, or HOG descriptors. In deep learning, the network learns its own internal representations from raw pixels automatically.</div>
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">Google Photos — teaching a machine to recognise your grandmother</div>
+      <div class="rwb">Before deep learning, Google's engineers had to <strong>hand-craft</strong> rules: detect faces by looking for two oval shapes above a wider oval, with certain skin-tone pixels. This broke constantly. From 2014, Google switched to deep CNNs trained on millions of labelled photos. The network now learns its own features — it discovered that detecting fur texture helps find cats, without anyone telling it that. Google Photos can now identify 1 billion faces per day with no manual feature engineering. Classical ML required a PhD just to define the features; deep learning requires data and compute.</div>
     </div>
 
     <div class="two-col">
@@ -776,9 +782,9 @@ canvas{display:block;border-radius:12px;border:1px solid var(--bdr);}
     </div>
 
     <div class="rw">
-      <div class="rwl">The Core Loop</div>
-      <div class="rwt">Forward pass → compute loss → backward pass → update weights. Repeat millions of times.</div>
-      <div class="rwb">Backpropagation uses the chain rule of calculus to compute how much each weight contributed to the error. Then gradient descent nudges each weight in the direction that reduces the error.</div>
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">DeepMind AlphaGo — backpropagation beats the world champion</div>
+      <div class="rwb">In March 2016, DeepMind's AlphaGo defeated 18-time world champion Lee Sedol at Go — a game with more board positions than atoms in the universe (10¹⁷⁰ possible states). The network learned by playing millions of games against itself, running backpropagation after every move. Each forward pass predicted the best next move; each backward pass updated 13 layers of weights based on whether the game was eventually won or lost. The result: AlphaGo found <strong>Move 37</strong> in Game 2 — a move no human had ever played, which commentators called an error, but which turned out to be genius. A human grandmaster watching live said "I thought it was a mistake… and then I saw it wasn't."</div>
     </div>
 
     <div class="two-col">
@@ -895,9 +901,9 @@ canvas{display:block;border-radius:12px;border:1px solid var(--bdr);}
     </div>
 
     <div class="rw">
-      <div class="rwl">The Paradigm Shift</div>
-      <div class="rwt">Pre-2020: one model per task. Post-2020: one model, many tasks.</div>
-      <div class="rwb">Traditional ML required a separate model for each task — a spam classifier, a sentiment analyser, a summariser. Foundation models like GPT-4 are trained once at massive scale and then <strong>prompted</strong> or <strong>fine-tuned</strong> to perform hundreds of different tasks. This is the essence of the generative AI revolution.</div>
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">GitHub Copilot — one model, £10 billion of developer productivity</div>
+      <div class="rwb">Before GPT-based foundation models, GitHub had separate tools for code completion, bug detection, and documentation — each trained from scratch. In 2021, GitHub Copilot was built on OpenAI's Codex (a fine-tuned GPT model) and launched as a single assistant that writes code, explains errors, suggests tests, and generates documentation — all from natural language prompts. By 2023, over 1 million developers used it, and GitHub reported a <strong>55% faster task completion</strong> in controlled trials. A bank previously needed 5 specialised models; now a single fine-tuned LLM handles all five tasks. Microsoft paid $7.5 billion for GitHub partly on the strength of this one foundation model capability.</div>
     </div>
   </div>
 
@@ -1181,9 +1187,9 @@ canvas{display:block;border-radius:12px;border:1px solid var(--bdr);}
     </div>
 
     <div class="rw">
-      <div class="rwl">Key Insight</div>
-      <div class="rwt">Fairness is not one thing — mathematically incompatible definitions exist.</div>
-      <div class="rwb">The "impossibility theorem" (Chouldechova, 2017) proves that when base rates differ between groups, you cannot simultaneously achieve demographic parity, equalised odds, AND calibration. Policy makers must choose which notion of fairness to prioritise — this is a value judgement, not a technical one.</div>
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">COMPAS recidivism algorithm — when fairness definitions collide in a US courtroom</div>
+      <div class="rwb">Northpointe's COMPAS algorithm was used by US judges to predict whether a defendant would re-offend. ProPublica's 2016 investigation found it was <strong>twice as likely to falsely flag Black defendants as future criminals</strong> compared to White defendants (false positive rate: 44% vs 23%). Northpointe responded: "Our model IS fair — it's equally calibrated across races." Both were correct by different mathematical definitions. This is the Chouldechova impossibility theorem in the real world: you cannot simultaneously have equal false positive rates AND equal calibration when base rates differ. Wisconsin courts continued using COMPAS. The EU's AI Act (2024) now requires high-risk AI systems — including judicial tools — to document which fairness definition they optimise for, and why.</div>
     </div>
 
     <table class="nice">

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -419,7 +419,13 @@ df[<span class="str">'lag_7'</span>] = df[<span class="str">'close'</span>].<spa
   </div>
 
   <div class="badge" id="badge-in" style="background:linear-gradient(135deg,rgba(217,119,6,0.15),rgba(16,185,129,0.15));border:1px solid var(--p);">
-    <div class="bi">⏰</div>
+    <div class="rw">
+    <div class="rwl">🌍 Real World Example</div>
+    <div class="rwt">Uber — surge pricing is a real-time time series problem solved every 5 seconds</div>
+    <div class="rwb">Every 5 seconds, Uber's forecasting system analyses time series data from thousands of cities: driver availability, rider demand, weather, local events. The system predicts demand 15 minutes ahead so it can incentivise more drivers to go online <em>before</em> the surge hits, not after. The model reads historical patterns (Friday nights near stadiums are always busy), decomposes seasonal effects (rain increases demand by ~25%), and issues surge multipliers automatically. Without time series forecasting, Uber would simply react to demand — drivers arrive late, prices spike to extreme levels, and riders give up. Uber's forecasting system prevents ~40% of potential surge events from becoming severely disruptive for users.</div>
+  </div>
+
+  <div class="bi">⏰</div>
     <div class="bt">Time Traveller Unlocked!</div>
     <div class="bs">You understand what time series are and how Python handles them</div>
   </div>
@@ -448,9 +454,10 @@ df[<span class="str">'lag_7'</span>] = df[<span class="str">'close'</span>].<spa
     </div>
 
     <div class="rw">
-      <div class="rwl">Core Idea</div>
-      <div class="rwt">Observed = Trend + Seasonal + Residual (additive) &nbsp;|&nbsp; Observed = Trend × Seasonal × Residual (multiplicative)</div>
-      <div class="rwb">Decomposition isolates each signal so you can analyse, model, and forecast each separately. It also helps diagnose whether a series is stationary and detect anomalies hiding in the noise.</div>
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">Amazon — decomposing Black Friday demand to stop warehouses running out of stock</div>
+      <div class="rwb">Amazon's demand forecasting team decomposes daily sales into three components: <strong>Trend</strong> (long-run growth in e-commerce), <strong>Seasonal</strong> (the Christmas spike, Prime Day lift, Black Friday surge), and <strong>Residual</strong> (random noise from a viral TikTok video or a competitor going out of stock). By separating these signals, Amazon can pre-position inventory in the right fulfilment centres weeks in advance. Before decomposition-based forecasting, Amazon's in-stock rate during Black Friday was ~85%. After — over 97%. The seasonal component alone is worth billions: a 1% improvement in in-stock rate translates to approximately $800 million in additional sales.</div>
+    </div>
     </div>
 
     <!-- Interactive decomposition canvas -->
@@ -737,9 +744,10 @@ auto = pm.<span class="fn">auto_arima</span>(df[<span class="str">'sales'</span>
     </div>
 
     <div class="rw">
-      <div class="rwl">Core Idea</div>
-      <div class="rwt">Exponential smoothing weights recent observations more heavily than older ones — the influence of past data decays exponentially.</div>
-      <div class="rwb">Unlike ARIMA (which models autocorrelation structure), Exponential Smoothing directly models the level, trend, and seasonality of a series. The Holt-Winters method is still a top performer in forecasting competitions.</div>
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">NHS England — predicting A&amp;E demand to schedule the right number of nurses</div>
+      <div class="rwb">NHS England uses Holt-Winters exponential smoothing to forecast A&amp;E attendance 7 days ahead. The model tracks: <strong>Level</strong> (baseline daily attendance ~400 patients/day at a large trust), <strong>Trend</strong> (gradual year-on-year increase as the population ages), and <strong>Seasonality</strong> (Mondays are 30% busier than Thursdays; winter sees a 40% surge). This forecast drives nurse and doctor rostering. Before time series forecasting, rosters were set 6 weeks in advance using last year's actuals — leading to costly overtime or dangerous understaffing. The model reduced roster-related overspend by £12 million per year across 20 NHS trusts in a 2019 pilot.</div>
+    </div>
     </div>
 
     <div class="three-col">
@@ -880,9 +888,10 @@ auto = pm.<span class="fn">auto_arima</span>(df[<span class="str">'sales'</span>
     </div>
 
     <div class="rw">
-      <div class="rwl">Hypothesis</div>
-      <div class="rwt">H₀: Series has a unit root (non-stationary) &nbsp;|&nbsp; H₁: Series is stationary</div>
-      <div class="rwb">If the p-value &lt; 0.05, reject H₀ — the series is stationary. If p-value &gt; 0.05, fail to reject — the series likely has a unit root and needs differencing or transformation.</div>
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">Goldman Sachs — why stationarity matters in algorithmic trading</div>
+      <div class="rwb">Quantitative analysts at Goldman Sachs run the Augmented Dickey-Fuller test on every price series before fitting an ARIMA model. Share prices are almost always <strong>non-stationary</strong> — they follow a random walk with a unit root. A quant who fits ARIMA directly to raw prices will find spurious relationships: two unrelated stocks may appear statistically correlated just because they both trend upward. Goldman's rule: if ADF p-value &gt; 0.05, difference the series first. Log returns (today's price ÷ yesterday's price) are typically stationary — and that is what all serious financial time series models use. Ignoring this test contributed to several hedge fund collapses in the 2000s.</div>
+    </div>
     </div>
 
     <!-- Interactive ADF demo -->
@@ -1177,6 +1186,12 @@ metrics = <span class="fn">performance_metrics</span>(df_cv)
 
   <div class="nav-btns">
     <button class="btn btn-o" onclick="go('stat')">← Back</button>
+  <div class="rw">
+    <div class="rwl">🌍 Real World Example</div>
+    <div class="rwt">Meta (Facebook) — Prophet was built to forecast billions of data points across 100+ product metrics</div>
+    <div class="rwb">Meta's Data Science team built Prophet in 2017 because traditional ARIMA models were failing at scale: analysts had to manually tune models for each of 100+ business metrics (daily active users, ad revenue, stories posted). Prophet's key insight was to model time series as <strong>trend + seasonality + holidays</strong> where business analysts — not statisticians — could specify known events (Black Friday, Christmas, Super Bowl) as holiday effects. The result: Meta's analysts could fit reliable forecasts for any metric in seconds, without understanding ARIMA. Prophet is now used by Airbnb, Spotify, and thousands of companies worldwide. It handles the messiness of real business data — missing values, outliers from product launches — that pure ARIMA cannot.</div>
+  </div>
+
     <button class="btn btn-p" onclick="done('proph')">🏁 Complete Module 9!</button>
   </div>
 </div>

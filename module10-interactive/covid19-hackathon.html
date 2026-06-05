@@ -417,6 +417,12 @@ df = pd.<span class="fn">read_csv</span>(<span class="str">'corona_tested_indivi
     <div class="fb" id="q2fb"></div>
   </div>
 
+  <div class="rw">
+    <div class="rwl">🌍 Real World Example</div>
+    <div class="rwt">ONS & SAGE — the actual COVID-19 data pipeline that informed UK lockdown decisions</div>
+    <div class="rwb">During the COVID-19 pandemic, the UK's Office for National Statistics (ONS) and the Scientific Advisory Group for Emergencies (SAGE) ran exactly this kind of data science hackathon — but for real, in weeks. Their pipeline: <strong>collect</strong> (PCR test results, hospital admissions, death registrations, sewage RNA data), <strong>clean</strong> (reconcile different reporting lags — hospital deaths reported in 24h, care home deaths in 5 days), <strong>model</strong> (Rt estimation — the reproduction number — using multiple independent teams' models), <strong>evaluate</strong> (compare Rt estimates across models; if they disagreed, investigate why). When SAGE reported "Rt is above 1" on 30 October 2020, England entered its second national lockdown. A single modelling decision — which Rt threshold to use — affected 55 million people's lives. This module replicates that exact pipeline on open COVID data.</div>
+  </div>
+
   <div class="badge" id="badge-in" style="background:linear-gradient(135deg,rgba(225,29,72,0.15),rgba(249,115,22,0.15));border:1px solid var(--p);">
     <div class="bi">🎯</div>
     <div class="bt">Problem Framer Unlocked!</div>
@@ -613,6 +619,12 @@ pos_rate = df.<span class="fn">groupby</span>(<span class="str">'test_indication
     <div class="fb" id="q4fb"></div>
   </div>
 
+  <div class="rw">
+    <div class="rwl">🌍 Real World Example</div>
+    <div class="rwt">John Snow's cholera map (1854) — the original EDA that saved thousands of lives</div>
+    <div class="rwb">In August 1854, cholera killed 127 people near Broad Street, London in 3 days. Dr John Snow didn't have a theory — he had data. He mapped every death by address and overlaid it on the locations of water pumps. The pattern was unmistakable: deaths clustered around the Broad Street pump. He also noticed <strong>outliers</strong>: a brewery nearby had zero deaths (workers drank beer, not water). Snow's EDA — scatter plot + anomaly investigation — convinced the local council to remove the pump handle. Deaths stopped immediately. This is still taught as the founding act of epidemiology. The COVID-19 EDA you're doing in this module follows the exact same logic: map the data, find the pattern, check the outliers, form a hypothesis.</div>
+  </div>
+
   <div class="badge" id="badge-eda" style="background:linear-gradient(135deg,rgba(225,29,72,0.15),rgba(249,115,22,0.15));border:1px solid var(--p);">
     <div class="bi">🔍</div>
     <div class="bt">Data Detective Unlocked!</div>
@@ -790,6 +802,12 @@ X_train_sm, y_train_sm = sm.<span class="fn">fit_resample</span>(X_train, y_trai
     <div class="fb" id="q6fb"></div>
   </div>
 
+  <div class="rw">
+    <div class="rwl">🌍 Real World Example</div>
+    <div class="rwt">Google Flu Trends — what happens when you skip data preprocessing</div>
+    <div class="rwb">In 2008, Google launched "Flu Trends" — a model that predicted flu outbreaks from Google search queries. It made headlines: real-time flu prediction without waiting for doctor reports. Then it catastrophically failed. In 2012/13, Google Flu Trends overestimated flu prevalence by <strong>140%</strong>. Why? The team had not preprocessed their training data for <strong>media bias</strong>: heavy flu news coverage made people search flu-related terms even when they weren't sick. The model had learned "scary news about flu → more searches" rather than "actual flu → more searches." The feature engineering was wrong. This is now a canonical example in data science: garbage in, garbage out. The preprocessing stage — handling missing values, removing biased features, scaling correctly — is not optional. It determines whether your model is useful or dangerously misleading.</div>
+  </div>
+
   <div class="badge" id="badge-pre" style="background:linear-gradient(135deg,rgba(225,29,72,0.15),rgba(249,115,22,0.15));border:1px solid var(--p);">
     <div class="bi">🔧</div>
     <div class="bt">Data Engineer Unlocked!</div>
@@ -943,6 +961,12 @@ y_prob = best_model.<span class="fn">predict_proba</span>(X_test)[:, <span class
       <div class="opt" onclick="ans('q8',this,false,'Averaging predictions (ensemble) requires calibration and justified methodology. The simpler action is to use the better model.')"><span class="ol">D</span>Average the predictions of both models to get the best result</div>
     </div>
     <div class="fb" id="q8fb"></div>
+  </div>
+
+  <div class="rw">
+    <div class="rwl">🌍 Real World Example</div>
+    <div class="rwt">Imperial College London's COVID model — and why model choice matters enormously</div>
+    <div class="rwb">In March 2020, Imperial College London's Neil Ferguson published Report 9 — a model predicting 500,000 UK deaths if no action was taken. This single report triggered the UK lockdown. The model was an individual-based simulation (similar to a Random Forest of individual human behaviours). A week later, Oxford's Sunetra Gupta published a simpler compartmental model (like logistic regression) suggesting the virus had already spread widely and fewer people were susceptible. Both teams used the same data; different model choices gave radically different predictions. This is not an error — it is the normal uncertainty of modelling. The lesson: <strong>never rely on a single model</strong>. The UK government's SAGE committee used 10+ independent models and reported consensus ranges, not single-point predictions. In this module, you build and compare multiple models for exactly this reason.</div>
   </div>
 
   <div class="badge" id="badge-mod" style="background:linear-gradient(135deg,rgba(225,29,72,0.15),rgba(249,115,22,0.15));border:1px solid var(--p);">
@@ -1118,6 +1142,12 @@ shap.<span class="fn">summary_plot</span>(shap_values, X_test.<span class="fn">i
       <div class="opt" onclick="ans('q10',this,false,'Collecting more data from the same biased process just gives you a larger biased dataset — it doesn\'t fix the reporting bias.')"><span class="ol">D</span>Collect more data to reduce the bias effect</div>
     </div>
     <div class="fb" id="q10fb"></div>
+  </div>
+
+  <div class="rw">
+    <div class="rwl">🌍 Real World Example</div>
+    <div class="rwt">NHS COVID Oximetry@Home — when evaluation metrics saved lives in the field</div>
+    <div class="rwb">In late 2020, NHS England deployed the COVID Oximetry@Home programme: COVID patients monitored their blood oxygen at home with pulse oximeters, and readings were fed into a triage model to flag deterioration. The initial model was evaluated on <strong>accuracy alone</strong> — 94% accurate. Sounds good. But the evaluation team then checked sensitivity: the model only detected 61% of patients who were genuinely deteriorating (true positive rate). In a COVID context, missing 39% of deteriorating patients means preventable deaths. The team switched to optimising <strong>sensitivity at 90%+</strong> even at the cost of more false alarms (sending ambulances unnecessarily). This is the precision-recall trade-off made explicit in a life-or-death setting. The revised model was deployed nationally. Evaluation metrics are not abstract — they encode the values of what errors are acceptable.</div>
   </div>
 
   <div class="badge" id="badge-eval" style="background:linear-gradient(135deg,rgba(225,29,72,0.15),rgba(250,204,21,0.15));border:1px solid var(--p);">
