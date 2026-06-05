@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -180,11 +180,34 @@ input[type=range]{flex:1;accent-color:var(--p);}
 ::-webkit-scrollbar-track{background:var(--bg);}
 ::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:3px;}
 ::-webkit-scrollbar-thumb:hover{background:var(--p);}
-</style>
+
+#menu-toggle{display:none;background:none;border:1px solid var(--bdr);color:var(--tx);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:1.1rem;line-height:1;flex-shrink:0;}
+#sidebar-overlay{display:none;position:fixed;inset:0;z-index:90;background:rgba(0,0,0,0.6);backdrop-filter:blur(2px);}
+#sidebar-overlay.open{display:block;}
+@media(max-width:768px){
+  #menu-toggle{display:block;}
+  #tb{padding:0 12px;gap:8px;}
+  .brand{font-size:0.9rem;}
+  .xw{display:none;}
+  .stk{display:none;}
+  .scd{font-size:0.78rem;}
+  .lvb{font-size:0.72rem;padding:3px 8px;}
+  .mnav{gap:4px;margin-left:4px;}
+  .mbtn{font-size:0.7rem;padding:3px 7px;}
+  #sbar{position:fixed;left:0;top:60px;bottom:0;transform:translateX(-100%);transition:transform 0.3s ease;z-index:95;width:250px;min-width:0;box-shadow:4px 0 24px rgba(0,0,0,0.5);}
+  #sbar.open{transform:translateX(0);}
+  #app{flex-direction:column;}
+  #main{padding:20px 16px;max-width:100%;width:100%;}
+  .hero{padding:22px 18px;}
+  .htitle{font-size:1.6rem;}
+  canvas{max-width:100%;height:auto!important;}
+}</style>
 </head>
 <body>
 
+<div id="sidebar-overlay" onclick="closeSidebar()"></div>
 <div id="tb">
+  <button id="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle menu">☰</button>
   <div class="brand">⚙️ Model Evaluation</div>
   <div class="xps">
     <div id="lvl" class="lvb">Lv 1</div>
@@ -853,6 +876,8 @@ function done(l){
   if(l==='ht')document.getElementById('b2').style.color='inherit';
   if(l==='fs'){document.getElementById('b3').style.color='inherit';document.getElementById('bdg-ev').classList.add('show');document.getElementById('bdg-m6').classList.add('show');}
 }
+function toggleSidebar(){document.getElementById('sbar').classList.toggle('open');document.getElementById('sidebar-overlay').classList.toggle('open');}
+function closeSidebar(){document.getElementById('sbar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');}
 function go(p){
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
@@ -861,6 +886,7 @@ function go(p){
   const pm=document.getElementById('p-'+p);
   if(!S.done.has(p)&&pm.style.width==='0%')pm.style.width='15%';
   document.getElementById('main').scrollTop=0;
+  closeSidebar();
   if(p==='ht')setTimeout(()=>{buildHeatmap();updateTuning();},100);
   if(p==='fs')setTimeout(()=>{renderFI();},100);
 }

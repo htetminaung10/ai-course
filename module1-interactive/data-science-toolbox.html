@@ -399,12 +399,61 @@
   .collapsible-content.open { display: block; }
   .collapse-arrow { transition: transform 0.2s; display: inline-block; }
   .collapsible.open .collapse-arrow { transform: rotate(90deg); }
+
+  /* ── HAMBURGER ── */
+  #menu-toggle {
+    display: none; background: none; border: 1px solid var(--border);
+    color: var(--text); border-radius: 8px; padding: 6px 10px;
+    cursor: pointer; font-size: 1.1rem; line-height: 1; flex-shrink: 0;
+  }
+
+  /* ── OVERLAY ── */
+  #sidebar-overlay {
+    display: none; position: fixed; inset: 0; z-index: 90;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(2px);
+  }
+  #sidebar-overlay.open { display: block; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    #menu-toggle { display: block; }
+
+    #topbar { padding: 0 12px; gap: 10px; }
+    #topbar .brand { font-size: 0.95rem; }
+    #xp-bar-wrap { display: none; }
+    #streak { display: none; }
+    #score-display { font-size: 0.8rem; }
+    #level-badge { font-size: 0.75rem; padding: 3px 8px; }
+
+    #sidebar {
+      position: fixed; left: 0; top: 60px; bottom: 0;
+      transform: translateX(-100%); transition: transform 0.3s ease;
+      z-index: 95; width: 260px; min-width: 0;
+      box-shadow: 4px 0 24px rgba(0,0,0,0.5);
+    }
+    #sidebar.open { transform: translateX(0); }
+
+    #app { flex-direction: column; }
+    #main { padding: 20px 16px; max-width: 100%; width: 100%; }
+
+    .lesson-hero { padding: 24px 20px; }
+    .hero-title { font-size: 1.6rem; }
+    .hero-meta { gap: 8px; }
+
+    canvas { max-width: 100%; height: auto !important; }
+
+    .quiz-options { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
 
+<!-- SIDEBAR OVERLAY -->
+<div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
 <!-- TOP BAR -->
 <div id="topbar">
+  <button id="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle menu">☰</button>
   <a href="../index.html" style="padding:4px 10px;border-radius:6px;font-size:0.75rem;font-weight:600;border:1px solid #444;color:#ccc;text-decoration:none;margin-right:8px;" onmouseover="this.style.color='#7c3aed';this.style.borderColor='#7c3aed'" onmouseout="this.style.color='#ccc';this.style.borderColor='#444'">🏠 Home</a><div class="brand">🧰 DS Toolbox</div>
   <div id="xp-section">
     <div id="level-badge">Lv 1</div>
@@ -1430,6 +1479,16 @@ git checkout -- file.py     <span class="cm"># discard changes to a file</span><
 </div>
 
 <script>
+// ── MOBILE SIDEBAR ──
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
+}
+
 // ── STATE ──
 const state = {
   xp: 0,
@@ -1556,6 +1615,7 @@ function showPage(page) {
 
   window.scrollTo(0, 0);
   document.getElementById('main').scrollTop = 0;
+  closeSidebar();
 }
 
 // ── TOAST ──
