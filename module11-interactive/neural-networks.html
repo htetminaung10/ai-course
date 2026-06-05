@@ -2073,12 +2073,13 @@ window.addEventListener('load',()=>{
   drawGNNCanvas();
 });
 
+
+</script>
+
 <div class="rw" style="margin:24px 0;">
   <div class="rwl">🌍 Real World Example</div>
   <div class="rwt">Google Translate and Spotify — sequence models powering 500 million users daily</div>
   <div class="rwb">Google Translate (2016–2023) used a sequence-to-sequence LSTM architecture to translate 100+ languages. The encoder LSTM read the entire input sentence, compressing it into a hidden state vector (a fixed-length "thought vector" representing meaning). The decoder LSTM then unrolled this vector into the target language word by word. The vanishing gradient problem you just learned about was why early RNNs failed on long sentences — the gradient for "She" at position 1 was essentially zero by the time backpropagation reached it from position 30. LSTMs' gates (forget, input, output) fixed this by maintaining a cell state that carries information across arbitrarily long sequences. Meanwhile, Spotify's music recommendation uses a Graph Neural Network: songs are nodes, user co-listens are edges. GNN aggregates neighbourhood features — songs frequently played together share embedding space — enabling Spotify to generate the "Discover Weekly" playlist for 500 million users every Monday morning.</div>
 </div>
-
-</script>
 </body>
 </html>

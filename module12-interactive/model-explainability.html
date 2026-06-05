@@ -715,7 +715,32 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
 <div class="rw" style="margin:24px 0;">
   <div class="rwl">🌍 Real World Example</div>
   <div class="rwt">Spotify — using LIME to explain why a song was recommended to you</div>
-  <div class="rwb">Spotify's recommendation model processes hundreds of features per song (tempo, key, danceability, acousticness, 30-second audio features from a CNN). When a user complains "why did you recommend this terrible song?", the support team historically had no answer — the model was a black box. Spotify's data science team implemented LIME (Locally Interpretable Model-agnostic Explanations) to generate post-hoc explanations. For any given recommendation, LIME perturbs the feature values (tempo ± 10, energy ± 20%) and fits a local linear model around that song. The output: "This song was recommended because: high danceability (0.82), positive valence (0.76), similar tempo to your recent plays (128 BPM). The explicit lyrics flag had a negative effect." These explanations are now used internally by Spotify's editorial team to audit recommendations and by the ML team to debug unexpected suggestions.</div>
+  <div class="rwb">Spotify's recommendation model processes hundreds of features per song (tempo, key, danceability, acousticness, 30-second audio features from a CNN). When a user complains "why did you recommend this terrible song?", the support team historically had no answer — the model was a black box. Spotify's data science team implemented LIME (Locally Interpretable Model-agnostic Explanations) to generate post-hoc explanations. For any given recommendation, LIME perturbs the feature values (tempo ± 10, energy ± 20%) and fits a local linear model around that song. The output: "This song was recommended because: high danceability (0.82), positive valence (0.76), similar tempo to your recent plays (128 BPM). The explicit lyrics flag had a negative effect." These explanations are now used internally by Spotify's editorial team to audit recommendations and by the ML team to debug unexpected suggestions.</div>  <!-- Counterfactual Explanations -->
+  <div class="card">
+    <h2>🔄 Counterfactual Explanations</h2>
+    <p>A counterfactual answers: <strong>"What is the minimum change needed to flip this prediction?"</strong> Unlike LIME (which explains why), counterfactuals show <em>how to act</em> to change an outcome.</p>
+    <p style="margin-top:.6rem;color:var(--txm);font-size:.9rem">Example: <em>"Your loan was denied. If your debt ratio were below 48%, the decision would flip to APPROVED."</em></p>
+
+    <div style="margin-top:1.25rem">
+      <label style="color:var(--txm);font-size:.9rem">Adjust debt ratio to see how the prediction changes:</label>
+      <div style="display:flex;align-items:center;gap:12px;margin-top:.5rem;flex-wrap:wrap">
+        <span style="color:var(--txm);font-size:.85rem">0%</span>
+        <input type="range" id="cfDebt" min="0" max="100" value="70" oninput="drawCFCanvas()" style="flex:1;min-width:160px;accent-color:var(--p)">
+        <span style="color:var(--txm);font-size:.85rem">100%</span>
+        <span id="cfDebtVal" style="font-weight:700;color:var(--p);min-width:40px">70%</span>
+      </div>
+      <canvas id="cfCanvas" width="700" height="220" style="width:100%;max-width:700px;margin-top:.75rem;border-radius:10px;background:var(--sur2)"></canvas>
+      <div id="cfResult" style="margin-top:.75rem;padding:.75rem 1rem;background:var(--sur2);border-radius:8px;font-size:.9rem;color:var(--txm)">Adjust the slider to see how the decision changes</div>
+    </div>
+
+    <div class="rw" style="margin-top:1.25rem">
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">Amazon hiring AI — counterfactuals exposing systematic bias</div>
+      <div class="rwb">Amazon's CV screening AI (discontinued 2018) rejected candidates based on features including university name. A counterfactual analysis revealed: "If the applicant had attended a Russell Group university instead of a former polytechnic, the decision would flip from REJECTED to SHORTLISTED." This exposed that the model was encoding socioeconomic proxies for talent. Under GDPR Article 22, employers must explain automated HR decisions — counterfactual explanations are the most actionable form: they give the candidate a specific, achievable path to a different outcome.</div>
+    </div>
+  </div>
+
+
 </div>
 
 <!-- ═══════════════════════════════════════
@@ -949,7 +974,33 @@ pre{background:#020f0d;border:1px solid var(--border);border-radius:.5rem;paddin
 <div class="rw" style="margin:24px 0;">
   <div class="rwl">🌍 Real World Example</div>
   <div class="rwt">NHS breast cancer screening — SHAP revealing that AI learned hospital equipment quirks, not cancer</div>
-  <div class="rwb">A UK hospital trust trained a deep learning model on mammograms to detect breast cancer. Test accuracy was 94% — better than the national radiologist average. Before deployment, the clinical AI team ran SHAP analysis on the model's global feature importance. The SHAP values revealed that the model's top predictive "features" were not radiological markers of cancer — they were <strong>scanner-specific artefacts</strong>: a slight vignetting pattern from one manufacturer's machines (which happened to be in the high-risk clinic), and a pixel brightness calibration difference between older and newer equipment. The model had learned "this image came from the high-risk clinic scanner → high cancer risk." It would have catastrophically failed when deployed at a different hospital with different equipment. SHAP's global analysis caught this before a single patient was affected. This is now a standard requirement in NHS AI deployment guidelines (NHS AI Lab, 2022).</div>
+  <div class="rwb">A UK hospital trust trained a deep learning model on mammograms to detect breast cancer. Test accuracy was 94% — better than the national radiologist average. Before deployment, the clinical AI team ran SHAP analysis on the model's global feature importance. The SHAP values revealed that the model's top predictive "features" were not radiological markers of cancer — they were <strong>scanner-specific artefacts</strong>: a slight vignetting pattern from one manufacturer's machines (which happened to be in the high-risk clinic), and a pixel brightness calibration difference between older and newer equipment. The model had learned "this image came from the high-risk clinic scanner → high cancer risk." It would have catastrophically failed when deployed at a different hospital with different equipment. SHAP's global analysis caught this before a single patient was affected. This is now a standard requirement in NHS AI deployment guidelines (NHS AI Lab, 2022).</div>  <!-- Partial Dependence Plots -->
+  <div class="card">
+    <h2>📈 Partial Dependence Plots (PDP)</h2>
+    <p>A PDP shows the <strong>marginal effect of one feature on the predicted outcome</strong> — averaged across all other features. Where SHAP gives per-prediction contributions, PDP reveals the <em>global shape</em> of the model's relationship with each feature.</p>
+    <p style="margin-top:.6rem;color:var(--txm);font-size:.9rem"><strong>ICE lines</strong> (faint purple) show the same curve for individual data points — revealing whether the average hides heterogeneous effects.</p>
+
+    <div style="margin-top:1rem">
+      <div id="pdpTabs" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:.75rem">
+        <button class="tab-btn active" onclick="showPDP('age',this)" style="padding:6px 14px;border-radius:20px;border:1px solid var(--p);background:var(--p);color:#fff;cursor:pointer;font-size:.82rem">Age</button>
+        <button class="tab-btn" onclick="showPDP('income',this)" style="padding:6px 14px;border-radius:20px;border:1px solid var(--bdr);background:transparent;color:var(--txm);cursor:pointer;font-size:.82rem">Income</button>
+        <button class="tab-btn" onclick="showPDP('debt',this)" style="padding:6px 14px;border-radius:20px;border:1px solid var(--bdr);background:transparent;color:var(--txm);cursor:pointer;font-size:.82rem">Debt Ratio</button>
+      </div>
+      <canvas id="pdpCanvas" width="760" height="280" style="width:100%;max-width:760px;border-radius:10px;background:var(--sur2)"></canvas>
+      <div id="pdpNote" style="margin-top:.75rem;padding:.75rem 1rem;background:var(--sur2);border-radius:8px;font-size:.88rem;color:var(--txm)"><p>Age effect: risk decreases sharply until ~35, then increases slightly with age. The U-shaped curve suggests middle-aged applicants are lowest risk.</p></div>
+    </div>
+
+    <div style="margin-top:1rem;padding:1rem;background:var(--sur2);border-radius:10px;border-left:3px solid var(--warn)">
+      <strong style="color:var(--warn)">⚠️ PDP Caveats</strong>
+      <ul style="margin-top:.5rem;padding-left:1.2rem;color:var(--txm);font-size:.88rem;line-height:1.7">
+        <li>Assumes features are <strong>independent</strong> — can produce unrealistic combinations if features are correlated (e.g., age=18, income=$200k)</li>
+        <li>Averaging can hide <strong>heterogeneous effects</strong> — use ICE lines to detect them</li>
+        <li>For correlated features, prefer <strong>Accumulated Local Effects (ALE)</strong> plots instead</li>
+      </ul>
+    </div>
+  </div>
+
+
 </div>
 
 <!-- ═══════════════════════════════════════
