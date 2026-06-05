@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 3: Product Management 📦</title>
+<style>
+:root{--primary:#f59e0b;--primary-d:#d97706;--secondary:#ec4899;--accent:#10b981;--accent2:#3b82f6;--bg:#0c0a06;--surface:#1a1506;--surface2:#231c08;--surface3:#2d2010;--text:#f0ead6;--text-muted:#9a8f6e;--border:#3a3010;--code-bg:#0f0d04;--success:#10b981;--warning:#f59e0b;--error:#ef4444;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+
+#topbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(12,10,6,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;gap:16px;}
+.brand{font-size:1rem;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap;}
+.xp-section{display:flex;align-items:center;gap:10px;flex:1;}
+.lvl-badge{background:linear-gradient(135deg,var(--primary),var(--secondary));padding:4px 12px;border-radius:20px;font-weight:700;font-size:0.82rem;color:#000;white-space:nowrap;}
+.xp-wrap{flex:1;max-width:280px;}
+.xp-lbl{font-size:0.72rem;color:var(--text-muted);margin-bottom:3px;}
+.xp-bg{background:var(--border);border-radius:10px;height:7px;overflow:hidden;}
+.xp-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--secondary));border-radius:10px;transition:width 0.5s;}
+.streak{font-size:0.82rem;color:var(--warning);display:flex;align-items:center;gap:4px;}
+.score-d{font-weight:700;color:var(--accent);font-size:0.88rem;white-space:nowrap;}
+.mod-nav{display:flex;gap:6px;margin-left:8px;}
+.mod-btn{padding:4px 10px;border-radius:6px;font-size:0.75rem;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all 0.2s;text-decoration:none;}
+.mod-btn:hover{border-color:var(--primary);color:var(--primary);}
+
+#app{display:flex;margin-top:60px;min-height:calc(100vh - 60px);}
+#sidebar{width:260px;min-width:260px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;}
+.sb-title{padding:0 16px 10px;font-size:0.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-muted);}
+.nav-item{display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;border-left:3px solid transparent;transition:all 0.2s;font-size:0.87rem;}
+.nav-item:hover{background:var(--surface2);}
+.nav-item.active{border-left-color:var(--primary);background:var(--surface2);color:var(--primary);}
+.nav-item.done{color:var(--accent);}
+.nav-item.done::after{content:'✓';margin-left:auto;font-weight:700;}
+.nav-icon{font-size:1.1rem;min-width:22px;text-align:center;flex-shrink:0;}
+.nav-label{flex:1;}
+.pmini{margin-top:3px;height:3px;background:var(--border);border-radius:3px;overflow:hidden;}
+.pmini-fill{height:100%;background:var(--primary);border-radius:3px;transition:width 0.3s;}
+.sb-section{padding:14px 16px 4px;border-top:1px solid var(--border);margin-top:8px;}
+
+#main{flex:1;padding:36px 44px;max-width:920px;overflow-y:auto;}
+.page{display:none;}.page.active{display:block;}
+
+.hero{background:linear-gradient(135deg,var(--surface2),var(--surface3));border:1px solid var(--border);border-radius:20px;padding:36px;margin-bottom:36px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-30%;right:-5%;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,0.12),transparent);}
+.hero-tag{font-size:0.72rem;text-transform:uppercase;letter-spacing:2px;color:var(--primary);margin-bottom:6px;}
+.hero-title{font-size:2rem;font-weight:800;margin-bottom:10px;line-height:1.2;}
+.hero-sub{font-size:0.92rem;color:var(--text-muted);margin-bottom:20px;max-width:580px;line-height:1.6;}
+.hero-pills{display:flex;gap:10px;flex-wrap:wrap;}
+.pill{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:0.78rem;color:var(--text-muted);}
+
+.section{margin-bottom:44px;}
+.sec-hdr{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+.sec-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+.sec-title{font-size:1.4rem;font-weight:700;}
+.sec-sub{font-size:0.82rem;color:var(--text-muted);margin-top:2px;}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:18px;transition:transform 0.2s,border-color 0.2s;}
+.card:hover{transform:translateY(-2px);border-color:var(--primary);}
+.card-title{font-size:1.05rem;font-weight:700;margin-bottom:9px;}
+.card-body{color:var(--text-muted);line-height:1.7;font-size:0.9rem;}
+.card-body strong{color:var(--text);}
+.card-body code{background:var(--code-bg);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:0.83rem;color:var(--primary);}
+
+.rw{background:linear-gradient(135deg,rgba(16,185,129,0.07),rgba(245,158,11,0.07));border:1px solid rgba(16,185,129,0.22);border-radius:14px;padding:18px 22px;margin:18px 0;}
+.rw-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--accent);margin-bottom:6px;}
+.rw-title{font-weight:700;margin-bottom:5px;}
+.rw-body{color:var(--text-muted);font-size:0.88rem;line-height:1.6;}
+
+.quiz{background:var(--surface2);border:2px solid var(--border);border-radius:16px;padding:26px;margin:26px 0;position:relative;}
+.quiz::before{content:'🧠 QUIZ';position:absolute;top:-12px;left:18px;background:var(--primary);color:#000;padding:3px 11px;border-radius:20px;font-size:0.73rem;font-weight:700;letter-spacing:1px;}
+.quiz-xp{position:absolute;top:-12px;right:18px;background:var(--secondary);color:#fff;padding:3px 11px;border-radius:20px;font-size:0.73rem;font-weight:700;}
+.quiz-q{font-size:0.97rem;font-weight:600;margin-bottom:16px;line-height:1.5;}
+.opts{display:grid;gap:9px;}
+.opt{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px 14px;cursor:pointer;transition:all 0.2s;font-size:0.88rem;display:flex;align-items:flex-start;gap:9px;text-align:left;}
+.opt:hover:not(.locked){border-color:var(--primary);background:rgba(245,158,11,0.08);}
+.opt.correct{border-color:var(--success);background:rgba(16,185,129,0.12);color:var(--success);}
+.opt.wrong{border-color:var(--error);background:rgba(239,68,68,0.12);color:var(--error);}
+.opt.locked{cursor:default;}
+.opt-l{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;flex-shrink:0;}
+.fb{margin-top:12px;padding:11px 14px;border-radius:9px;font-size:0.88rem;line-height:1.5;display:none;}
+.fb.show{display:block;}
+.fb.cfb{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:var(--success);}
+.fb.wfb{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:var(--error);}
+
+.info{border-radius:9px;padding:12px 16px;margin:14px 0;display:flex;gap:10px;align-items:flex-start;font-size:0.87rem;line-height:1.6;}
+.info.tip{background:rgba(245,158,11,0.08);border-left:3px solid var(--primary);}
+.info.warn{background:rgba(239,68,68,0.08);border-left:3px solid var(--error);}
+.info.ok{background:rgba(16,185,129,0.08);border-left:3px solid var(--accent);}
+.info.note{background:rgba(59,130,246,0.08);border-left:3px solid var(--accent2);}
+.info-i{font-size:1rem;flex-shrink:0;margin-top:2px;}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:18px 0;}
+@media(max-width:680px){.two-col,.three-col{grid-template-columns:1fr;}}
+
+.framework-box{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:22px;margin:18px 0;}
+.framework-title{font-weight:700;margin-bottom:14px;font-size:1rem;color:var(--primary);}
+
+.badge{display:none;border-radius:16px;padding:20px;margin:20px 0;text-align:center;animation:slideIn 0.4s ease;}
+.badge.show{display:block;}
+@keyframes slideIn{from{transform:translateY(-16px);opacity:0}to{transform:translateY(0);opacity:1}}
+.badge-icon{font-size:2.8rem;margin-bottom:6px;}
+.badge-title{font-size:1.1rem;font-weight:800;}
+.badge-sub{font-size:0.82rem;opacity:0.8;}
+
+.nav-btns{display:flex;gap:10px;margin-top:36px;padding-top:20px;border-top:1px solid var(--border);}
+.btn{padding:11px 22px;border-radius:9px;border:none;cursor:pointer;font-weight:600;font-size:0.88rem;transition:all 0.2s;display:flex;align-items:center;gap:7px;}
+.btn-p{background:var(--primary);color:#000;}
+.btn-p:hover{background:var(--primary-d);transform:translateY(-1px);}
+.btn-o{background:transparent;border:1px solid var(--border);color:var(--text);}
+.btn-o:hover{border-color:var(--primary);color:var(--primary);}
+
+/* Agile sprint visual */
+.sprint-ring{display:flex;justify-content:center;align-items:center;margin:20px 0;}
+.sprint-phases{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;}
+.sprint-phase{padding:10px 18px;border-radius:30px;font-size:0.82rem;font-weight:700;text-align:center;border:2px solid;}
+
+/* User story builder */
+.story-builder{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:22px;margin:18px 0;}
+.story-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.story-label{font-weight:700;color:var(--primary);font-size:0.9rem;min-width:80px;}
+.story-select{background:var(--surface3);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:0.88rem;flex:1;min-width:140px;}
+.story-output{background:var(--code-bg);border:1px solid var(--border);border-radius:10px;padding:14px;margin-top:14px;font-size:0.9rem;line-height:1.7;font-style:italic;color:var(--primary);}
+
+/* MoSCoW board */
+.moscow-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0;}
+.moscow-col{border-radius:12px;padding:16px;border:1px solid;}
+.moscow-col h4{font-size:0.85rem;font-weight:700;margin-bottom:8px;}
+.moscow-item{font-size:0.82rem;padding:5px 8px;border-radius:6px;margin-bottom:4px;color:var(--text-muted);}
+
+/* Design thinking wheel */
+.dt-steps{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0;justify-content:center;}
+.dt-step{flex:1;min-width:100px;max-width:140px;padding:14px 10px;border-radius:12px;text-align:center;border:2px solid;cursor:default;transition:transform 0.2s;}
+.dt-step:hover{transform:scale(1.05);}
+.dt-step .dt-num{font-size:1.4rem;margin-bottom:4px;}
+.dt-step .dt-name{font-weight:700;font-size:0.82rem;}
+.dt-step .dt-desc{font-size:0.72rem;opacity:0.75;margin-top:4px;}
+
+/* INVEST checker */
+.invest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0;}
+.invest-card{padding:14px;border-radius:10px;border:1px solid;text-align:center;}
+.invest-letter{font-size:1.6rem;font-weight:800;margin-bottom:4px;}
+.invest-word{font-weight:700;font-size:0.82rem;margin-bottom:4px;}
+.invest-desc{font-size:0.73rem;color:var(--text-muted);line-height:1.4;}
+
+/* Journey map */
+.journey-map{overflow-x:auto;margin:18px 0;}
+.journey-table{min-width:600px;border-collapse:separate;border-spacing:0;font-size:0.82rem;}
+.journey-table th{padding:10px 12px;background:var(--surface3);color:var(--primary);font-weight:700;border:1px solid var(--border);text-align:center;}
+.journey-table td{padding:9px 12px;border:1px solid var(--border);vertical-align:top;}
+.journey-table .stage{font-weight:700;background:var(--surface2);color:var(--text);}
+.emotion-emoji{font-size:1.3rem;text-align:center;}
+
+/* Testing pyramid */
+.test-pyramid{display:flex;flex-direction:column;align-items:center;gap:4px;margin:20px 0;}
+.pyramid-layer{border-radius:8px;padding:12px;text-align:center;font-weight:700;font-size:0.85rem;display:flex;flex-direction:column;gap:3px;}
+.pyr-sub{font-size:0.73rem;font-weight:400;opacity:0.8;}
+
+/* Lab banner */
+#lab-banner{margin-bottom:28px;transition:opacity 0.3s,transform 0.3s;}
+#lab-banner-inner{background:linear-gradient(135deg,#1a1506,#231c08);border:1px solid rgba(245,158,11,0.35);border-left:4px solid var(--primary);border-radius:14px;padding:20px 22px;}
+
+/* Toast */
+#toast{position:fixed;bottom:28px;right:28px;z-index:9999;background:var(--surface);border:1px solid var(--primary);border-radius:12px;padding:12px 18px;font-size:0.88rem;display:none;align-items:center;gap:9px;box-shadow:0 8px 32px rgba(0,0,0,0.4);animation:slideUp 0.3s ease;}
+#toast.show{display:flex;}
+@keyframes slideUp{from{transform:translateY(18px);opacity:0}to{transform:translateY(0);opacity:1}}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:var(--primary);}
+
+table.nice{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.85rem;}
+table.nice th{background:var(--surface3);padding:9px 12px;text-align:left;color:var(--primary);font-weight:600;}
+table.nice td{padding:8px 12px;border-bottom:1px solid var(--border);}
+table.nice tr:hover td{background:var(--surface);}
+table.nice .muted{color:var(--text-muted);}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="brand">📦 Product Management</div>
+  <div class="xp-section">
+    <div id="lvl" class="lvl-badge">Lv 1</div>
+    <div class="xp-wrap">
+      <div id="xlbl" class="xp-lbl">0 / 200 XP</div>
+      <div class="xp-bg"><div id="xbar" class="xp-fill" style="width:0%"></div></div>
+    </div>
+    <div class="streak">🔥 <span id="stk">0</span></div>
+    <div class="score-d">⭐ <span id="pts">0</span></div>
+  </div>
+  <div class="mod-nav">
+    <a class="mod-btn" href="../module2-interactive/intro-to-machine-learning.html">← M2</a>
+    <a class="mod-btn" href="../module4-interactive/supervised-classification.html">M4 →</a>
+  </div>
+</div>
+
+<div id="app">
+<nav id="sidebar">
+  <div class="sb-title">Module 3 Lessons</div>
+  <div id="n-pm" class="nav-item active" onclick="go('pm')"><div class="nav-icon">📦</div><div class="nav-label">Intro to PM<div class="pmini"><div class="pmini-fill" id="p-pm" style="width:0%"></div></div></div></div>
+  <div id="n-ag" class="nav-item" onclick="go('ag')"><div class="nav-icon">🏃</div><div class="nav-label">Agile Fundamentals<div class="pmini"><div class="pmini-fill" id="p-ag" style="width:0%"></div></div></div></div>
+  <div id="n-us" class="nav-item" onclick="go('us')"><div class="nav-icon">📖</div><div class="nav-label">User Stories &amp; INVEST<div class="pmini"><div class="pmini-fill" id="p-us" style="width:0%"></div></div></div></div>
+  <div id="n-ri" class="nav-item" onclick="go('ri')"><div class="nav-icon">🗓️</div><div class="nav-label">Agile Rituals<div class="pmini"><div class="pmini-fill" id="p-ri" style="width:0%"></div></div></div></div>
+  <div id="n-pr" class="nav-item" onclick="go('pr')"><div class="nav-icon">🎯</div><div class="nav-label">Prioritisation &amp; MVP<div class="pmini"><div class="pmini-fill" id="p-pr" style="width:0%"></div></div></div></div>
+  <div id="n-dt" class="nav-item" onclick="go('dt')"><div class="nav-icon">💡</div><div class="nav-label">Design Thinking<div class="pmini"><div class="pmini-fill" id="p-dt" style="width:0%"></div></div></div></div>
+  <div id="n-uj" class="nav-item" onclick="go('uj')"><div class="nav-icon">🗺️</div><div class="nav-label">User Journey<div class="pmini"><div class="pmini-fill" id="p-uj" style="width:0%"></div></div></div></div>
+  <div id="n-ai" class="nav-item" onclick="go('ai')"><div class="nav-icon">🤖</div><div class="nav-label">PM for AI Products<div class="pmini"><div class="pmini-fill" id="p-ai" style="width:0%"></div></div></div></div>
+  <div id="n-te" class="nav-item" onclick="go('te')"><div class="nav-icon">🧪</div><div class="nav-label">Testing Principles<div class="pmini"><div class="pmini-fill" id="p-te" style="width:0%"></div></div></div></div>
+  <div class="sb-section">
+    <div class="sb-title">Badges</div>
+    <div id="bdg" style="font-size:1.4rem;letter-spacing:3px;">
+      <span id="b0" style="color:var(--border)">📦</span>
+      <span id="b1" style="color:var(--border)">🏃</span>
+      <span id="b2" style="color:var(--border)">🤖</span>
+      <span id="b3" style="color:var(--border)">🏆</span>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- ═══ PM INTRO ═══ -->
+<div id="page-pm" class="page active">
+  <div class="hero">
+    <div class="hero-tag">Lesson 1 of 9 · Module 3</div>
+    <div class="hero-title">📦 Intro to Product Management</div>
+    <div class="hero-sub">A product manager is the CEO of the product — without the authority. Learn the PM role, what makes a great product, and how PM fits into an AI team.</div>
+    <div class="hero-pills"><div class="pill">⏱ ~30 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 150 XP</div></div>
+  </div>
+
+  <div class="section">
+    <div class="sec-hdr"><div class="sec-icon" style="background:rgba(245,158,11,0.12);">🎭</div>
+      <div><div class="sec-title">What Does a PM Do?</div><div class="sec-sub">The glue between business, technology, and users</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎭 The PM Role</div>
+      <div class="card-body">A Product Manager <strong>defines what to build and why</strong> — not how. They sit at the intersection of three worlds:<br><br>
+        • <strong>Business</strong> — ensuring the product generates value and meets company goals<br>
+        • <strong>Technology</strong> — understanding what's feasible and working with engineers<br>
+        • <strong>Users</strong> — deeply understanding customer needs and pain points<br><br>
+        The PM doesn't manage people — they manage the <strong>product vision and roadmap</strong>.
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:center;margin:24px 0;">
+      <svg width="320" height="260" viewBox="0 0 320 260" style="max-width:100%">
+        <circle cx="160" cy="100" r="70" fill="rgba(245,158,11,0.12)" stroke="rgba(245,158,11,0.4)" stroke-width="2"/>
+        <circle cx="100" cy="190" r="70" fill="rgba(236,72,153,0.12)" stroke="rgba(236,72,153,0.4)" stroke-width="2"/>
+        <circle cx="220" cy="190" r="70" fill="rgba(59,130,246,0.12)" stroke="rgba(59,130,246,0.4)" stroke-width="2"/>
+        <text x="160" y="72" fill="#f59e0b" text-anchor="middle" font-weight="700" font-size="13">Business</text>
+        <text x="160" y="88" fill="#9a8f6e" text-anchor="middle" font-size="10">Goals &amp; value</text>
+        <text x="72" y="215" fill="#ec4899" text-anchor="middle" font-weight="700" font-size="13">Users</text>
+        <text x="72" y="229" fill="#9a8f6e" text-anchor="middle" font-size="10">Needs &amp; pain</text>
+        <text x="248" y="215" fill="#3b82f6" text-anchor="middle" font-weight="700" font-size="13">Technology</text>
+        <text x="248" y="229" fill="#9a8f6e" text-anchor="middle" font-size="10">Feasibility</text>
+        <text x="160" y="148" fill="#f0ead6" text-anchor="middle" font-weight="800" font-size="14">PM</text>
+        <text x="160" y="164" fill="#9a8f6e" text-anchor="middle" font-size="10">Sweet spot</text>
+      </svg>
+    </div>
+
+    <div class="rw">
+      <div class="rw-label">🌍 Real World Example</div>
+      <div class="rw-title">Product Management at Spotify</div>
+      <div class="rw-body">Spotify's PM for the "Discover Weekly" playlist feature had to: understand <em>user frustration</em> with music discovery (users), work with <em>data scientists and engineers</em> to build a recommendation model (technology), and convince leadership it would <em>increase engagement and retention</em> (business). They defined the "what" — a personalised weekly playlist — while the engineering team built the "how".</div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">📋 PM Responsibilities</div>
+        <div class="card-body">• Define product vision &amp; strategy<br>• Build and maintain the roadmap<br>• Gather &amp; prioritise requirements<br>• Write user stories and acceptance criteria<br>• Align stakeholders<br>• Measure product success (KPIs)<br>• Make build vs. buy vs. partner decisions</div>
+      </div>
+      <div class="card">
+        <div class="card-title">🛠️ PM Skills</div>
+        <div class="card-body">• <strong>Communication</strong> — translate between tech &amp; business<br>• <strong>Empathy</strong> — deeply understand users<br>• <strong>Data literacy</strong> — make evidence-based decisions<br>• <strong>Prioritisation</strong> — say no gracefully<br>• <strong>Strategic thinking</strong> — see the big picture<br>• <strong>Facilitation</strong> — run effective meetings</div>
+      </div>
+    </div>
+
+    <div class="quiz" id="q1">
+      <div class="quiz-xp">+30 XP</div>
+      <div class="quiz-q">A developer asks the PM: "Should we use a microservices architecture or a monolith for the new feature?" What should the PM do?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q1',this,false,'❌ Architecture decisions are <em>how</em> to build — that\'s the engineering team\'s domain. PMs define <em>what</em> and <em>why</em>, not <em>how</em>.')"><div class="opt-l">A</div>Make the architecture decision — the PM is responsible for all product decisions</div>
+        <div class="opt" onclick="ans('q1',this,true,'✅ Correct! The PM\'s job is to define requirements, constraints, and success criteria (what/why). The engineering team owns technical architecture decisions (how). A good PM provides context: scalability needs, team size, timeline — then trusts the engineers.')"><div class="opt-l">B</div>Clarify the requirements and constraints, then let the engineering team decide</div>
+        <div class="opt" onclick="ans('q1',this,false,'❌ Escalating to a VP for routine technical decisions would be a misuse of leadership time and shows poor PM judgement.')"><div class="opt-l">C</div>Escalate to the VP of Engineering to decide</div>
+        <div class="opt" onclick="ans('q1',this,false,'❌ Ignoring technical questions entirely would leave engineers without needed context about requirements — collaboration is key.')"><div class="opt-l">D</div>Ignore it — technical decisions are not the PM\'s concern at all</div>
+      </div>
+      <div class="fb" id="fb-q1"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-p" onclick="done('pm');go('ag')">Next: Agile Fundamentals 🏃 →</button>
+  </div>
+</div>
+
+<!-- ═══ AGILE ═══ -->
+<div id="page-ag" class="page">
+  <div class="hero">
+    <div class="hero-tag">Lesson 2 of 9</div>
+    <div class="hero-title">🏃 Agile Fundamentals</div>
+    <div class="hero-sub">Agile is a mindset, not a process. It's how modern software teams deliver value faster, adapt to change, and build the right thing — not just build the thing right.</div>
+    <div class="hero-pills"><div class="pill">⏱ ~35 min</div><div class="pill">🎯 3 Quizzes</div><div class="pill">⭐ 180 XP</div></div>
+  </div>
+
+  <div class="section">
+    <div class="sec-hdr"><div class="sec-icon" style="background:rgba(236,72,153,0.12);">📜</div>
+      <div><div class="sec-title">The Agile Manifesto</div><div class="sec-sub">4 values and 12 principles (2001)</div></div>
+    </div>
+
+    <div class="framework-box">
+      <div class="framework-title">The 4 Agile Values</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="padding:14px;border-radius:10px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);">
+          <div style="font-weight:700;color:var(--primary);margin-bottom:4px;">Individuals &amp; interactions</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);">over processes and tools</div>
+        </div>
+        <div style="padding:14px;border-radius:10px;background:rgba(236,72,153,0.08);border:1px solid rgba(236,72,153,0.25);">
+          <div style="font-weight:700;color:var(--secondary);margin-bottom:4px;">Working software</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);">over comprehensive documentation</div>
+        </div>
+        <div style="padding:14px;border-radius:10px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:4px;">Customer collaboration</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);">over contract negotiation</div>
+        </div>
+        <div style="padding:14px;border-radius:10px;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.25);">
+          <div style="font-weight:700;color:var(--accent2);margin-bottom:4px;">Responding to change</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);">over following a plan</div>
+        </div>
+      </div>
+      <div class="info tip" style="margin-top:14px;"><div class="info-i">💡</div><div>The right side items still have value — Agile just says the <strong>left side items matter more</strong>. It's about balance, not abandonment.</div></div>
+    </div>
+
+    <div class="rw">
+      <div class="rw-label">🌍 Real World Example</div>
+      <div class="rw-title">Waterfall vs Agile at Nokia vs Apple</div>
+      <div class="rw-body">Nokia used <strong>Waterfall</strong> in 2007: 2-year phone development cycles with full specs locked upfront. By the time phones shipped, the market had moved. Apple used iterative development — the first iPhone shipped with limited features but the team <em>responded to user feedback</em> rapidly with iOS updates. Within 3 years, the App Store had transformed the product based on what customers actually wanted, not what was planned 2 years before.</div>
+    </div>
+
+    <div class="sec-hdr" style="margin-top:28px;"><div class="sec-icon" style="background:rgba(236,72,153,0.12);">🔄</div>
+      <div><div class="sec-title">Agile vs Waterfall</div></div>
+    </div>
+
+    <table class="nice">
+      <thead><tr><th>Dimension</th><th>🌊 Waterfall</th><th>🏃 Agile</th></tr></thead>
+      <tbody>
+        <tr><td>Planning</td><td class="muted">Upfront, fully detailed</td><td class="muted">Continuous, adaptive</td></tr>
+        <tr><td>Delivery</td><td class="muted">One big release at end</td><td class="muted">Incremental releases (sprints)</td></tr>
+        <tr><td>Change</td><td class="muted">Expensive, resisted</td><td class="muted">Embraced and expected</td></tr>
+        <tr><td>Customer</td><td class="muted">Involved at start &amp; end</td><td class="muted">Involved throughout</td></tr>
+        <tr><td>Feedback</td><td class="muted">After full delivery</td><td class="muted">Every sprint (2 weeks)</td></tr>
+        <tr><td>Risk</td><td class="muted">High (discovered late)</td><td class="muted">Lower (discovered early)</td></tr>
+        <tr><td>Best for</td><td class="muted">Fixed scope, stable requirements</td><td class="muted">Evolving requirements, innovation</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sec-hdr" style="margin-top:28px;"><div class="sec-icon" style="background:rgba(236,72,153,0.12);">⚡</div>
+      <div><div class="sec-title">The Sprint Cycle</div><div class="sec-sub">The heartbeat of Agile — typically 2 weeks</div></div>
+    </div>
+
+    <div class="sprint-phases">
+      <div class="sprint-phase" style="border-color:rgba(245,158,11,0.5);background:rgba(245,158,11,0.08);color:var(--primary);">📋<br>Sprint<br>Planning</div>
+      <div style="align-self:center;color:var(--text-muted);font-size:1.2rem;">→</div>
+      <div class="sprint-phase" style="border-color:rgba(236,72,153,0.5);background:rgba(236,72,153,0.08);color:var(--secondary);">💻<br>Development<br>(2 weeks)</div>
+      <div style="align-self:center;color:var(--text-muted);font-size:1.2rem;">→</div>
+      <div class="sprint-phase" style="border-color:rgba(16,185,129,0.5);background:rgba(16,185,129,0.08);color:var(--accent);">🎯<br>Sprint<br>Review</div>
+      <div style="align-self:center;color:var(--text-muted);font-size:1.2rem;">→</div>
+      <div class="sprint-phase" style="border-color:rgba(59,130,246,0.5);background:rgba(59,130,246,0.08);color:var(--accent2);">🔄<br>Retrospective</div>
+      <div style="align-self:center;color:var(--text-muted);font-size:1.2rem;">↩</div>
+    </div>
+
+    <div class="quiz" id="q2">
+      <div class="quiz-xp">+40 XP</div>
+      <div class="quiz-q">Halfway through a 2-week sprint, a stakeholder insists on adding a major new feature. What should the Agile team do?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q2',this,false,'❌ Adding scope mid-sprint disrupts the team\'s focus and commitment. The sprint backlog is protected during the sprint.')"><div class="opt-l">A</div>Stop everything and add the feature immediately</div>
+        <div class="opt" onclick="ans('q2',this,true,'✅ Correct! The sprint backlog is protected — mid-sprint additions break flow and commitments. Add it to the product backlog and prioritise for the next sprint. If truly urgent, the Product Owner can cancel the sprint — but this is rare.')"><div class="opt-l">B</div>Add it to the product backlog and consider it for the next sprint</div>
+        <div class="opt" onclick="ans('q2',this,false,'❌ Ignoring stakeholders is bad collaboration. Agile values customer collaboration — just through the right process.')"><div class="opt-l">C</div>Refuse and never add it</div>
+        <div class="opt" onclick="ans('q2',this,false,'❌ Extending the sprint duration defeats the purpose of fixed-length iterations — predictability and cadence.')"><div class="opt-l">D</div>Extend the sprint to fit the new feature in</div>
+      </div>
+      <div class="fb" id="fb-q2"></div>
+    </div>
+
+    <div class="quiz" id="q3">
+      <div class="quiz-xp">+40 XP</div>
+      <div class="quiz-q">Which statement best describes the Agile principle "working software over comprehensive documentation"?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q3',this,false,'❌ Agile still values documentation — it just doesn\'t let documentation become a substitute for working software.')"><div class="opt-l">A</div>Never write any documentation in Agile teams</div>
+        <div class="opt" onclick="ans('q3',this,false,'❌ That reverses the Agile manifesto entirely.')"><div class="opt-l">B</div>Documentation is more important than software</div>
+        <div class="opt" onclick="ans('q3',this,true,'✅ Correct! The primary measure of progress is working, usable software — not a 200-page spec doc. Documentation is still valuable, but shouldn\'t substitute for actually delivering value to users.')"><div class="opt-l">C</div>Delivering usable software is the primary measure of progress</div>
+        <div class="opt" onclick="ans('q3',this,false,'❌ Agile projects do have documentation — API docs, architecture decisions, user guides — just not excessive upfront specs.')"><div class="opt-l">D</div>Agile projects have no documentation at all</div>
+      </div>
+      <div class="fb" id="fb-q3"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('pm')">← Back</button>
+    <button class="btn btn-p" onclick="done('ag');go('us')">Next: User Stories 📖 →</button>
+  </div>
+</div>
+
+<!-- ═══ USER STORIES ═══ -->
+<div id="page-us" class="page">
+  <div class="hero">
+    <div class="hero-tag">Lesson 3 of 9</div>
+    <div class="hero-title">📖 User Stories & INVEST</div>
+    <div class="hero-sub">User stories are the currency of Agile. They capture requirements from the user's perspective — not the system's — and keep the team focused on delivering real value.</div>
+    <div class="hero-pills"><div class="pill">⏱ ~35 min</div><div class="pill">🎯 3 Quizzes</div><div class="pill">⭐ 180 XP</div><div class="pill">✍️ Interactive</div></div>
+  </div>
+
+  <div class="section">
+    <div class="sec-hdr"><div class="sec-icon" style="background:rgba(59,130,246,0.12);">📝</div>
+      <div><div class="sec-title">The User Story Format</div><div class="sec-sub">Three-part sentence that keeps focus on user value</div></div>
+    </div>
+
+    <div class="framework-box">
+      <div class="framework-title">User Story Template</div>
+      <div style="font-size:1.1rem;text-align:center;padding:20px;background:var(--code-bg);border-radius:10px;line-height:2.2;">
+        <span style="color:var(--primary);font-weight:700;">As a</span> <span style="color:var(--text-muted)">[type of user]</span>,<br>
+        <span style="color:var(--secondary);font-weight:700;">I want to</span> <span style="color:var(--text-muted)">[perform some action]</span>,<br>
+        <span style="color:var(--accent);font-weight:700;">so that</span> <span style="color:var(--text-muted)">[I achieve some goal/benefit]</span>.
+      </div>
+      <div class="info note" style="margin-top:14px;"><div class="info-i">💡</div><div>The <strong>"so that"</strong> clause is critical — it states the <em>why</em>. Without it, teams build features without understanding the purpose, leading to solutions that technically work but miss the point.</div></div>
+    </div>
+
+    <!-- Interactive Story Builder -->
+    <div class="story-builder">
+      <div style="font-weight:700;margin-bottom:14px;color:var(--primary);">✍️ Build Your Own User Story</div>
+      <div class="story-row">
+        <span class="story-label">As a</span>
+        <select class="story-select" id="sb-who" onchange="buildStory()">
+          <option>data analyst</option><option>product manager</option><option>new customer</option>
+          <option>admin user</option><option>mobile user</option><option>healthcare professional</option>
+        </select>
+      </div>
+      <div class="story-row">
+        <span class="story-label">I want to</span>
+        <select class="story-select" id="sb-what" onchange="buildStory()">
+          <option>filter the dashboard by date range</option>
+          <option>export reports as PDF</option>
+          <option>receive email notifications</option>
+          <option>view predictions in real-time</option>
+          <option>upload data in bulk</option>
+          <option>reset my password without contacting support</option>
+        </select>
+      </div>
+      <div class="story-row">
+        <span class="story-label">So that</span>
+        <select class="story-select" id="sb-why" onchange="buildStory()">
+          <option>I can analyse trends over specific time periods</option>
+          <option>I can share insights with stakeholders</option>
+          <option>I can act on important events quickly</option>
+          <option>I can make faster clinical decisions</option>
+          <option>I can save time and reduce manual errors</option>
+          <option>I can regain access independently and quickly</option>
+        </select>
+      </div>
+      <div class="story-output" id="story-output"></div>
+    </div>
+
+    <div class="sec-hdr" style="margin-top:28px;"><div class="sec-icon" style="background:rgba(59,130,246,0.12);">✅</div>
+      <div><div class="sec-title">INVEST Criteria</div><div class="sec-sub">What makes a good user story?</div></div>
+    </div>
+
+    <div class="invest-grid">
+      <div class="invest-card" style="border-color:rgba(245,158,11,0.35);background:rgba(245,158,11,0.06);">
+        <div class="invest-letter" style="color:var(--primary)">I</div>
+        <div class="invest-word">Independent</div>
+        <div class="invest-desc">Can be developed and delivered without depending on other stories</div>
+      </div>
+      <div class="invest-card" style="border-color:rgba(236,72,153,0.35);background:rgba(236,72,153,0.06);">
+        <div class="invest-letter" style="color:var(--secondary)">N</div>
+        <div class="invest-word">Negotiable</div>
+        <div class="invest-desc">Details can be discussed and adjusted — not a fixed contract</div>
+      </div>
+      <div class="invest-card" style="border-color:rgba(16,185,129,0.35);background:rgba(16,185,129,0.06);">
+        <div class="invest-letter" style="color:var(--accent)">V</div>
+        <div class="invest-word">Valuable</div>
+        <div class="invest-desc">Delivers clear value to users or the business — not just technical work</div>
+      </div>
+      <div class="invest-card" style="border-color:rgba(59,130,246,0.35);background:rgba(59,130,246,0.06);">
+        <div class="invest-letter" style="color:var(--accent2)">E</div>
+        <div class="invest-word">Estimable</div>
+        <div class="invest-desc">Team can estimate the effort — if not, it needs more splitting or clarification</div>
+      </div>
+      <div class="invest-card" style="border-color:rgba(139,92,246,0.35);background:rgba(139,92,246,0.06);">
+        <div class="invest-letter" style="color:#8b5cf6">S</div>
+        <div class="invest-word">Small</div>
+        <div class="invest-desc">Completable within one sprint. Epic → Stories → Tasks</div>
+      </div>
+      <div class="invest-card" style="border-color:rgba(239,68,68,0.35);background:rgba(239,68,68,0.06);">
+        <div class="invest-letter" style="color:var(--error)">T</div>
+        <div class="invest-word">Testable</div>
+        <div class="invest-desc">Clear acceptance criteria — you know when it's done</div>
+      </div>
+    </div>
+
+    <div class="rw">
+      <div class="rw-label">🌍 Real World Example</div>
+      <div class="rw-title">Acceptance Criteria at Monzo Bank</div>
+      <div class="rw-body">
+        User story: <em>"As a Monzo user, I want instant spending notifications so that I can track my money in real-time."</em><br><br>
+        Acceptance criteria (Given/When/Then):<br>
+        • <strong>Given</strong> I have the Monzo app installed, <strong>When</strong> a transaction occurs, <strong>Then</strong> I receive a push notification within 3 seconds<br>
+        • <strong>Given</strong> my phone is on silent, <strong>When</strong> a transaction occurs, <strong>Then</strong> the notification still appears in the notification centre<br>
+        • <strong>Given</strong> the transaction fails, <strong>When</strong> it's declined, <strong>Then</strong> I receive a notification explaining why
+      </div>
+    </div>
+
+    <div class="quiz" id="q4">
+      <div class="quiz-xp">+40 XP</div>
+      <div class="quiz-q">Which of these user stories best follows the INVEST criteria?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q4',this,false,'❌ This is a technical task, not a user story. It has no "As a user", no "so that", and no user value — just an implementation detail.')"><div class="opt-l">A</div>"Refactor the database schema to use UUID primary keys."</div>
+        <div class="opt" onclick="ans('q4',this,false,'❌ This is an epic — far too large for one sprint. "Entire reporting system" is not Small or Estimable.')"><div class="opt-l">B</div>"As a manager, I want to build the entire reporting system so I can see everything."</div>
+        <div class="opt" onclick="ans('q4',this,true,'✅ Correct! This follows the format, has clear user value, is specific and small, can be estimated, and can be tested (either the filter works or it doesn\'t).')"><div class="opt-l">C</div>"As a sales manager, I want to filter reports by region so that I can compare performance across territories."</div>
+        <div class="opt" onclick="ans('q4',this,false,'❌ No "so that" — why do they want this? Without the benefit, the team can\'t make good design trade-offs. Also vague — "fast" needs a measurable definition.')"><div class="opt-l">D</div>"As a user, I want the app to be fast."</div>
+      </div>
+      <div class="fb" id="fb-q4"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('ag')">← Back</button>
+    <button class="btn btn-p" onclick="done('us');go('ri')">Next: Agile Rituals 🗓️ →</button>
+  </div>
+</div>
+
+<!-- ═══ AGILE RITUALS ═══ -->
+<div id="page-ri" class="page">
+  <div class="hero">
+    <div class="hero-tag">Lesson 4 of 9</div>
+    <div class="hero-title">🗓️ Agile Rituals & Estimation</div>
+    <div class="hero-sub">Agile ceremonies are the structured touchpoints that keep teams aligned, unblocked, and continuously improving. Each ritual has a clear purpose — done badly, they're time-wasters; done well, they're multipliers.</div>
+    <div class="hero-pills"><div class="pill">⏱ ~30 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 150 XP</div></div>
+  </div>
+
+  <div class="section">
+    <div class="sec-hdr"><div class="sec-icon" style="background:rgba(16,185,129,0.12);">🎭</div>
+      <div><div class="sec-title">The 4 Scrum Ceremonies</div></div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">📋 Sprint Planning</div>
+        <div class="card-body"><strong>When:</strong> Start of each sprint<br><strong>Duration:</strong> 2–4 hours (for 2-week sprint)<br><strong>Purpose:</strong> Select backlog items for the sprint, define the Sprint Goal, break stories into tasks<br><br>Output: <strong>Sprint Backlog</strong> — the team's commitment</div>
+      </div>
+      <div class="card">
+        <div class="card-title">☀️ Daily Standup</div>
+        <div class="card-body"><strong>When:</strong> Every day, same time<br><strong>Duration:</strong> 15 minutes max (standing!)<br><strong>3 questions:</strong><br>• What did I do yesterday?<br>• What will I do today?<br>• Any blockers?<br><br>Purpose: Synchronise, not report to manager</div>
+      </div>
+      <div class="card">
+        <div class="card-title">🎯 Sprint Review</div>
+        <div class="card-body"><strong>When:</strong> End of sprint<br><strong>Duration:</strong> 1–2 hours<br><strong>Purpose:</strong> Demo working software to stakeholders, gather feedback<br><br>Key rule: Only show <strong>working</strong> software — no slidedecks pretending things are done</div>
+      </div>
+      <div class="card">
+        <div class="card-title">🔄 Retrospective</div>
+        <div class="card-body"><strong>When:</strong> After Sprint Review<br><strong>Duration:</strong> 1–1.5 hours<br><strong>3 questions:</strong><br>• What went well? ✅<br>• What could improve? 🔧<br>• Action items? 📌<br><br>The engine of <strong>continuous improvement</strong></div>
+      </div>
+    </div>
+
+    <div class="sec-hdr" style="margin-top:28px;"><div class="sec-icon" style="background:rgba(16,185,129,0.12);">🃏</div>
+      <div><div class="sec-title">Story Point Estimation</div><div class="sec-sub">Estimating effort, not time</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🃏 Planning Poker</div>
+      <div class="card-body">Teams estimate user stories in <strong>story points</strong> — a relative measure of effort, complexity, and uncertainty — using Fibonacci numbers: <strong>1, 2, 3, 5, 8, 13, 21</strong>.<br><br>
+        Process: Everyone secretly picks a card → reveal simultaneously → discuss outliers → re-estimate → repeat until consensus.<br><br>
+        Why Fibonacci? The gaps between numbers grow with uncertainty. A 13-point story isn't exactly 13x harder than a 1 — it's "much harder and much less certain."
+      </div>
+    </div>
+
+    <!-- Interactive estimation -->
+    <div class="story-builder">
+      <div style="font-weight:700;margin-bottom:14px;color:var(--primary);">🃏 Estimate These Stories — What Would You Pick?</div>
+      <div id="est-stories" style="display:grid;gap:10px;">
+        <div class="card" style="margin:0;">
+          <div style="font-size:0.88rem;margin-bottom:10px;"><strong>Story:</strong> "As a user, I want to log in with email and password."</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="est-btn" onclick="estimate(this,'1')" data-story="login">1</button>
+            <button class="est-btn" onclick="estimate(this,'2')" data-story="login">2</button>
+            <button class="est-btn" onclick="estimate(this,'3')" data-story="login">3</button>
+            <button class="est-btn" onclick="estimate(this,'5')" data-story="login">5</button>
+            <button class="est-btn" onclick="estimate(this,'8')" data-story="login">8</button>
+            <button class="est-btn" onclick="estimate(this,'13')" data-story="login">13</button>
+          </div>
+          <div id="est-login" style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;display:none;"></div>
+        </div>
+        <div class="card" style="margin:0;">
+          <div style="font-size:0.88rem;margin-bottom:10px;"><strong>Story:</strong> "As an analyst, I want an AI-powered anomaly detection dashboard."</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="est-btn" onclick="estimate(this,'1')" data-story="ai">1</button>
+            <button class="est-btn" onclick="estimate(this,'2')" data-story="ai">2</button>
+            <button class="est-btn" onclick="estimate(this,'3')" data-story="ai">3</button>
+            <button class="est-btn" onclick="estimate(this,'5')" data-story="ai">5</button>
+            <button class="est-btn" onclick="estimate(this,'8')" data-story="ai">8</button>
+            <button class="est-btn" onclick="estimate(this,'13')" data-story="ai">13</button>
+          </div>
+          <div id="est-ai" style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;display:none;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz" id="q5">
+      <div class="quiz-xp">+35 XP</div>
+      <div class="quiz-q">In a Sprint Retrospective, the team identifies that the daily standup is consistently running 45 minutes. What action item should they create?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q5',this,false,'❌ The retro is for finding systemic improvements — not assigning personal blame. Blame cultures destroy psychological safety.')"><div class="opt-l">A</div>Name and shame whoever talks too much</div>
+        <div class="opt" onclick="ans('q5',this,true,'✅ Correct! Move problem-solving offline — the standup is for synchronisation only. Long standups usually mean teams are solving problems in the meeting instead of just flagging blockers. Take detailed discussions to a follow-up "parking lot" conversation.')"><div class="opt-l">B</div>Agree to take detailed problem-solving offline; use the standup only for the 3 questions</div>
+        <div class="opt" onclick="ans('q5',this,false,'❌ Cancelling the standup loses the synchronisation benefit. Fix the format, don\'t eliminate it.')"><div class="opt-l">C</div>Cancel the standup — it\'s not working</div>
+        <div class="opt" onclick="ans('q5',this,false,'❌ A 45-minute standup is a process problem, not a platform problem. The tool won\'t fix the behaviour.')"><div class="opt-l">D</div>Switch to a different project management tool</div>
+      </div>
+      <div class="fb" id="fb-q5"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('us')">← Back</button>
+    <button class="btn btn-p" onclick="done('ri');go('pr')">Next: Prioritisation & MVP 🎯 →</button>
+  </div>
+</div>
+
+<!-- ═══ PRIORITISATION ═══ -->
+<div id="page-pr" class="page">
+  <div class="hero">
+    <div class="hero-tag">Lesson 5 of 9</div>
+    <div class="hero-title">🎯 Prioritisation & MVP</div>
+    <div class="hero-sub">A PM's most important skill is saying <em>no</em>. Learn MoSCoW, the MVP concept, and how to make tough trade-off decisions that keep teams focused on what truly matters.</div>
+    <div class="hero-pills"><div class="pill">⏱ ~30 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 150 XP</div><div class="pill">🎮 Interactive</div></div>
+  </div>
+
+  <div class="section">
+    <div class="sec-hdr"><div class="sec-icon" style="background:rgba(245,158,11,0.12);">🏆</div>
+      <div><div class="sec-title">MoSCoW Prioritisation</div><div class="sec-sub">A framework for making trade-offs explicit</div></div>
+    </div>
+
+    <div class="moscow-grid">
+      <div class="moscow-col" style="border-color:rgba(239,68,68,0.35);background:rgba(239,68,68,0.06);">
+        <h4 style="color:#ef4444;">🔴 Must Have</h4>
+        <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;">Non-negotiable. Without these, the product fails.</div>
+        <div class="moscow-item">User authentication</div>
+        <div class="moscow-item">Payment processing</div>
+        <div class="moscow-item">Core search feature</div>
+      </div>
+      <div class="moscow-col" style="border-color:rgba(245,158,11,0.35);background:rgba(245,158,11,0.06);">
+        <h4 style="color:#f59e0b;">🟡 Should Have</h4>
+        <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;">Important but not critical for launch. Include if time allows.</div>
+        <div class="moscow-item">Email notifications</div>
+        <div class="moscow-item">Export to PDF</div>
+        <div class="moscow-item">Advanced filters</div>
+      </div>
+      <div class="moscow-col" style="border-color:rgba(59,130,246,0.35);background:rgba(59,130,246,0.06);">
+        <h4 style="color:#3b82f6;">🔵 Could Have</h4>
+        <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;">Nice to have. Low impact if left out.</div>
+        <div class="moscow-item">Dark mode</div>
+        <div class="moscow-item">Keyboard shortcuts</div>
+        <div class="moscow-item">Animated transitions</div>
+      </div>
+      <div class="moscow-col" style="border-color:rgba(107,114,128,0.35);background:rgba(107,114,128,0.06);">
+        <h4 style="color:#6b7280;">⚪ Won't Have</h4>
+        <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;">Explicitly out of scope. Sets expectations.</div>
+        <div class="moscow-item">Multi-language support</div>
+        <div class="moscow-item">Offline mode</div>
+        <div class="moscow-item">AR features</div>
+      </div>
+    </div>
+
+    <div class="info tip"><div class="info-i">💡</div><div><strong>Golden Rule:</strong> Must Haves should be ≤60% of the total effort. If everything is a Must Have, nothing is — prioritisation has failed.</div></div>
+
+    <div class="sec-hdr" style="margin-top:28px;"><div class="sec-icon" style="background:rgba(245,158,11,0.12);">🌱</div>
+      <div><div class="sec-title">Minimum Viable Product (MVP)</div><div class="sec-sub">The smallest thing you can build to test your biggest assumption</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🌱 What is an MVP?</div>
+      <div class="card-body">
+        An MVP is the <strong>minimum set of features</strong> needed to deliver value to early customers and generate validated learning about the product.<br><br>
+        The goal is NOT to build a half-baked product — it's to <strong>test your riskiest assumption</strong> as cheaply as possible before committing to full development.
+      </div>
+    </div>
+
+    <div style="margin:20px 0;">
+      <div style="font-size:0.82rem;color:var(--text-muted);text-align:center;margin-bottom:12px;">The classic MVP misunderstanding:</div>
+      <svg width="500" height="140" viewBox="0 0 500 140" style="display:block;margin:0 auto;max-width:100%">
+        <!-- Wrong approach -->
+        <text x="120" y="18" fill="#ef4444" text-anchor="middle" font-size="11" font-weight="700">❌ Wrong: "Half a car"</text>
+        <rect x="20" y="25" width="40" height="40" rx="6" fill="rgba(239,68,68,0.15)" stroke="rgba(239,68,68,0.4)" stroke-width="1"/>
+        <text x="40" y="50" fill="#9a8f6e" font-size="18" text-anchor="middle">🛞</text>
+        <rect x="70" y="25" width="40" height="40" rx="6" fill="rgba(239,68,68,0.15)" stroke="rgba(239,68,68,0.4)" stroke-width="1"/>
+        <text x="90" y="50" fill="#9a8f6e" font-size="18" text-anchor="middle">🚗</text>
+        <text x="90" y="76" fill="#9a8f6e" font-size="8" text-anchor="middle">chassis</text>
+        <rect x="120" y="25" width="40" height="40" rx="6" fill="rgba(239,68,68,0.15)" stroke="rgba(239,68,68,0.4)" stroke-width="1"/>
+        <text x="140" y="50" fill="#9a8f6e" font-size="18" text-anchor="middle">🚗</text>
+        <text x="140" y="76" fill="#9a8f6e" font-size="8" text-anchor="middle">+ engine</text>
+        <rect x="170" y="25" width="50" height="40" rx="6" fill="rgba(245,158,11,0.15)" stroke="rgba(245,158,11,0.4)" stroke-width="2"/>
+        <text x="195" y="50" fill="#f59e0b" font-size="20" text-anchor="middle">🚗</text>
+        <text x="195" y="76" fill="#9a8f6e" font-size="8" text-anchor="middle">full car</text>
+        <text x="40" y="90" fill="#9a8f6e" font-size="8" text-anchor="middle">wheel</text>
+        <!-- Right approach -->
+        <line x1="250" y1="10" x2="250" y2="130" stroke="var(--border)" stroke-width="1"/>
+        <text x="375" y="18" fill="#10b981" text-anchor="middle" font-size="11" font-weight="700">✅ Right: Each step usable</text>
+        <text x="272" y="60" fill="#9a8f6e" font-size="22" text-anchor="middle">🛹</text>
+        <text x="272" y="80" fill="#9a8f6e" font-size="8" text-anchor="middle">MVP 1</text>
+        <text x="312" y="60" fill="#9a8f6e" font-size="22" text-anchor="middle">🛴</text>
+        <text x="312" y="80" fill="#9a8f6e" font-size="8" text-anchor="middle">MVP 2</text>
+        <text x="352" y="60" fill="#9a8f6e" font-size="22" text-anchor="middle">🚲</text>
+        <text x="352" y="80" fill="#9a8f6e" font-size="8" text-anchor="middle">MVP 3</text>
+        <text x="392" y="60" fill="#9a8f6e" font-size="22" text-anchor="middle">🏍️</text>
+        <text x="392" y="80" fill="#9a8f6e" font-size="8" text-anchor="middle">MVP 4</text>
+        <text x="440" y="55" fill="#f59e0b" font-size="28" text-anchor="middle">🚗</text>
+        <text x="440" y="80" fill="#9a8f6e" font-size="8" text-anchor="middle">Final</text>
+      </svg>
+    </div>
+
+    <div class="rw">
+      <div class="rw-label">🌍 Real World Example</div>
+      <div class="rw-title">Airbnb's MVP — A Website and a Camera</div>
+      <div class="rw-body">Airbnb's founders needed to test: "Will strangers rent out their homes to other strangers?" Their MVP was a basic website plus going door-to-door in New York with a camera to photograph hosts' spaces. No complex matching algorithm, no payment system, no trust features. They just needed to validate the core assumption. Once confirmed, they built the full platform. This saved years of building the wrong thing.</div>
+    </div>
+
+    <div class="quiz" id="q6">
+      <div class="quiz-xp">+40 XP</div>
+      <div class="quiz-q">Your team is building an AI-powered CV screening tool for recruiters. Which of these is the best MVP?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q6',this,false,'❌ Building everything upfront is the opposite of MVP thinking. You\'d spend months before validating whether recruiters actually find AI screening valuable.')"><div class="opt-l">A</div>Build the full product with AI scoring, calendar integration, and candidate messaging</div>
+        <div class="opt" onclick="ans('q6',this,true,'✅ Correct! This tests the core assumption ("Does AI screening save recruiters time and improve quality?") with minimal build cost. If recruiters find it valuable, build the automation. This is validated learning before big investment.')"><div class="opt-l">B</div>Manually screen CVs using the AI model and email results to 5 pilot recruiters to test if they find it valuable</div>
+        <div class="opt" onclick="ans('q6',this,false,'❌ A slideshow doesn\'t let you test the actual product experience. A "Wizard of Oz" MVP (manual but looks automated) is far more informative.')"><div class="opt-l">C</div>Create a PowerPoint presentation of what the tool might look like</div>
+        <div class="opt" onclick="ans('q6',this,false,'❌ Waiting 6 months to get feedback means 6 months of potential wrong direction. MVP is about getting feedback early and often.')"><div class="opt-l">D</div>Spend 6 months building the product then show it to recruiters</div>
+      </div>
+      <div class="fb" id="fb-q6"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('ri')">← Back</button>
+    <button class="btn btn-p" onclick="done('pr');go('dt')">Next: Design Thinking 💡 →</button>
+  </div>
+</div>
+
+<!-- ═══ DESIGN THINKING ═══ -->
+<div id="page-dt" class="page">
+  <div class="hero">
+    <div class="hero-tag">Lesson 6 of 9</div>
+    <div class="hero-title">💡 Design Thinking</div>
+    <div class="hero-sub">A human-centred approach to innovation. Design Thinking gives teams a structured process for deeply understanding user problems and generating creative solutions — before writing a single line of code.</div>
+    <div class="hero-pills"><div class="pill">⏱ ~30 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 150 XP</div></div>
+  </div>
+
+  <div class="section">
+    <div class="sec-hdr"><div class="sec-icon" style="background:rgba(236,72,153,0.12);">💎</div>
+      <div><div class="sec-title">The 5-Stage Process</div><div class="sec-sub">Non-linear — you can loop back at any stage</div></div>
+    </div>
+
+    <div class="dt-steps">
+      <div class="dt-step" style="border-color:rgba(236,72,153,0.5);background:rgba(236,72,153,0.08);">
+        <div class="dt-num">🫀</div>
+        <div class="dt-name" style="color:var(--secondary);">Empathise</div>
+        <div class="dt-desc">Observe, interview, deeply understand users' real problems</div>
+      </div>
+      <div class="dt-step" style="border-color:rgba(245,158,11,0.5);background:rgba(245,158,11,0.08);">
+        <div class="dt-num">🎯</div>
+        <div class="dt-name" style="color:var(--primary);">Define</div>
+        <div class="dt-desc">Synthesise insights into a clear problem statement (HMW)</div>
+      </div>
+      <div class="dt-step" style="border-color:rgba(59,130,246,0.5);background:rgba(59,130,246,0.08);">
+        <div class="dt-num">💭</div>
+        <div class="dt-name" style="color:var(--accent2);">Ideate</div>
+        <div class="dt-desc">Generate many ideas — quantity over quality. No filtering yet!</div>
+      </div>
+      <div class="dt-step" style="border-color:rgba(16,185,129,0.5);background:rgba(16,185,129,0.08);">
+        <div class="dt-num">🏗️</div>
+        <div class="dt-name" style="color:var(--accent);">Prototype</div>
+        <div class="dt-desc">Build rough, cheap versions — sketches, cardboard, Figma mockups</div>
+      </div>
+      <div class="dt-step" style="border-color:rgba(139,92,246,0.5);background:rgba(139,92,246,0.08);">
+        <div class="dt-num">🔬</div>
+        <div class="dt-name" style="color:#8b5cf6;">Test</div>
+        <div class="dt-desc">Get feedback from real users on the prototype — then iterate</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+      <div class="card-title">📝 "How Might We" Statements</div>
+      <div class="card-body">The bridge between Empathise and Ideate. Frame the problem as a question starting with "How might we..." — it opens up possibilities without prescribing a solution.<br><br>
+        ❌ Problem: "Users can't find products easily"<br>
+        ❌ Solution frame: "We need a better search bar"<br>
+        ✅ HMW: "<strong>How might we</strong> help users discover the right product without knowing what to search for?"<br><br>
+        The HMW reframe opens up solutions like: visual browsing, AI recommendations, quiz-based matching, curated collections — not just "a better search bar."
+      </div>
+    </div>
+
+    <div class="rw">
+      <div class="rw-label">🌍 Real World Example</div>
+      <div class="rw-title">IDEO and the NHS Waiting Experience</div>
+      <div class="rw-body">IDEO applied Design Thinking to NHS waiting rooms. <strong>Empathise:</strong> They shadowed patients and observed anxiety, confusion about wait times, and isolation. <strong>Define:</strong> "How might we make waiting feel less uncertain and more human?" <strong>Ideate:</strong> 50+ ideas generated. <strong>Prototype:</strong> Simple digital boards showing estimated wait times + a small café area. <strong>Test:</strong> Patient satisfaction scores rose 34%. The insight — patients didn't mind waiting, they hated not knowing how long — only emerged through deep empathy, not assumption.</div>
+    </div>
+
+    <div class="quiz" id="q7">
+      <div class="quiz-xp">+40 XP</div>
+      <div class="quiz-q">A team skips the Empathise stage and jumps straight to building a prototype. What risk does this create?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q7',this,false,'❌ Speed isn\'t the primary concern — building the wrong thing fast is actually worse than building slowly.')"><div class="opt-l">A</div>The prototype will take too long to build</div>
+        <div class="opt" onclick="ans('q7',this,true,'✅ Correct! Without empathy, the team is solving an assumed problem, not the real one. They might build a brilliant solution to the wrong problem — wasting all the development effort. Design Thinking\'s power is discovering what the actual problem is before building.')"><div class="opt-l">B</div>They risk building a solution to the wrong problem</div>
+        <div class="opt" onclick="ans('q7',this,false,'❌ Empathise comes before Ideate — skipping it doesn\'t mean you have too many ideas, it means your ideas may be based on wrong assumptions.')"><div class="opt-l">C</div>The team will generate too many ideas</div>
+        <div class="opt" onclick="ans('q7',this,false,'❌ The Test stage can still give feedback regardless — but feedback on a prototype that solves the wrong problem is less valuable.')"><div class="opt-l">D</div>Nothing — the Test stage will catch any issues anyway</div>
+      </div>
+      <div class="fb" id="fb-q7"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('pr')">← Back</button>
+    <button class="btn btn-p" onclick="done('dt');go('uj')">Next: User Journey 🗺️ →</button>
+  </div>
+</div>
+
+<!-- ═══ USER JOURNEY ═══ -->
+<div id="page-uj" class="page">
+  <div class="hero">
+    <div class="hero-tag">Lesson 7 of 9</div>
+    <div class="hero-title">🗺️ User Journey Mapping</div>
+    <div class="hero-sub">A user journey map visualises every step a customer takes to achieve a goal — their actions, thoughts, emotions, and pain points. It builds shared empathy across the entire team.</div>
+    <div class="hero-pills"><div class="pill">⏱ ~25 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 120 XP</div></div>
+  </div>
+
+  <div class="section">
+    <div class="sec-hdr"><div class="sec-icon" style="background:rgba(59,130,246,0.12);">🗺️</div>
+      <div><div class="sec-title">Anatomy of a Journey Map</div></div>
+    </div>
+
+    <div class="journey-map">
+      <table class="journey-table">
+        <thead>
+          <tr>
+            <th style="width:120px;">Stage</th>
+            <th>🔍 Awareness</th>
+            <th>🤔 Consideration</th>
+            <th>💳 Purchase</th>
+            <th>🎓 Onboarding</th>
+            <th>🔁 Retention</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="stage">User Actions</td>
+            <td>Sees ad on LinkedIn</td>
+            <td>Reads reviews, compares tools</td>
+            <td>Signs up for free trial</td>
+            <td>Sets up account, watches tutorial</td>
+            <td>Uses daily, invites colleagues</td>
+          </tr>
+          <tr>
+            <td class="stage">Thoughts</td>
+            <td>"Could this help my team?"</td>
+            <td>"Is it worth the price?"</td>
+            <td>"I hope setup is easy"</td>
+            <td>"Where do I start?"</td>
+            <td>"I can't work without this now"</td>
+          </tr>
+          <tr>
+            <td class="stage">Emotion</td>
+            <td class="emotion-emoji">😐</td>
+            <td class="emotion-emoji">🤔</td>
+            <td class="emotion-emoji">😬</td>
+            <td class="emotion-emoji">😕</td>
+            <td class="emotion-emoji">😊</td>
+          </tr>
+          <tr>
+            <td class="stage">Pain Points</td>
+            <td>Ad is vague</td>
+            <td>Pricing not clear</td>
+            <td>Too many form fields</td>
+            <td style="color:#ef4444;font-weight:600;">Overwhelmed! No clear first step</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="stage">Opportunities</td>
+            <td>Clearer value prop</td>
+            <td>Transparent pricing page</td>
+            <td>Reduce form to 3 fields</td>
+            <td style="color:#10b981;font-weight:600;">Add guided setup wizard</td>
+            <td>Referral programme</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info ok"><div class="info-i">💡</div><div><strong>The insight:</strong> The biggest drop-off isn't at signup — it's at <em>onboarding</em>. The user journey map makes this visible. Without it, the team might focus on improving the ad (awareness) while the real problem is the first-use experience.</div></div>
+
+    <div class="rw">
+      <div class="rw-label">🌍 Real World Example</div>
+      <div class="rw-title">Duolingo's Onboarding Redesign</div>
+      <div class="rw-body">Duolingo mapped their user journey and found: 70% of users who downloaded the app never completed a lesson. Journey map revealed the culprit — a lengthy registration form before users could try anything. They redesigned: <em>let users try a lesson immediately, then register</em>. Completion rate jumped from 20% to 65%. The fix cost 2 sprints. Without the journey map, they'd have kept optimising the wrong stage.</div>
+    </div>
+
+    <div class="quiz" id="q8">
+      <div class="quiz-xp">+35 XP</div>
+      <div class="quiz-q">A user journey map shows that users feel "frustrated" 😤 during the checkout stage and abandon their cart 60% of the time. What should the PM prioritise?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q8',this,false,'❌ Redesigning the homepage won\'t fix abandonment at checkout — you\'re solving the wrong stage.')"><div class="opt-l">A</div>Redesign the homepage to attract more users</div>
+        <div class="opt" onclick="ans('q8',this,true,'✅ Correct! The journey map pinpoints where and why users drop off. Investigate the checkout pain: too many steps? Unexpected fees? No guest checkout? Reduce friction at that specific touchpoint.')"><div class="opt-l">B</div>Investigate and reduce friction at the checkout stage specifically</div>
+        <div class="opt" onclick="ans('q8',this,false,'❌ A loyalty programme rewards existing customers — it doesn\'t address the checkout abandonment problem.')"><div class="opt-l">C</div>Launch a loyalty programme for returning customers</div>
+        <div class="opt" onclick="ans('q8',this,false,'❌ More marketing brings more users into a broken funnel — you\'d be pouring water into a leaky bucket.')"><div class="opt-l">D</div>Increase the marketing budget to bring more users in</div>
+      </div>
+      <div class="fb" id="fb-q8"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('dt')">← Back</button>
+    <button class="btn btn-p" onclick="done('uj');go('ai')">Next: PM for AI 🤖 →</button>
+  </div>
+</div>
+
+<!-- ═══ PM FOR AI ═══ -->
+<div id="page-ai" class="page">
+  <div class="hero">
+    <div class="hero-tag">Lesson 8 of 9</div>
+    <div class="hero-title">🤖 Product Management for AI</div>
+    <div class="hero-sub">AI products are fundamentally different from traditional software. They have probabilistic outputs, data dependencies, model drift, and ethical implications that require a new PM playbook.</div>
+    <div class="hero-pills"><div class="pill">⏱ ~35 min</div><div class="pill">🎯 3 Quizzes</div><div class="pill">⭐ 180 XP</div></div>
+  </div>
+
+  <div class="section">
+    <div class="sec-hdr"><div class="sec-icon" style="background:rgba(59,130,246,0.12);">⚡</div>
+      <div><div class="sec-title">What Makes AI Products Different</div></div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">🧮 Traditional Software</div>
+        <div class="card-body">• Deterministic: same input → same output<br>• "Done" when built<br>• Bugs are discrete and fixable<br>• Requirements can be fully specified<br>• Testing is straightforward<br>• Performance is stable over time</div>
+      </div>
+      <div class="card">
+        <div class="card-title">🤖 AI / ML Products</div>
+        <div class="card-body">• Probabilistic: outputs have confidence, not certainty<br>• Never "done" — models drift as data changes<br>• Failures are gradual and statistical<br>• Requirements include data quality &amp; volume<br>• Testing requires evaluation datasets<br>• Performance degrades without retraining</div>
+      </div>
+    </div>
+
+    <div class="rw">
+      <div class="rw-label">🌍 Real World Example</div>
+      <div class="rw-title">Amazon's Hiring Algorithm Failure</div>
+      <div class="rw-body">Amazon built an AI CV screener in 2014 and quietly discontinued it in 2018 — the model had learned to penalise CVs containing the word "women's" (e.g. "women's chess club") because it was trained on historical male-dominated hiring data. A PM with AI literacy would have demanded: bias testing on protected characteristics, model cards documenting limitations, and human-in-the-loop review for edge cases. Without PM oversight, the model shipped with systematic discrimination baked in.</div>
+    </div>
+
+    <div class="framework-box">
+      <div class="framework-title">The AI Product PM's Unique Responsibilities</div>
+      <div style="display:grid;gap:10px;">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="font-size:1.2rem;flex-shrink:0;">📊</span>
+          <div><strong>Data Strategy</strong> — <span style="color:var(--text-muted);font-size:0.88rem;">What data do we need? How much? Where does it come from? How is it labelled? Is it representative?</span></div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="font-size:1.2rem;flex-shrink:0;">🎯</span>
+          <div><strong>Success Metrics</strong> — <span style="color:var(--text-muted);font-size:0.88rem;">Define what "good" looks like before training. Accuracy? Precision? Recall? F1? Business KPIs vs. model KPIs.</span></div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="font-size:1.2rem;flex-shrink:0;">⚖️</span>
+          <div><strong>Responsible AI</strong> — <span style="color:var(--text-muted);font-size:0.88rem;">Fairness, explainability, privacy (GDPR), bias testing. Especially critical in healthcare, finance, HR.</span></div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="font-size:1.2rem;flex-shrink:0;">🔄</span>
+          <div><strong>Model Lifecycle</strong> — <span style="color:var(--text-muted);font-size:0.88rem;">Plan for monitoring, retraining, versioning. A model isn't a feature — it's a living system.</span></div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="font-size:1.2rem;flex-shrink:0;">🤝</span>
+          <div><strong>Human-in-the-Loop</strong> — <span style="color:var(--text-muted);font-size:0.88rem;">Where should humans review AI decisions? High-stakes decisions (medical, legal, financial) almost always need human oversight.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz" id="q9">
+      <div class="quiz-xp">+40 XP</div>
+      <div class="quiz-q">Six months after launching an AI fraud detection model, its accuracy starts dropping from 94% to 87%. No code has changed. What is the most likely cause?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q9',this,false,'❌ The code hasn\'t changed — it\'s not a software bug. AI model performance issues after deployment usually have a data-related cause.')"><div class="opt-l">A</div>A bug was introduced in the latest code deployment</div>
+        <div class="opt" onclick="ans('q9',this,true,'✅ Correct! This is model drift — the statistical distribution of real-world data has shifted (fraudsters adapted their tactics) but the model was only trained on historical patterns. This is a uniquely AI problem. Solution: monitor for drift and retrain regularly with fresh data.')"><div class="opt-l">B</div>Model drift — the real-world data distribution has shifted since training</div>
+        <div class="opt" onclick="ans('q9',this,false,'❌ More users would affect scale/latency, not model accuracy. Performance degradation here is a data problem, not an infrastructure one.')"><div class="opt-l">C</div>Too many users are using the system simultaneously</div>
+        <div class="opt" onclick="ans('q9',this,false,'❌ The model\'s internal weights don\'t change unless explicitly retrained. The issue is that the world changed around the model.')"><div class="opt-l">D</div>The model accidentally changed its own weights</div>
+      </div>
+      <div class="fb" id="fb-q9"></div>
+    </div>
+
+    <div class="quiz" id="q10">
+      <div class="quiz-xp">+40 XP</div>
+      <div class="quiz-q">You're the PM for an AI tool that recommends prison sentence lengths to judges. What governance should you insist on?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q10',this,false,'❌ Automated high-stakes decisions affecting people\'s liberty with no human review is ethically and legally unacceptable — regardless of accuracy.')"><div class="opt-l">A</div>Fully automate — if accuracy is above 90%, no human review needed</div>
+        <div class="opt" onclick="ans('q10',this,true,'✅ Correct! This is a classic high-stakes, life-affecting decision requiring: human-in-the-loop (judge makes final decision), explainability (judge must understand why), bias auditing (does it discriminate by race/gender?), and clear documentation of limitations. AI can assist, but must never replace judicial judgement.')"><div class="opt-l">B</div>Human-in-the-loop review, explainability requirements, bias auditing, and clear limitation documentation</div>
+        <div class="opt" onclick="ans('q10',this,false,'❌ Even a highly accurate model can have systematic biases against protected groups. Accuracy alone is insufficient for high-stakes, rights-affecting decisions.')"><div class="opt-l">C</div>Launch it if the model achieves 95%+ accuracy on the test set</div>
+        <div class="opt" onclick="ans('q10',this,false,'❌ This avoids the responsibility rather than addressing it. If the tool is built, it needs proper governance; if the governance can\'t be met, the product shouldn\'t be built.')"><div class="opt-l">D</div>Don\'t tell anyone it\'s AI — just present it as "decision support software"</div>
+      </div>
+      <div class="fb" id="fb-q10"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('uj')">← Back</button>
+    <button class="btn btn-p" onclick="done('ai');go('te')">Next: Testing Principles 🧪 →</button>
+  </div>
+</div>
+
+<!-- ═══ TESTING ═══ -->
+<div id="page-te" class="page">
+  <div class="hero">
+    <div class="hero-tag">Lesson 9 of 9 ⭐</div>
+    <div class="hero-title">🧪 Testing Principles</div>
+    <div class="hero-sub">Testing isn't a phase at the end — it's built into every stage of development. Understanding testing types helps PMs write better acceptance criteria and have more productive conversations with QA engineers.</div>
+    <div class="hero-pills"><div class="pill">⏱ ~30 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 150 XP</div></div>
+  </div>
+
+  <div class="section">
+    <div class="sec-hdr"><div class="sec-icon" style="background:rgba(16,185,129,0.12);">🔺</div>
+      <div><div class="sec-title">The Testing Pyramid</div><div class="sec-sub">More tests at the bottom, fewer (but broader) at the top</div></div>
+    </div>
+
+    <div class="test-pyramid">
+      <div class="pyramid-layer" style="width:200px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);">
+        <span style="color:#ef4444;">🧑 Manual / Exploratory</span>
+        <span class="pyr-sub">Human testers explore edge cases</span>
+      </div>
+      <div class="pyramid-layer" style="width:300px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);">
+        <span style="color:#f59e0b;">🖥️ End-to-End Tests</span>
+        <span class="pyr-sub">Simulate real user workflows — slow, expensive, valuable</span>
+      </div>
+      <div class="pyramid-layer" style="width:380px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);">
+        <span style="color:#3b82f6;">🔗 Integration Tests</span>
+        <span class="pyr-sub">Test that components work together correctly</span>
+      </div>
+      <div class="pyramid-layer" style="width:460px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);">
+        <span style="color:#10b981;">⚡ Unit Tests</span>
+        <span class="pyr-sub">Fast, isolated tests of individual functions — the foundation</span>
+      </div>
+    </div>
+
+    <div class="three-col" style="margin-top:20px;">
+      <div class="card">
+        <div class="card-title">⚡ Unit Tests</div>
+        <div class="card-body"><strong>What:</strong> Test a single function in isolation<br><strong>Speed:</strong> Milliseconds<br><strong>Written by:</strong> Developers<br><strong>Example:</strong> Test that <code>calculate_discount(100, 0.2)</code> returns 80.0</div>
+      </div>
+      <div class="card">
+        <div class="card-title">🔗 Integration Tests</div>
+        <div class="card-body"><strong>What:</strong> Test how components work together<br><strong>Speed:</strong> Seconds<br><strong>Example:</strong> Test that the payment service correctly talks to the order database when a purchase is made</div>
+      </div>
+      <div class="card">
+        <div class="card-title">👤 User Acceptance Tests</div>
+        <div class="card-body"><strong>What:</strong> Does it meet the user's requirements?<br><strong>Who:</strong> PMs, stakeholders, real users<br><strong>Example:</strong> "Given I add 3 items to cart, when I checkout, then my order confirmation email arrives within 1 minute"</div>
+      </div>
+    </div>
+
+    <div class="sec-hdr" style="margin-top:28px;"><div class="sec-icon" style="background:rgba(16,185,129,0.12);">📋</div>
+      <div><div class="sec-title">Acceptance Criteria & Definition of Done</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">✅ Definition of Done (DoD)</div>
+      <div class="card-body">
+        A shared team agreement on what "done" means for any user story. Prevents "I thought it was done" surprises.<br><br>
+        Example DoD checklist:<br>
+        ☑ Code written and reviewed by a peer<br>
+        ☑ Unit tests written and passing<br>
+        ☑ Acceptance criteria verified by PM<br>
+        ☑ No new bugs introduced (regression tests pass)<br>
+        ☑ Deployed to staging environment<br>
+        ☑ Product Owner has signed off<br>
+        ☑ Documentation updated if needed
+      </div>
+    </div>
+
+    <div class="rw">
+      <div class="rw-label">🌍 Real World Example</div>
+      <div class="rw-title">NHS COVID Test Booking System Failure</div>
+      <div class="rw-body">In 2020, the NHS Test and Trace booking system crashed on launch day — 1 million users hitting a system tested for 10,000. The system had passed all unit and integration tests but was never end-to-end load tested at production scale. A PM-led Definition of Done that included "load tested to 5× expected peak traffic" would have caught this before launch. Proper testing isn't just about bugs — it's about realistic conditions.</div>
+    </div>
+
+    <div class="quiz" id="q11">
+      <div class="quiz-xp">+40 XP</div>
+      <div class="quiz-q">A developer tells you: "All unit tests are passing — the feature is ready to ship." What should you as a PM check before agreeing?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q11',this,false,'❌ Unit tests passing is necessary but not sufficient. They test individual functions in isolation — not the full user experience or system integration.')"><div class="opt-l">A</div>Nothing — if unit tests pass, the feature is done</div>
+        <div class="opt" onclick="ans('q11',this,false,'❌ Delaying until "perfect" is not Agile. But "everything passes" doesn\'t mean acceptance criteria have been verified from the user\'s perspective.')"><div class="opt-l">B</div>Delay shipping until every possible test type passes</div>
+        <div class="opt" onclick="ans('q11',this,true,'✅ Correct! Unit tests check code works in isolation. You still need: (1) acceptance criteria verified from the user\'s perspective, (2) integration testing, (3) the feature tested against your Definition of Done. Ask: "Does it actually do what the user story promised?"')"><div class="opt-l">C</div>Verify the acceptance criteria are met from the user's perspective, and check the Definition of Done</div>
+        <div class="opt" onclick="ans('q11',this,false,'❌ Rewriting tests to match the code inverts the purpose of testing — tests should verify requirements, not rationalise what was built.')"><div class="opt-l">D</div>Ask the developer to rewrite the tests to match whatever was built</div>
+      </div>
+      <div class="fb" id="fb-q11"></div>
+    </div>
+
+    <div class="badge" id="bdg-pm" style="background:linear-gradient(135deg,#f59e0b,#ec4899);">
+      <div class="badge-icon">📦</div>
+      <div class="badge-title" style="color:#000;">PM Pro</div>
+      <div class="badge-sub" style="color:rgba(0,0,0,0.7);">Completed Agile, User Stories, Design Thinking & more!</div>
+    </div>
+    <div class="badge" id="bdg-m3" style="background:linear-gradient(135deg,#10b981,#f59e0b);">
+      <div class="badge-icon">🏆</div>
+      <div class="badge-title" style="color:#000;">Module 3 Complete!</div>
+      <div class="badge-sub" style="color:rgba(0,0,0,0.7);">Ready for Supervised Classification! 🚀</div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('ai')">← Back</button>
+    <button class="btn btn-p" onclick="done('te')">🎉 Complete Module 3!</button>
+  </div>
+</div>
+
+</main>
+</div>
+<div id="toast"><span id="ti">⭐</span><span id="tm"></span></div>
+
+<script>
+const S={xp:0,lv:1,pts:0,stk:0,done:new Set(),ans:new Set()};
+const XP_LV=200;
+const LVNAMES=['Novice','Learner','Analyst','PM','Lead PM','Director'];
+const LXP={pm:30,ag:40,us:40,ri:35,pr:35,dt:30,uj:25,ai:40,te:30};
+
+function addXP(amt,lbl){
+  S.xp+=amt;S.pts+=amt;S.stk++;
+  const lv=Math.floor(S.xp/XP_LV)+1;
+  if(lv>S.lv){S.lv=lv;toast(`🎉 Level Up! Lv ${S.lv} ${LVNAMES[Math.min(S.lv-1,LVNAMES.length-1)]}!`,'🎊');}
+  updateUI();
+  if(lbl)toast(`+${amt} XP — ${lbl}`,'⭐');
+}
+function updateUI(){
+  const xpInLv=S.xp%XP_LV;
+  document.getElementById('xbar').style.width=(xpInLv/XP_LV*100)+'%';
+  document.getElementById('xlbl').textContent=`${S.xp} XP · Lv ${S.lv} — ${xpInLv}/${XP_LV}`;
+  document.getElementById('lvl').textContent=`Lv ${S.lv} ${LVNAMES[Math.min(S.lv-1,LVNAMES.length-1)]}`;
+  document.getElementById('stk').textContent=S.stk;
+  document.getElementById('pts').textContent=S.pts;
+}
+function ans(qid,el,ok,fb){
+  if(S.ans.has(qid))return;
+  S.ans.add(qid);
+  el.closest('.quiz').querySelectorAll('.opt').forEach(o=>o.classList.add('locked'));
+  const fbEl=document.getElementById('fb-'+qid);
+  const xp=parseInt(el.closest('.quiz').querySelector('.quiz-xp').textContent)||35;
+  if(ok){el.classList.add('correct');fbEl.className='fb cfb show';fbEl.innerHTML=fb;addXP(xp,'Correct!');confetti(el);}
+  else{el.classList.add('wrong');fbEl.className='fb wfb show';fbEl.innerHTML=fb;S.stk=0;updateUI();toast('Read the explanation and keep going! 💡','💡');}
+}
+function done(lesson){
+  if(S.done.has(lesson))return;
+  S.done.add(lesson);
+  addXP(LXP[lesson]||30,`${lesson.toUpperCase()} complete!`);
+  document.getElementById('p-'+lesson).style.width='100%';
+  document.getElementById('n-'+lesson).classList.add('done');
+  if(lesson==='pm') document.getElementById('b0').style.color='inherit';
+  if(lesson==='ag') document.getElementById('b1').style.color='inherit';
+  if(lesson==='ai') document.getElementById('b2').style.color='inherit';
+  if(lesson==='te'){
+    document.getElementById('b3').style.color='inherit';
+    document.getElementById('bdg-pm').classList.add('show');
+    document.getElementById('bdg-m3').classList.add('show');
+  }
+}
+function go(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.getElementById('n-'+page).classList.add('active');
+  const p=document.getElementById('p-'+page);
+  if(!S.done.has(page)&&p.style.width==='0%')p.style.width='15%';
+  document.getElementById('main').scrollTop=0;
+}
+let toastT;
+function toast(msg,icon='⭐'){
+  document.getElementById('ti').textContent=icon;
+  document.getElementById('tm').textContent=msg;
+  const t=document.getElementById('toast');
+  t.classList.add('show');
+  clearTimeout(toastT);
+  toastT=setTimeout(()=>t.classList.remove('show'),3500);
+}
+function confetti(el){
+  const r=el.getBoundingClientRect();
+  const cols=['#f59e0b','#ec4899','#10b981','#3b82f6','#fff'];
+  for(let i=0;i<18;i++){
+    const d=document.createElement('div');
+    d.style.cssText=`position:fixed;width:7px;height:7px;border-radius:50%;background:${cols[i%cols.length]};left:${r.left+r.width/2}px;top:${r.top}px;pointer-events:none;z-index:9999;transition:all 0.9s cubic-bezier(0,.9,.57,1);`;
+    document.body.appendChild(d);
+    requestAnimationFrame(()=>{d.style.left=(r.left+r.width/2+(Math.random()-.5)*180)+'px';d.style.top=(r.top-90-Math.random()*80)+'px';d.style.opacity='0';d.style.transform=`scale(${Math.random()*2})`;});
+    setTimeout(()=>d.remove(),1000);
+  }
+}
+
+// User story builder
+function buildStory(){
+  const who=document.getElementById('sb-who').value;
+  const what=document.getElementById('sb-what').value;
+  const why=document.getElementById('sb-why').value;
+  document.getElementById('story-output').innerHTML=
+    `<span style="color:var(--primary);font-weight:700;">As a</span> ${who}, <span style="color:var(--secondary);font-weight:700;">I want to</span> ${what}, <span style="color:var(--accent);font-weight:700;">so that</span> ${why}.`;
+}
+
+// Story point estimation feedback
+const EST_FEEDBACK = {
+  login: {
+    '1':'Close! Login is well-understood but has subtleties (password rules, session handling, "remember me"). Most teams would say 2–3.',
+    '2':'✅ Good call! Login is familiar work with some nuance (validation, sessions, security). 2–3 points is typical.',
+    '3':'✅ Reasonable — login has edge cases (forgot password, lockouts, OAuth?). Anything from 2–5 is defensible.',
+    '5':'A bit high for basic login unless you\'re adding OAuth, 2FA, or complex session management.',
+    '8':'Too high for basic login — this signals the story needs more investigation or splitting.',
+    '13':'Way too high for basic login. If it feels like 13 points, the scope is much bigger than a simple login feature.'
+  },
+  ai: {
+    '1':'Way too low! An AI-powered anomaly detection dashboard is complex: model integration, real-time data pipeline, visualisation, threshold tuning...',
+    '2':'Far too low. This is a large, uncertain story that should be broken into multiple smaller stories.',
+    '3':'Too low. AI features have significant unknowns — data pipeline, model selection, evaluation metrics, UI design.',
+    '5':'Getting closer but likely still underestimating the uncertainty. This might warrant an 8 or a spike first.',
+    '8':'✅ Reasonable for one sub-component. But "AI-powered anomaly detection dashboard" might be an epic — consider splitting into: (1) anomaly model, (2) data pipeline, (3) dashboard UI.',
+    '13':'✅ Honest! This story has high complexity and uncertainty. In practice, this should probably be an epic split into 3–5 smaller stories.'
+  }
+};
+
+function estimate(btn, val) {
+  const story = btn.getAttribute('data-story');
+  // Deselect siblings
+  btn.closest('.card').querySelectorAll('.est-btn').forEach(b => b.classList.remove('est-selected'));
+  btn.classList.add('est-selected');
+  const fb = document.getElementById('est-' + story);
+  fb.style.display = 'block';
+  fb.textContent = EST_FEEDBACK[story][val] || '';
+}
+
+// Add estimation button styles
+const estStyle = document.createElement('style');
+estStyle.textContent = `.est-btn{padding:8px 14px;border-radius:8px;border:2px solid var(--border);background:var(--surface3);color:var(--text);font-weight:700;font-size:0.9rem;cursor:pointer;transition:all 0.2s;}.est-btn:hover{border-color:var(--primary);}.est-btn.est-selected{border-color:var(--primary);background:rgba(245,158,11,0.15);color:var(--primary);}`;
+document.head.appendChild(estStyle);
+
+// Lab banner
+function initLabBanner(){
+  if(localStorage.getItem('lab-banner-dismissed')==='1')return;
+  const banner=document.createElement('div');
+  banner.id='lab-banner';
+  banner.innerHTML=`<div id="lab-banner-inner"><div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;"><div style="font-size:1.6rem;flex-shrink:0;">📋</div><div style="flex:1;min-width:200px;"><div style="font-weight:700;font-size:0.95rem;margin-bottom:6px;">About this module</div><div style="font-size:0.85rem;line-height:1.6;color:rgba(240,234,214,0.85);">Module 3 is <strong>concept-focused</strong> — most content here is frameworks, processes, and thinking models rather than code.<br>Where code <em>is</em> shown, open a Jupyter notebook: <code style="background:rgba(0,0,0,0.3);padding:1px 6px;border-radius:4px;">conda activate ds_env && jupyter notebook</code> and copy the code there to experiment.</div></div><button onclick="dismissLabBanner()" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:0.82rem;flex-shrink:0;" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">Got it ✓</button></div></div>`;
+  document.getElementById('main').prepend(banner);
+}
+function dismissLabBanner(){
+  const b=document.getElementById('lab-banner');
+  if(b){b.style.opacity='0';b.style.transform='translateY(-8px)';setTimeout(()=>b.remove(),300);}
+  localStorage.setItem('lab-banner-dismissed','1');
+}
+
+buildStory();
+initLabBanner();
+toast('Welcome to Module 3: Product Management! 📦','👋');
+</script>
+</body>
+</html>

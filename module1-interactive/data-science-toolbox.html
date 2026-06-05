@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 1: Data Science Toolbox 🧰</title>
+<style>
+  :root {
+    --primary: #6c63ff;
+    --primary-dark: #5a52d5;
+    --secondary: #ff6584;
+    --accent: #43e97b;
+    --accent2: #f7971e;
+    --bg: #0f0f1a;
+    --surface: #1a1a2e;
+    --surface2: #16213e;
+    --surface3: #0f3460;
+    --text: #e8e8f0;
+    --text-muted: #9090b0;
+    --border: #2a2a4a;
+    --code-bg: #0d1117;
+    --python: #3776ab;
+    --conda: #44a833;
+    --git: #f05032;
+    --numpy: #013243;
+    --pandas: #150458;
+    --success: #43e97b;
+    --warning: #f7971e;
+    --error: #ff6584;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── TOP BAR ── */
+  #topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(15,15,26,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 60px;
+    display: flex; align-items: center; gap: 20px;
+  }
+  #topbar .brand { font-size: 1.1rem; font-weight: 700; color: var(--primary); white-space: nowrap; }
+  #xp-section { display: flex; align-items: center; gap: 10px; flex: 1; }
+  #level-badge {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 0.85rem;
+    white-space: nowrap;
+  }
+  #xp-bar-wrap { flex: 1; max-width: 300px; }
+  #xp-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 3px; }
+  #xp-bar-bg { background: var(--border); border-radius: 10px; height: 8px; overflow: hidden; }
+  #xp-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 10px; transition: width 0.5s ease; }
+  #streak { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--warning); }
+  #score-display { font-weight: 700; color: var(--accent); font-size: 0.9rem; white-space: nowrap; }
+
+  /* ── LAYOUT ── */
+  #app { display: flex; margin-top: 60px; min-height: calc(100vh - 60px); }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    width: 280px; min-width: 280px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 20px 0;
+    position: sticky; top: 60px; height: calc(100vh - 60px);
+    overflow-y: auto;
+  }
+  .sidebar-title { padding: 0 20px 12px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); }
+  .module-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 20px; cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+  }
+  .module-item:hover { background: var(--surface2); }
+  .module-item.active { border-left-color: var(--primary); background: var(--surface2); color: var(--primary); }
+  .module-item.completed { color: var(--accent); }
+  .module-item.completed::after { content: '✓'; margin-left: auto; font-weight: 700; }
+  .module-icon { font-size: 1.2rem; min-width: 24px; text-align: center; }
+  .module-name { flex: 1; }
+  .progress-mini { margin-top: 4px; height: 3px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .progress-mini-fill { height: 100%; background: var(--primary); border-radius: 3px; transition: width 0.3s; }
+  .sidebar-section { padding: 16px 20px 4px; }
+
+  /* ── MAIN CONTENT ── */
+  #main {
+    flex: 1; padding: 40px 48px; max-width: 900px;
+    overflow-y: auto;
+  }
+
+  /* ── HERO ── */
+  .lesson-hero {
+    background: linear-gradient(135deg, var(--surface2), var(--surface3));
+    border: 1px solid var(--border);
+    border-radius: 20px; padding: 40px;
+    margin-bottom: 40px; position: relative; overflow: hidden;
+  }
+  .lesson-hero::before {
+    content: ''; position: absolute; top: -40%; right: -10%;
+    width: 300px; height: 300px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(108,99,255,0.15), transparent);
+  }
+  .hero-tag { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--primary); margin-bottom: 8px; }
+  .hero-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 12px; line-height: 1.2; }
+  .hero-subtitle { font-size: 1rem; color: var(--text-muted); margin-bottom: 24px; max-width: 600px; line-height: 1.6; }
+  .hero-meta { display: flex; gap: 20px; flex-wrap: wrap; }
+  .hero-pill {
+    background: rgba(255,255,255,0.07); border: 1px solid var(--border);
+    border-radius: 20px; padding: 6px 14px; font-size: 0.8rem; color: var(--text-muted);
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  /* ── SECTION CARDS ── */
+  .lesson-section { margin-bottom: 48px; }
+  .section-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 24px; padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-icon {
+    width: 48px; height: 48px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; flex-shrink: 0;
+  }
+  .section-title { font-size: 1.5rem; font-weight: 700; }
+  .section-subtitle { font-size: 0.85rem; color: var(--text-muted); margin-top: 2px; }
+
+  /* ── CONCEPT CARDS ── */
+  .concept-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px; padding: 24px;
+    margin-bottom: 20px; transition: transform 0.2s, border-color 0.2s;
+  }
+  .concept-card:hover { transform: translateY(-2px); border-color: var(--primary); }
+  .concept-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .concept-body { color: var(--text-muted); line-height: 1.7; font-size: 0.92rem; }
+  .concept-body strong { color: var(--text); }
+  .concept-body code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-family: 'Consolas', monospace; font-size: 0.85rem; color: var(--accent); }
+
+  /* ── REAL WORLD EXAMPLE ── */
+  .real-world {
+    background: linear-gradient(135deg, rgba(67,233,123,0.08), rgba(108,99,255,0.08));
+    border: 1px solid rgba(67,233,123,0.25);
+    border-radius: 14px; padding: 20px 24px; margin: 20px 0;
+  }
+  .real-world-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .real-world-title { font-weight: 700; margin-bottom: 6px; }
+  .real-world-body { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
+
+  /* ── CODE BLOCK ── */
+  .code-wrap { margin: 20px 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+  .code-header {
+    background: var(--surface2); padding: 10px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 0.8rem; color: var(--text-muted);
+  }
+  .code-lang { display: flex; align-items: center; gap: 6px; }
+  .lang-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .copy-btn {
+    background: none; border: 1px solid var(--border); color: var(--text-muted);
+    padding: 3px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem;
+    transition: all 0.2s;
+  }
+  .copy-btn:hover { border-color: var(--primary); color: var(--primary); }
+  pre {
+    background: var(--code-bg); padding: 20px; margin: 0;
+    overflow-x: auto; font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.88rem; line-height: 1.6;
+  }
+  .kw { color: #ff79c6; }
+  .fn { color: #50fa7b; }
+  .str { color: #f1fa8c; }
+  .num { color: #bd93f9; }
+  .cm { color: #6272a4; font-style: italic; }
+  .op { color: #ff79c6; }
+  .var { color: #8be9fd; }
+  .cls { color: #ffb86c; }
+
+  /* ── QUIZ ── */
+  .quiz-card {
+    background: var(--surface2);
+    border: 2px solid var(--border);
+    border-radius: 16px; padding: 28px;
+    margin: 28px 0; position: relative;
+  }
+  .quiz-card::before {
+    content: '🧠 QUIZ'; position: absolute; top: -12px; left: 20px;
+    background: var(--primary); color: white;
+    padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px;
+  }
+  .quiz-xp { position: absolute; top: -12px; right: 20px;
+    background: var(--warning); color: #000;
+    padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;
+  }
+  .quiz-question { font-size: 1rem; font-weight: 600; margin-bottom: 18px; line-height: 1.5; }
+  .quiz-options { display: grid; gap: 10px; }
+  .quiz-option {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 16px;
+    cursor: pointer; transition: all 0.2s; font-size: 0.9rem;
+    display: flex; align-items: center; gap: 10px; text-align: left;
+  }
+  .quiz-option:hover:not(.locked) { border-color: var(--primary); background: rgba(108,99,255,0.1); }
+  .quiz-option.correct { border-color: var(--success); background: rgba(67,233,123,0.12); color: var(--success); }
+  .quiz-option.wrong { border-color: var(--error); background: rgba(255,101,132,0.12); color: var(--error); }
+  .quiz-option.locked { cursor: default; }
+  .option-letter {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--border); display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.8rem; flex-shrink: 0;
+  }
+  .quiz-feedback { margin-top: 14px; padding: 12px 16px; border-radius: 10px; font-size: 0.9rem; line-height: 1.5; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct-fb { background: rgba(67,233,123,0.1); border: 1px solid rgba(67,233,123,0.3); color: var(--success); }
+  .quiz-feedback.wrong-fb { background: rgba(255,101,132,0.1); border: 1px solid rgba(255,101,132,0.3); color: var(--error); }
+  .xp-pop { display: none; font-weight: 700; color: var(--warning); margin-left: 8px; }
+  .xp-pop.show { display: inline; animation: popIn 0.5s ease; }
+  @keyframes popIn { 0%{transform:scale(0.5);opacity:0} 60%{transform:scale(1.2)} 100%{transform:scale(1);opacity:1} }
+
+  /* ── VISUAL DIAGRAMS ── */
+  .diagram {
+    background: var(--code-bg); border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px; margin: 20px 0;
+    font-family: 'Consolas', monospace; font-size: 0.85rem; line-height: 1.8;
+    overflow-x: auto;
+  }
+  .diagram .highlight { color: var(--primary); font-weight: 700; }
+  .diagram .arrow { color: var(--accent); }
+  .diagram .box { color: var(--warning); }
+
+  /* ── INFO BOXES ── */
+  .info-box {
+    border-radius: 10px; padding: 14px 18px; margin: 16px 0;
+    display: flex; gap: 12px; align-items: flex-start; font-size: 0.88rem; line-height: 1.6;
+  }
+  .info-box.tip { background: rgba(108,99,255,0.1); border-left: 3px solid var(--primary); }
+  .info-box.warning { background: rgba(247,151,30,0.1); border-left: 3px solid var(--warning); }
+  .info-box.success { background: rgba(67,233,123,0.1); border-left: 3px solid var(--accent); }
+  .info-box-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
+
+  /* ── PROGRESS TRACKER ── */
+  .progress-tracker {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 20px 24px; margin-bottom: 32px;
+  }
+  .progress-title { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+  .progress-steps { display: flex; gap: 6px; flex-wrap: wrap; }
+  .progress-step {
+    width: 36px; height: 36px; border-radius: 8px;
+    border: 2px solid var(--border); display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
+  }
+  .progress-step.done { background: var(--accent); border-color: var(--accent); color: #000; }
+  .progress-step.current { border-color: var(--primary); color: var(--primary); }
+
+  /* ── BADGE ── */
+  .badge-earned {
+    display: none; background: linear-gradient(135deg, var(--warning), #ff9a44);
+    border-radius: 16px; padding: 20px 24px; margin: 24px 0; text-align: center;
+    animation: slideIn 0.5s ease;
+  }
+  .badge-earned.show { display: block; }
+  @keyframes slideIn { from{transform:translateY(-20px);opacity:0} to{transform:translateY(0);opacity:1} }
+  .badge-icon { font-size: 3rem; margin-bottom: 8px; }
+  .badge-title { font-size: 1.2rem; font-weight: 800; color: #000; }
+  .badge-subtitle { font-size: 0.85rem; color: rgba(0,0,0,0.7); }
+
+  /* ── GRID ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+  @media(max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ── NAV BUTTONS ── */
+  .nav-btns { display: flex; gap: 12px; margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border); }
+  .btn {
+    padding: 12px 24px; border-radius: 10px; border: none;
+    cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: all 0.2s;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+  .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+  .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+  /* ── DATA TYPE VISUALIZER ── */
+  .type-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin: 20px 0; }
+  .type-card {
+    border-radius: 12px; padding: 16px; text-align: center; border: 1px solid;
+    transition: transform 0.2s;
+  }
+  .type-card:hover { transform: scale(1.05); }
+  .type-card .type-icon { font-size: 1.8rem; margin-bottom: 8px; }
+  .type-card .type-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; }
+  .type-card .type-example { font-size: 0.75rem; color: var(--text-muted); font-family: monospace; }
+
+  /* ── GIT FLOW VISUAL ── */
+  .git-flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
+  .git-node {
+    padding: 8px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 600;
+    border: 2px solid; text-align: center;
+  }
+  .git-arrow { color: var(--text-muted); font-size: 1.2rem; }
+
+  /* ── NUMPY VISUAL ── */
+  .array-vis { display: inline-flex; gap: 0; margin: 8px 0; }
+  .array-cell {
+    width: 44px; height: 44px; border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: monospace; font-size: 0.85rem; font-weight: 600;
+    background: var(--surface);
+  }
+  .array-cell:first-child { border-radius: 8px 0 0 8px; }
+  .array-cell:last-child { border-radius: 0 8px 8px 0; }
+  .array-cell.highlight { background: rgba(108,99,255,0.3); border-color: var(--primary); color: var(--primary); }
+
+  /* ── PANDAS TABLE ── */
+  .df-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.85rem; font-family: monospace; }
+  .df-table th { background: var(--surface3); padding: 8px 12px; text-align: left; color: var(--primary); }
+  .df-table td { padding: 7px 12px; border-bottom: 1px solid var(--border); }
+  .df-table tr:hover td { background: var(--surface); }
+  .df-table .idx { color: var(--text-muted); }
+
+  /* ── TOAST ── */
+  #toast {
+    position: fixed; bottom: 30px; right: 30px; z-index: 9999;
+    background: var(--surface); border: 1px solid var(--accent);
+    border-radius: 12px; padding: 14px 20px; font-size: 0.9rem;
+    display: none; align-items: center; gap: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    animation: slideUp 0.3s ease;
+  }
+  #toast.show { display: flex; }
+  @keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+  /* ── LAB BANNER ── */
+  #lab-banner { margin-bottom: 28px; transition: opacity 0.3s, transform 0.3s; }
+  #lab-banner-inner {
+    background: linear-gradient(135deg, #1e3a5f, #1a2744);
+    border: 1px solid rgba(108,99,255,0.4);
+    border-left: 4px solid var(--primary);
+    border-radius: 14px; padding: 20px 22px;
+  }
+  .jupyter-pill {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: rgba(67,233,123,0.12); border: 1px solid rgba(67,233,123,0.35);
+    color: #43e97b; border-radius: 6px; padding: 2px 9px;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.5px;
+    margin-right: 8px; cursor: default;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+  /* hidden pages */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .tag { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-right: 6px; }
+  .tag-blue { background: rgba(55,118,171,0.2); color: #3776ab; border: 1px solid rgba(55,118,171,0.4); }
+  .tag-green { background: rgba(68,168,51,0.2); color: #44a833; border: 1px solid rgba(68,168,51,0.4); }
+  .tag-red { background: rgba(240,80,50,0.2); color: #f05032; border: 1px solid rgba(240,80,50,0.4); }
+  .tag-orange { background: rgba(247,151,30,0.2); color: #f7971e; border: 1px solid rgba(247,151,30,0.4); }
+  .tag-purple { background: rgba(108,99,255,0.2); color: #8b83ff; border: 1px solid rgba(108,99,255,0.4); }
+
+  .steps { counter-reset: steps; }
+  .step-item { display: flex; gap: 16px; margin-bottom: 16px; counter-increment: steps; }
+  .step-num {
+    width: 30px; height: 30px; border-radius: 50%; background: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.85rem; flex-shrink: 0; margin-top: 2px;
+  }
+  .step-content { flex: 1; }
+  .step-title { font-weight: 600; margin-bottom: 4px; }
+  .step-desc { color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; }
+
+  .fillblank { background: rgba(108,99,255,0.2); border: 1px dashed var(--primary); border-radius: 4px; padding: 2px 8px; min-width: 80px; display: inline-block; text-align: center; cursor: pointer; }
+
+  .challenge-card {
+    background: linear-gradient(135deg, rgba(247,151,30,0.08), rgba(255,101,132,0.08));
+    border: 1px solid rgba(247,151,30,0.3); border-radius: 14px; padding: 24px; margin: 24px 0;
+  }
+  .challenge-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: var(--warning); margin-bottom: 8px; }
+
+  .collapsible { cursor: pointer; user-select: none; }
+  .collapsible-content { display: none; margin-top: 12px; }
+  .collapsible-content.open { display: block; }
+  .collapse-arrow { transition: transform 0.2s; display: inline-block; }
+  .collapsible.open .collapse-arrow { transform: rotate(90deg); }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div id="topbar">
+  <div class="brand">🧰 DS Toolbox</div>
+  <div id="xp-section">
+    <div id="level-badge">Lv 1</div>
+    <div id="xp-bar-wrap">
+      <div id="xp-label">0 / 200 XP</div>
+      <div id="xp-bar-bg"><div id="xp-bar" style="width:0%"></div></div>
+    </div>
+    <div id="streak">🔥 <span id="streak-count">0</span> streak</div>
+    <div id="score-display">⭐ <span id="total-score">0</span> pts</div>
+  </div>
+</div>
+
+<!-- APP LAYOUT -->
+<div id="app">
+  <!-- SIDEBAR -->
+  <nav id="sidebar">
+    <div class="sidebar-title">Module 1 Lessons</div>
+
+    <div id="nav-python" class="module-item active" onclick="showPage('python')">
+      <div class="module-icon">🐍</div>
+      <div class="module-name">
+        Python Basics
+        <div class="progress-mini"><div class="progress-mini-fill" id="prog-python" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div id="nav-conda" class="module-item" onclick="showPage('conda')">
+      <div class="module-icon">🌿</div>
+      <div class="module-name">
+        Conda
+        <div class="progress-mini"><div class="progress-mini-fill" id="prog-conda" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div id="nav-git" class="module-item" onclick="showPage('git')">
+      <div class="module-icon">🌿</div>
+      <div class="module-name">
+        Git & Version Control
+        <div class="progress-mini"><div class="progress-mini-fill" id="prog-git" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div id="nav-numpy" class="module-item" onclick="showPage('numpy')">
+      <div class="module-icon">🔢</div>
+      <div class="module-name">
+        NumPy
+        <div class="progress-mini"><div class="progress-mini-fill" id="prog-numpy" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div id="nav-pandas" class="module-item" onclick="showPage('pandas')">
+      <div class="module-icon">🐼</div>
+      <div class="module-name">
+        Pandas
+        <div class="progress-mini"><div class="progress-mini-fill" id="prog-pandas" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <div class="sidebar-section" style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 20px;">
+      <div class="sidebar-title">Achievements</div>
+      <div id="badges-display" style="padding: 0 0 0 0; font-size: 1.5rem; letter-spacing: 4px; color: var(--border);">🏆🥇🎯🚀⚡</div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main id="main">
+
+    <!-- ═══════════════ PAGE: PYTHON ═══════════════ -->
+    <div id="page-python" class="page active">
+
+      <div class="lesson-hero">
+        <div class="hero-tag">Lesson 1 of 5</div>
+        <div class="hero-title">🐍 Python Programming</div>
+        <div class="hero-subtitle">The language powering data science. Learn variables, control flow, and functions — the building blocks you'll use in every future lesson.</div>
+        <div class="hero-meta">
+          <div class="hero-pill">⏱ ~45 min</div>
+          <div class="hero-pill">🎯 5 Quizzes</div>
+          <div class="hero-pill">⭐ 250 XP</div>
+          <div class="hero-pill">📊 Beginner</div>
+        </div>
+      </div>
+
+      <!-- SECTION 1.1: DATA TYPES -->
+      <div class="lesson-section">
+        <div class="section-header">
+          <div class="section-icon" style="background:rgba(55,118,171,0.15);">📦</div>
+          <div>
+            <div class="section-title">1.1 Variables & Data Types</div>
+            <div class="section-subtitle">Every piece of data in Python has a type</div>
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-title">🧠 What is a Variable?</div>
+          <div class="concept-body">
+            Think of a variable as a <strong>labelled box</strong> in your computer's memory. You put a value inside, give it a name, and you can use that name later to get the value back — or change it.<br><br>
+            Python uses <strong>dynamic typing</strong>: you don't need to declare the type. Python figures it out automatically.
+          </div>
+        </div>
+
+        <div class="real-world">
+          <div class="real-world-label">🌍 Real World Example</div>
+          <div class="real-world-title">Netflix's Recommendation Engine</div>
+          <div class="real-world-body">Every time Netflix stores a user's age (<code>age = 28</code>), their username (<code>name = "Alice"</code>), or their watch history count (<code>watched = 347</code>), they're using variables. Data scientists at Netflix then use these variables to build models that predict what you'll watch next.</div>
+        </div>
+
+        <div class="type-grid">
+          <div class="type-card" style="border-color:rgba(55,118,171,0.4); background:rgba(55,118,171,0.06);">
+            <div class="type-icon">🔢</div>
+            <div class="type-name">int</div>
+            <div class="type-example">age = 28</div>
+          </div>
+          <div class="type-card" style="border-color:rgba(67,233,123,0.4); background:rgba(67,233,123,0.06);">
+            <div class="type-icon">🌊</div>
+            <div class="type-name">float</div>
+            <div class="type-example">price = 9.99</div>
+          </div>
+          <div class="type-card" style="border-color:rgba(247,151,30,0.4); background:rgba(247,151,30,0.06);">
+            <div class="type-icon">📝</div>
+            <div class="type-name">str</div>
+            <div class="type-example">name = "Alice"</div>
+          </div>
+          <div class="type-card" style="border-color:rgba(255,101,132,0.4); background:rgba(255,101,132,0.06);">
+            <div class="type-icon">✅</div>
+            <div class="type-name">bool</div>
+            <div class="type-example">is_member = True</div>
+          </div>
+          <div class="type-card" style="border-color:rgba(108,99,255,0.4); background:rgba(108,99,255,0.06);">
+            <div class="type-icon">📋</div>
+            <div class="type-name">list</div>
+            <div class="type-example">[1, 2, 3]</div>
+          </div>
+          <div class="type-card" style="border-color:rgba(255,179,0,0.4); background:rgba(255,179,0,0.06);">
+            <div class="type-icon">🗂️</div>
+            <div class="type-name">dict</div>
+            <div class="type-example">{"key": "val"}</div>
+          </div>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-header">
+            <div class="code-lang"><div class="lang-dot" style="background:#3776ab"></div> Python</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><span class="cm"># Variables — name = value</span>
+<span class="var">name</span>       = <span class="str">"Alice"</span>          <span class="cm"># str: text in quotes</span>
+<span class="var">age</span>        = <span class="num">28</span>              <span class="cm"># int: whole number</span>
+<span class="var">salary</span>     = <span class="num">65000.50</span>        <span class="cm"># float: decimal number</span>
+<span class="var">is_active</span>  = <span class="kw">True</span>            <span class="cm"># bool: True or False</span>
+<span class="var">scores</span>     = [<span class="num">85</span>, <span class="num">92</span>, <span class="num">78</span>, <span class="num">95</span>]  <span class="cm"># list: ordered collection</span>
+<span class="var">profile</span>    = {<span class="str">"city"</span>: <span class="str">"London"</span>, <span class="str">"premium"</span>: <span class="kw">True</span>}  <span class="cm"># dict: key-value pairs</span>
+
+<span class="cm"># Check type</span>
+<span class="fn">print</span>(<span class="fn">type</span>(<span class="var">age</span>))    <span class="cm"># &lt;class 'int'&gt;</span>
+<span class="fn">print</span>(<span class="fn">type</span>(<span class="var">name</span>))   <span class="cm"># &lt;class 'str'&gt;</span>
+
+<span class="cm"># f-strings: embed variables in text</span>
+<span class="fn">print</span>(<span class="str">f"Hello, </span>{<span class="var">name</span>}<span class="str">! You are </span>{<span class="var">age</span>}<span class="str"> years old."</span>)</pre>
+        </div>
+
+        <div class="quiz-card" id="q1">
+          <div class="quiz-xp">+30 XP</div>
+          <div class="quiz-question">What data type would you use to store someone's bank balance (e.g. £1,234.56)?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="answer('q1',this,false,'❌ <b>int</b> only holds whole numbers — a bank balance needs decimal precision!')">
+              <div class="option-letter">A</div> int
+            </div>
+            <div class="quiz-option" onclick="answer('q1',this,true,'✅ Correct! <b>float</b> stores decimal numbers, perfect for money values like £1,234.56')">
+              <div class="option-letter">B</div> float
+            </div>
+            <div class="quiz-option" onclick="answer('q1',this,false,'❌ <b>str</b> is for text. You can\'t do maths on a string like &quot;£1234.56&quot;!')">
+              <div class="option-letter">C</div> str
+            </div>
+            <div class="quiz-option" onclick="answer('q1',this,false,'❌ <b>bool</b> is only True or False — not suitable for numerical values!')">
+              <div class="option-letter">D</div> bool
+            </div>
+          </div>
+          <div class="quiz-feedback" id="fb-q1"></div>
+        </div>
+      </div>
+
+      <!-- SECTION 1.2: CONDITIONALS & LOOPS -->
+      <div class="lesson-section">
+        <div class="section-header">
+          <div class="section-icon" style="background:rgba(255,101,132,0.15);">🔀</div>
+          <div>
+            <div class="section-title">1.2 Conditionals & Loops</div>
+            <div class="section-subtitle">Make decisions and repeat actions</div>
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-title">🔀 if / elif / else — Making Decisions</div>
+          <div class="concept-body">
+            Conditionals let your code <strong>choose a path</strong> based on whether something is true or false. Think of them as the "if this happens, do that" logic of real life.<br><br>
+            Python uses <strong>indentation</strong> (4 spaces) to define code blocks — no curly braces like other languages!
+          </div>
+        </div>
+
+        <div class="real-world">
+          <div class="real-world-label">🌍 Real World Example</div>
+          <div class="real-world-title">Fraud Detection at Banks</div>
+          <div class="real-world-body">Barclays uses conditions like: <em>"If the transaction amount > £5000 AND the location is abroad AND it's past midnight, flag as suspicious."</em> This is exactly <code>if/elif/else</code> logic running millions of times per second.</div>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-header">
+            <div class="code-lang"><div class="lang-dot" style="background:#3776ab"></div> Python — Conditionals</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><span class="var">transaction_amount</span> = <span class="num">7500</span>
+<span class="var">is_abroad</span> = <span class="kw">True</span>
+<span class="var">hour</span> = <span class="num">2</span>   <span class="cm"># 2 AM</span>
+
+<span class="kw">if</span> <span class="var">transaction_amount</span> > <span class="num">5000</span> <span class="kw">and</span> <span class="var">is_abroad</span> <span class="kw">and</span> <span class="var">hour</span> < <span class="num">6</span>:
+    <span class="fn">print</span>(<span class="str">"🚨 Flagged as suspicious!"</span>)
+<span class="kw">elif</span> <span class="var">transaction_amount</span> > <span class="num">5000</span>:
+    <span class="fn">print</span>(<span class="str">"⚠️  Large transaction — review required"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="str">"✅ Transaction approved"</span>)
+
+<span class="cm"># Output: 🚨 Flagged as suspicious!</span></pre>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-title">🔁 for Loops — Repeat Actions</div>
+          <div class="concept-body">
+            A <code>for</code> loop lets you <strong>iterate</strong> over a collection and perform an action on each item. Instead of writing the same code 1000 times, write it once in a loop.<br><br>
+            A <code>while</code> loop repeats as long as a condition is <code>True</code>.
+          </div>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-header">
+            <div class="code-lang"><div class="lang-dot" style="background:#3776ab"></div> Python — Loops</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><span class="cm"># for loop — iterate over a list</span>
+<span class="var">exam_scores</span> = [<span class="num">72</span>, <span class="num">88</span>, <span class="num">65</span>, <span class="num">94</span>, <span class="num">77</span>]
+<span class="var">total</span> = <span class="num">0</span>
+
+<span class="kw">for</span> <span class="var">score</span> <span class="kw">in</span> <span class="var">exam_scores</span>:
+    <span class="var">total</span> += <span class="var">score</span>
+
+<span class="fn">print</span>(<span class="str">f"Average: </span>{<span class="var">total</span> / <span class="fn">len</span>(<span class="var">exam_scores</span>):.1f}<span class="str">%"</span>)  <span class="cm"># 79.2%</span>
+
+<span class="cm"># List comprehension — pythonic one-liner</span>
+<span class="var">passed</span> = [<span class="var">s</span> <span class="kw">for</span> <span class="var">s</span> <span class="kw">in</span> <span class="var">exam_scores</span> <span class="kw">if</span> <span class="var">s</span> >= <span class="num">70</span>]
+<span class="fn">print</span>(<span class="str">f"Students who passed: </span>{<span class="fn">len</span>(<span class="var">passed</span>)}<span class="str">"</span>)  <span class="cm"># 4</span>
+
+<span class="cm"># range() — generate a sequence of numbers</span>
+<span class="kw">for</span> <span class="var">i</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, <span class="num">6</span>):
+    <span class="fn">print</span>(<span class="str">f"Week </span>{<span class="var">i</span>}<span class="str">: training model..."</span>)</pre>
+        </div>
+
+        <div class="quiz-card" id="q2">
+          <div class="quiz-xp">+30 XP</div>
+          <div class="quiz-question">What does this list comprehension produce?<br><code style="background:var(--code-bg);padding:4px 8px;border-radius:4px;font-size:0.9rem;">[x**2 for x in range(1, 5)]</code></div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="answer('q2',this,false,'❌ range(1,5) gives 1,2,3,4 — and x**2 squares each value.')">
+              <div class="option-letter">A</div> [1, 4, 9, 16, 25]
+            </div>
+            <div class="quiz-option" onclick="answer('q2',this,true,'✅ Correct! range(1,5) = [1,2,3,4]. Squaring each: 1²=1, 2²=4, 3²=9, 4²=16')">
+              <div class="option-letter">B</div> [1, 4, 9, 16]
+            </div>
+            <div class="quiz-option" onclick="answer('q2',this,false,'❌ x**2 means x to the power of 2 (squaring), not multiplying by 2.')">
+              <div class="option-letter">C</div> [2, 4, 6, 8]
+            </div>
+            <div class="quiz-option" onclick="answer('q2',this,false,'❌ range(1,5) starts at 1, not 0. It produces 1, 2, 3, 4.')">
+              <div class="option-letter">D</div> [0, 1, 4, 9, 16]
+            </div>
+          </div>
+          <div class="quiz-feedback" id="fb-q2"></div>
+        </div>
+      </div>
+
+      <!-- SECTION 1.3: FUNCTIONS -->
+      <div class="lesson-section">
+        <div class="section-header">
+          <div class="section-icon" style="background:rgba(67,233,123,0.15);">⚙️</div>
+          <div>
+            <div class="section-title">1.3 Python Functions</div>
+            <div class="section-subtitle">Package reusable logic into named blocks</div>
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-title">⚙️ Why Functions?</div>
+          <div class="concept-body">
+            Functions follow the <strong>DRY principle</strong>: Don't Repeat Yourself. Instead of writing the same 10 lines repeatedly, define them once as a function and call it whenever needed.<br><br>
+            In data science, functions help you <strong>standardise preprocessing steps</strong>, build <strong>reusable pipelines</strong>, and make code <strong>testable</strong>.
+          </div>
+        </div>
+
+        <div class="real-world">
+          <div class="real-world-label">🌍 Real World Example</div>
+          <div class="real-world-title">Spotify's Audio Feature Extraction</div>
+          <div class="real-world-body">Spotify's engineers write a function <code>extract_audio_features(song)</code> that computes tempo, energy, danceability, etc. This same function is called for every song in their 100M+ library — write once, use millions of times.</div>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-header">
+            <div class="code-lang"><div class="lang-dot" style="background:#3776ab"></div> Python — Functions</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><span class="cm"># Basic function: def name(parameters): → return result</span>
+<span class="kw">def</span> <span class="fn">calculate_bmi</span>(<span class="var">weight_kg</span>, <span class="var">height_m</span>):
+    <span class="str">"""Calculates Body Mass Index. Weight in kg, height in metres."""</span>
+    <span class="var">bmi</span> = <span class="var">weight_kg</span> / (<span class="var">height_m</span> ** <span class="num">2</span>)
+    <span class="kw">return</span> <span class="fn">round</span>(<span class="var">bmi</span>, <span class="num">1</span>)
+
+<span class="fn">print</span>(<span class="fn">calculate_bmi</span>(<span class="num">70</span>, <span class="num">1.75</span>))  <span class="cm"># 22.9</span>
+
+<span class="cm"># Default parameters</span>
+<span class="kw">def</span> <span class="fn">greet</span>(<span class="var">name</span>, <span class="var">greeting</span>=<span class="str">"Hello"</span>):
+    <span class="kw">return</span> <span class="str">f"</span>{<span class="var">greeting</span>}<span class="str">, </span>{<span class="var">name</span>}<span class="str">!"</span>
+
+<span class="fn">print</span>(<span class="fn">greet</span>(<span class="str">"Alice"</span>))             <span class="cm"># Hello, Alice!</span>
+<span class="fn">print</span>(<span class="fn">greet</span>(<span class="str">"Bob"</span>, <span class="str">"Good morning"</span>)) <span class="cm"># Good morning, Bob!</span>
+
+<span class="cm"># Lambda — small anonymous functions (used heavily in Pandas!)</span>
+<span class="var">square</span> = <span class="kw">lambda</span> <span class="var">x</span>: <span class="var">x</span> ** <span class="num">2</span>
+<span class="fn">print</span>(<span class="fn">square</span>(<span class="num">7</span>))  <span class="cm"># 49</span></pre>
+        </div>
+
+        <div class="quiz-card" id="q3">
+          <div class="quiz-xp">+40 XP</div>
+          <div class="quiz-question">A data scientist writes this function:<br><br><code style="background:var(--code-bg);padding:8px 12px;border-radius:6px;display:block;margin:8px 0;font-size:0.85rem;">def normalise(x, min_val, max_val):<br>&nbsp;&nbsp;&nbsp;&nbsp;return (x - min_val) / (max_val - min_val)</code><br>What does <code>normalise(75, 0, 100)</code> return?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="answer('q3',this,false,'❌ Not quite — plug in the values: (75 - 0) / (100 - 0) = 75/100 = 0.75')">
+              <div class="option-letter">A</div> 75
+            </div>
+            <div class="quiz-option" onclick="answer('q3',this,true,'✅ Correct! (75 - 0) / (100 - 0) = 0.75. This is min-max normalisation — scales any value to 0–1 range!')">
+              <div class="option-letter">B</div> 0.75
+            </div>
+            <div class="quiz-option" onclick="answer('q3',this,false,'❌ Try: (75 - 0) / (100 - 0). Remember, min_val=0, max_val=100, x=75.')">
+              <div class="option-letter">C</div> 7.5
+            </div>
+            <div class="quiz-option" onclick="answer('q3',this,false,'❌ The function subtracts min_val first: (75-0)/(100-0), not 75/100*100.')">
+              <div class="option-letter">D</div> 25
+            </div>
+          </div>
+          <div class="quiz-feedback" id="fb-q3"></div>
+        </div>
+
+        <div class="badge-earned" id="badge-python">
+          <div class="badge-icon">🐍</div>
+          <div class="badge-title">Python Fundamentalist</div>
+          <div class="badge-subtitle">Completed Python Basics — Variables, Loops & Functions!</div>
+        </div>
+
+        <div class="nav-btns">
+          <button class="btn btn-primary" onclick="completeLesson('python'); showPage('conda')">Next: Conda 🌿 →</button>
+        </div>
+      </div>
+    </div><!-- /page-python -->
+
+    <!-- ═══════════════ PAGE: CONDA ═══════════════ -->
+    <div id="page-conda" class="page">
+
+      <div class="lesson-hero">
+        <div class="hero-tag">Lesson 2 of 5</div>
+        <div class="hero-title">🌿 Working with Conda</div>
+        <div class="hero-subtitle">Manage Python environments like a professional. Never again hear "it works on my machine!" — Conda ensures everyone runs the same code the same way.</div>
+        <div class="hero-meta">
+          <div class="hero-pill">⏱ ~20 min</div>
+          <div class="hero-pill">🎯 2 Quizzes</div>
+          <div class="hero-pill">⭐ 120 XP</div>
+          <div class="hero-pill">🛠 Practical</div>
+        </div>
+      </div>
+
+      <div class="lesson-section">
+        <div class="section-header">
+          <div class="section-icon" style="background:rgba(68,168,51,0.15);">🧪</div>
+          <div>
+            <div class="section-title">Why Environments?</div>
+            <div class="section-subtitle">The "dependency hell" problem — and how to solve it</div>
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-title">🔥 The Problem Without Conda</div>
+          <div class="concept-body">
+            Imagine you're working on two projects simultaneously:<br><br>
+            • <strong>Project A</strong> (old system): requires <code>numpy==1.20</code><br>
+            • <strong>Project B</strong> (new system): requires <code>numpy==1.26</code><br><br>
+            Without environments, installing one <strong>breaks the other</strong>. Conda solves this by creating <strong>isolated sandboxes</strong> — each project lives in its own environment with its own packages.
+          </div>
+        </div>
+
+        <div class="diagram">
+<span class="highlight">Without Conda:</span>
+  System Python
+  └─ numpy 1.26 ← Project B works ✅
+               ← Project A BROKEN ❌
+
+<span class="highlight">With Conda:</span>
+  <span class="box">Environment: project_a</span>       <span class="box">Environment: project_b</span>
+  └─ Python 3.8                    └─ Python 3.11
+  └─ numpy 1.20 ✅                 └─ numpy 1.26 ✅
+  └─ pandas 1.3 ✅                 └─ pandas 2.0 ✅
+  └─ scikit-learn 0.24 ✅          └─ scikit-learn 1.3 ✅
+</div>
+
+        <div class="real-world">
+          <div class="real-world-label">🌍 Real World Example</div>
+          <div class="real-world-title">AI Teams at Google DeepMind</div>
+          <div class="real-world-body">Research teams at DeepMind use environment management so that the TensorFlow 1.x models from 2018 still run correctly alongside their new JAX-based systems. Without this, years of research code would be unmaintainable.</div>
+        </div>
+
+        <div class="section-header" style="margin-top: 32px;">
+          <div class="section-icon" style="background:rgba(68,168,51,0.15);">⌨️</div>
+          <div>
+            <div class="section-title">Essential Conda Commands</div>
+            <div class="section-subtitle">The commands you'll use every day</div>
+          </div>
+        </div>
+
+        <div class="steps">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-title">Create a new environment</div>
+              <div class="step-desc">Creates an isolated environment named "ds_env" with Python 3.11</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-title">Activate the environment</div>
+              <div class="step-desc">Switch into your environment — all installs now go here, not system-wide</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-title">Install packages</div>
+              <div class="step-desc">Install numpy, pandas, scikit-learn into this environment only</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <div class="step-title">Export environment</div>
+              <div class="step-desc">Share your exact setup so teammates can reproduce it perfectly</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-header">
+            <div class="code-lang"><div class="lang-dot" style="background:#44a833"></div> Terminal — Conda Commands</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><span class="cm"># Create a new environment</span>
+conda create --name ds_env python=3.11
+
+<span class="cm"># Activate it (Mac/Linux)</span>
+conda activate ds_env
+
+<span class="cm"># Install core data science packages</span>
+conda install numpy pandas scikit-learn matplotlib jupyter
+
+<span class="cm"># List all your environments</span>
+conda env list
+
+<span class="cm"># Export to share with teammates</span>
+conda env export > environment.yml
+
+<span class="cm"># Recreate from a shared file</span>
+conda env create -f environment.yml
+
+<span class="cm"># Deactivate (exit environment)</span>
+conda deactivate</pre>
+        </div>
+
+        <div class="info-box tip">
+          <div class="info-box-icon">💡</div>
+          <div><strong>Pro Tip:</strong> Always create a new environment for each project. Name it after the project (e.g. <code>stock_analysis</code>, <code>nlp_project</code>). Future-you will thank present-you!</div>
+        </div>
+
+        <div class="quiz-card" id="q4">
+          <div class="quiz-xp">+30 XP</div>
+          <div class="quiz-question">You want to share your project with a colleague so they can run it with the exact same package versions. What's the best Conda approach?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="answer('q4',this,false,'❌ Sending your whole conda folder would be gigabytes and OS-specific — it won\'t work on their machine.')">
+              <div class="option-letter">A</div> Send them your entire conda folder
+            </div>
+            <div class="quiz-option" onclick="answer('q4',this,false,'❌ This just tells them what packages you use, not the exact versions. Version mismatches can still break things.')">
+              <div class="option-letter">B</div> Tell them which packages you installed by memory
+            </div>
+            <div class="quiz-option" onclick="answer('q4',this,true,'✅ Correct! <code>conda env export > environment.yml</code> captures every package and its exact version. Your colleague runs <code>conda env create -f environment.yml</code> to recreate it perfectly.')">
+              <div class="option-letter">C</div> Export with <code>conda env export > environment.yml</code> and share the file
+            </div>
+            <div class="quiz-option" onclick="answer('q4',this,false,'❌ requirements.txt is for pip, not conda. It also may not capture all dependencies correctly for conda environments.')">
+              <div class="option-letter">D</div> Share a requirements.txt file
+            </div>
+          </div>
+          <div class="quiz-feedback" id="fb-q4"></div>
+        </div>
+
+        <div class="nav-btns">
+          <button class="btn btn-outline" onclick="showPage('python')">← Back</button>
+          <button class="btn btn-primary" onclick="completeLesson('conda'); showPage('git')">Next: Git 🌿 →</button>
+        </div>
+      </div>
+    </div><!-- /page-conda -->
+
+    <!-- ═══════════════ PAGE: GIT ═══════════════ -->
+    <div id="page-git" class="page">
+
+      <div class="lesson-hero">
+        <div class="hero-tag">Lesson 3 of 5</div>
+        <div class="hero-title">🌿 Git & Version Control</div>
+        <div class="hero-subtitle">Track changes, collaborate without chaos, and never lose your work again. Git is the time machine every developer — and data scientist — needs.</div>
+        <div class="hero-meta">
+          <div class="hero-pill">⏱ ~30 min</div>
+          <div class="hero-pill">🎯 3 Quizzes</div>
+          <div class="hero-pill">⭐ 150 XP</div>
+          <div class="hero-pill">🛠 Essential</div>
+        </div>
+      </div>
+
+      <div class="lesson-section">
+        <div class="section-header">
+          <div class="section-icon" style="background:rgba(240,80,50,0.15);">🕰️</div>
+          <div>
+            <div class="section-title">What is Git?</div>
+            <div class="section-subtitle">A distributed version control system</div>
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-title">🕰️ Git = Time Machine for Code</div>
+          <div class="concept-body">
+            Git records a <strong>history of every change</strong> you make. You can go back to any point in time, create parallel "alternate timelines" (branches) to try new ideas, and merge them back safely.<br><br>
+            Without Git, teams use nightmare approaches like <code>report_v1.py</code>, <code>report_FINAL.py</code>, <code>report_FINAL_v2_ACTUAL.py</code>... 😱
+          </div>
+        </div>
+
+        <div class="real-world">
+          <div class="real-world-label">🌍 Real World Example</div>
+          <div class="real-world-title">NHS AI Diagnostic Models</div>
+          <div class="real-world-body">A team at the NHS building AI for radiology uses Git so that: (1) if a model update reduces accuracy, they can instantly roll back; (2) multiple radiologists and engineers can work simultaneously without overwriting each other's work; (3) every model change is auditable — critical for medical regulatory compliance.</div>
+        </div>
+
+        <div class="section-header" style="margin-top: 32px;">
+          <div class="section-icon" style="background:rgba(240,80,50,0.15);">🗂️</div>
+          <div>
+            <div class="section-title">The Git Workflow</div>
+          </div>
+        </div>
+
+        <div class="diagram">
+<span class="highlight">Your Files</span>         <span class="highlight">Staging Area</span>       <span class="highlight">Local Repo</span>        <span class="highlight">Remote (GitHub)</span>
+     │                     │                    │                    │
+     │  git add file.py    │                    │                    │
+     │ <span class="arrow">──────────────────►</span>│                    │                    │
+     │                     │  git commit -m ""  │                    │
+     │                     │ <span class="arrow">──────────────────►</span>│                    │
+     │                     │                    │    git push        │
+     │                     │                    │ <span class="arrow">──────────────────►</span>│
+     │                     │                    │    git pull        │
+     │                     │                    │ <span class="arrow">◄──────────────────</span>│
+</div>
+
+        <div class="code-wrap">
+          <div class="code-header">
+            <div class="code-lang"><div class="lang-dot" style="background:#f05032"></div> Terminal — Essential Git Commands</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><span class="cm">## SETUP (do once)</span>
+git config --global user.name  <span class="str">"Your Name"</span>
+git config --global user.email <span class="str">"you@email.com"</span>
+
+<span class="cm">## START A PROJECT</span>
+git init                    <span class="cm"># initialise a new repo in current folder</span>
+git clone &lt;url&gt;             <span class="cm"># copy an existing repo from GitHub</span>
+
+<span class="cm">## DAILY WORKFLOW</span>
+git status                  <span class="cm"># see what's changed</span>
+git add analysis.ipynb      <span class="cm"># stage a specific file</span>
+git add .                   <span class="cm"># stage ALL changes</span>
+git commit -m <span class="str">"Add EDA for sales data"</span>  <span class="cm"># save a snapshot</span>
+git push origin main        <span class="cm"># send to GitHub</span>
+git pull                    <span class="cm"># get latest from teammates</span>
+
+<span class="cm">## BRANCHES — parallel timelines</span>
+git branch feature/new-model    <span class="cm"># create a branch</span>
+git checkout feature/new-model  <span class="cm"># switch to it</span>
+git checkout -b hotfix          <span class="cm"># create AND switch (shortcut)</span>
+git merge feature/new-model     <span class="cm"># bring changes back to main</span>
+
+<span class="cm">## HISTORY & UNDO</span>
+git log --oneline           <span class="cm"># see commit history</span>
+git diff                    <span class="cm"># see unstaged changes</span>
+git checkout -- file.py     <span class="cm"># discard changes to a file</span></pre>
+        </div>
+
+        <div class="info-box warning">
+          <div class="info-box-icon">⚠️</div>
+          <div><strong>Golden Rules:</strong> (1) Commit often — small commits are easier to understand. (2) Write meaningful commit messages: <code>"Fix data leakage in preprocessing"</code> not <code>"fix stuff"</code>. (3) Never force-push to shared branches.</div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-title">🌿 Branching Strategy for Data Science</div>
+          <div class="concept-body">
+            A common pattern for data science teams:<br><br>
+            • <strong>main</strong> — production-ready, always works<br>
+            • <strong>develop</strong> — integration branch for new work<br>
+            • <strong>feature/experiment-name</strong> — try a new model or approach<br><br>
+            This way, you can experiment freely on a feature branch without breaking the working model.
+          </div>
+        </div>
+
+        <div class="quiz-card" id="q5">
+          <div class="quiz-xp">+30 XP</div>
+          <div class="quiz-question">You've just finished building a new feature in your Jupyter notebook. What's the correct Git sequence to save and share your work?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="answer('q5',this,false,'❌ You can\'t push before committing — Git won\'t know what to send to GitHub!')">
+              <div class="option-letter">A</div> git push → git commit → git add
+            </div>
+            <div class="quiz-option" onclick="answer('q5',this,true,'✅ Correct! Stage changes (add) → create snapshot (commit) → send to remote (push). This is the core Git workflow!')">
+              <div class="option-letter">B</div> git add → git commit → git push
+            </div>
+            <div class="quiz-option" onclick="answer('q5',this,false,'❌ You need to add (stage) files before committing — Git doesn\'t automatically know which files you want to save.')">
+              <div class="option-letter">C</div> git commit → git add → git push
+            </div>
+            <div class="quiz-option" onclick="answer('q5',this,false,'❌ git pull fetches changes from teammates — it\'s not part of the workflow for sharing your own changes.')">
+              <div class="option-letter">D</div> git pull → git add → git commit
+            </div>
+          </div>
+          <div class="quiz-feedback" id="fb-q5"></div>
+        </div>
+
+        <div class="nav-btns">
+          <button class="btn btn-outline" onclick="showPage('conda')">← Back</button>
+          <button class="btn btn-primary" onclick="completeLesson('git'); showPage('numpy')">Next: NumPy 🔢 →</button>
+        </div>
+      </div>
+    </div><!-- /page-git -->
+
+    <!-- ═══════════════ PAGE: NUMPY ═══════════════ -->
+    <div id="page-numpy" class="page">
+
+      <div class="lesson-hero">
+        <div class="hero-tag">Lesson 4 of 5</div>
+        <div class="hero-title">🔢 NumPy</div>
+        <div class="hero-subtitle">Numerical Python — the foundation of all scientific computing in Python. Learn to work with arrays, perform vectorised operations, and handle multi-dimensional data.</div>
+        <div class="hero-meta">
+          <div class="hero-pill">⏱ ~40 min</div>
+          <div class="hero-pill">🎯 4 Quizzes</div>
+          <div class="hero-pill">⭐ 200 XP</div>
+          <div class="hero-pill">🔬 Core DS</div>
+        </div>
+      </div>
+
+      <div class="lesson-section">
+        <div class="section-header">
+          <div class="section-icon" style="background:rgba(1,50,67,0.4);">⚡</div>
+          <div>
+            <div class="section-title">Why NumPy?</div>
+            <div class="section-subtitle">100x faster than Python lists for maths</div>
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-title">⚡ The Speed Problem with Python Lists</div>
+          <div class="concept-body">
+            Python lists are flexible but <strong>slow for maths</strong>. To multiply every element by 2, you need a loop. NumPy arrays use <strong>vectorisation</strong> — the operation applies to all elements simultaneously, using optimised C code under the hood.<br><br>
+            For 1 million numbers: Python list loop ≈ <strong>500ms</strong>, NumPy ≈ <strong>2ms</strong> — 250x faster!
+          </div>
+        </div>
+
+        <div class="real-world">
+          <div class="real-world-label">🌍 Real World Example</div>
+          <div class="real-world-title">Image Processing at Instagram</div>
+          <div class="real-world-body">A 1080p photo is stored as a NumPy array of shape <code>(1080, 1920, 3)</code> — 1080 rows, 1920 columns, 3 colour channels (RGB). Instagram's filters apply NumPy operations across millions of pixels in milliseconds. Every deep learning framework (PyTorch, TensorFlow) is built on NumPy arrays.</div>
+        </div>
+
+        <!-- ARRAY VISUALISER -->
+        <div style="margin: 20px 0;">
+          <div style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 10px;">1D Array (shape: 5,) — like a single row of data:</div>
+          <div class="array-vis">
+            <div class="array-cell">10</div>
+            <div class="array-cell highlight">20</div>
+            <div class="array-cell">30</div>
+            <div class="array-cell highlight">40</div>
+            <div class="array-cell">50</div>
+          </div>
+          <div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 4px;">Index: [0] &nbsp; [1] &nbsp;&nbsp; [2] &nbsp; [3] &nbsp;&nbsp; [4]</div>
+        </div>
+
+        <div style="margin: 20px 0;">
+          <div style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 10px;">2D Array (shape: 3×4) — like a table or image slice:</div>
+          <div style="display: inline-block;">
+            <div style="display: flex; gap: 0; margin-bottom: 2px;">
+              <div class="array-cell" style="border-radius: 8px 0 0 0;">1</div>
+              <div class="array-cell highlight">2</div>
+              <div class="array-cell">3</div>
+              <div class="array-cell" style="border-radius: 0 8px 0 0;">4</div>
+            </div>
+            <div style="display: flex; gap: 0; margin-bottom: 2px;">
+              <div class="array-cell">5</div>
+              <div class="array-cell highlight">6</div>
+              <div class="array-cell">7</div>
+              <div class="array-cell">8</div>
+            </div>
+            <div style="display: flex; gap: 0;">
+              <div class="array-cell" style="border-radius: 0 0 0 8px;">9</div>
+              <div class="array-cell highlight">10</div>
+              <div class="array-cell">11</div>
+              <div class="array-cell" style="border-radius: 0 0 8px 0;">12</div>
+            </div>
+          </div>
+          <div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 4px;">arr[1, 1] = 6 (row 1, col 1)</div>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-header">
+            <div class="code-lang"><div class="lang-dot" style="background:#013243"></div> Python — NumPy Essentials</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><span class="kw">import</span> numpy <span class="kw">as</span> <span class="cls">np</span>
+
+<span class="cm">## Creating arrays</span>
+<span class="var">a</span> = <span class="cls">np</span>.array([<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span>, <span class="num">50</span>])   <span class="cm"># from list</span>
+<span class="var">z</span> = <span class="cls">np</span>.zeros((<span class="num">3</span>, <span class="num">4</span>))                <span class="cm"># 3×4 array of zeros</span>
+<span class="var">r</span> = <span class="cls">np</span>.random.rand(<span class="num">100</span>)             <span class="cm"># 100 random values 0–1</span>
+<span class="var">s</span> = <span class="cls">np</span>.arange(<span class="num">0</span>, <span class="num">100</span>, <span class="num">10</span>)           <span class="cm"># [0,10,20,...,90]</span>
+
+<span class="cm">## Array properties</span>
+<span class="fn">print</span>(<span class="var">a</span>.shape)    <span class="cm"># (5,)  ← shape</span>
+<span class="fn">print</span>(<span class="var">a</span>.dtype)    <span class="cm"># int64 ← data type</span>
+<span class="fn">print</span>(<span class="var">a</span>.ndim)     <span class="cm"># 1     ← dimensions</span>
+
+<span class="cm">## Vectorised operations (apply to ALL elements at once)</span>
+<span class="fn">print</span>(<span class="var">a</span> * <span class="num">2</span>)      <span class="cm"># [20, 40, 60, 80, 100]</span>
+<span class="fn">print</span>(<span class="var">a</span> + <span class="num">5</span>)      <span class="cm"># [15, 25, 35, 45, 55]</span>
+<span class="fn">print</span>(<span class="var">a</span> ** <span class="num">2</span>)     <span class="cm"># [100, 400, 900, 1600, 2500]</span>
+
+<span class="cm">## Slicing — just like Python lists but for N dimensions</span>
+<span class="fn">print</span>(<span class="var">a</span>[<span class="num">1</span>:<span class="num">4</span>])     <span class="cm"># [20, 30, 40] (index 1 to 3)</span>
+<span class="fn">print</span>(<span class="var">a</span>[-<span class="num">1</span>])      <span class="cm"># 50 (last element)</span>
+
+<span class="cm">## Boolean masking — powerful filtering!</span>
+<span class="var">prices</span> = <span class="cls">np</span>.array([<span class="num">10.5</span>, <span class="num">25.0</span>, <span class="num">8.2</span>, <span class="num">42.1</span>, <span class="num">15.0</span>])
+<span class="var">expensive</span> = <span class="var">prices</span>[<span class="var">prices</span> > <span class="num">15</span>]   <span class="cm"># [25.0, 42.1]</span>
+
+<span class="cm">## Statistics — built-in and fast</span>
+<span class="fn">print</span>(<span class="cls">np</span>.mean(<span class="var">prices</span>))   <span class="cm"># 20.16</span>
+<span class="fn">print</span>(<span class="cls">np</span>.std(<span class="var">prices</span>))    <span class="cm"># 12.49</span>
+<span class="fn">print</span>(<span class="cls">np</span>.max(<span class="var">prices</span>))    <span class="cm"># 42.1</span>
+<span class="fn">print</span>(<span class="cls">np</span>.argmax(<span class="var">prices</span>)) <span class="cm"># 3 (index of max)</span></pre>
+        </div>
+
+        <div class="quiz-card" id="q6">
+          <div class="quiz-xp">+40 XP</div>
+          <div class="quiz-question">You have an array of daily temperatures: <code>temps = np.array([12, 18, 22, 15, 9, 25, 30])</code><br><br>Which code gives you only the temperatures above 20°C?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="answer('q6',this,false,'❌ This filters the indices, not the temperatures. temps[temps] would try to use temperature values as indices!')">
+              <div class="option-letter">A</div> <code>temps[temps]</code>
+            </div>
+            <div class="quiz-option" onclick="answer('q6',this,false,'❌ This returns a boolean array [False, False, True, False, False, True, True] — not the actual values.')">
+              <div class="option-letter">B</div> <code>temps > 20</code>
+            </div>
+            <div class="quiz-option" onclick="answer('q6',this,true,'✅ Correct! Boolean masking: <code>temps > 20</code> creates [F,F,T,F,F,T,T], and using it as an index selects only True positions → [22, 25, 30]')">
+              <div class="option-letter">C</div> <code>temps[temps > 20]</code>
+            </div>
+            <div class="quiz-option" onclick="answer('q6',this,false,'❌ This would try to slice with a float, causing an error. Boolean masking uses a condition, not a number.')">
+              <div class="option-letter">D</div> <code>temps[20:]</code>
+            </div>
+          </div>
+          <div class="quiz-feedback" id="fb-q6"></div>
+        </div>
+
+        <div class="nav-btns">
+          <button class="btn btn-outline" onclick="showPage('git')">← Back</button>
+          <button class="btn btn-primary" onclick="completeLesson('numpy'); showPage('pandas')">Next: Pandas 🐼 →</button>
+        </div>
+      </div>
+    </div><!-- /page-numpy -->
+
+    <!-- ═══════════════ PAGE: PANDAS ═══════════════ -->
+    <div id="page-pandas" class="page">
+
+      <div class="lesson-hero">
+        <div class="hero-tag">Lesson 5 of 5 ⭐</div>
+        <div class="hero-title">🐼 Pandas</div>
+        <div class="hero-subtitle">The Swiss Army knife of data manipulation. Load, clean, explore, transform, and merge datasets with ease. Every data scientist uses Pandas every single day.</div>
+        <div class="hero-meta">
+          <div class="hero-pill">⏱ ~60 min</div>
+          <div class="hero-pill">🎯 5 Quizzes</div>
+          <div class="hero-pill">⭐ 280 XP</div>
+          <div class="hero-pill">🔬 Core DS</div>
+        </div>
+      </div>
+
+      <div class="lesson-section">
+        <div class="section-header">
+          <div class="section-icon" style="background:rgba(21,4,88,0.4);">🗃️</div>
+          <div>
+            <div class="section-title">DataFrames & Series</div>
+            <div class="section-subtitle">The two core data structures</div>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="concept-card">
+            <div class="concept-title">📋 Series</div>
+            <div class="concept-body">A <strong>1D labelled array</strong>. Like a single column in a spreadsheet. Has an index (labels) and values.</div>
+          </div>
+          <div class="concept-card">
+            <div class="concept-title">📊 DataFrame</div>
+            <div class="concept-body">A <strong>2D labelled table</strong>. Like a spreadsheet or SQL table. Multiple Series sharing the same index.</div>
+          </div>
+        </div>
+
+        <div class="real-world">
+          <div class="real-world-label">🌍 Real World Example</div>
+          <div class="real-world-title">UK COVID-19 Vaccination Data</div>
+          <div class="real-world-body">The NHS published COVID vaccination data as a CSV. A data scientist loads it with <code>pd.read_csv('vaccinations.csv')</code> and instantly has a DataFrame with columns like <em>date, doses_given, region, age_group</em>. From there, groupby operations reveal which regions lagged behind, filtering finds under-vaccinated demographics, and merge joins it with population data to calculate coverage percentages.</div>
+        </div>
+
+        <!-- DATAFRAME VISUALISER -->
+        <div style="overflow-x: auto; margin: 20px 0;">
+          <div style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 8px;">Example DataFrame — UK Customer Data:</div>
+          <table class="df-table">
+            <thead>
+              <tr><th></th><th>name</th><th>age</th><th>city</th><th>salary</th><th>is_premium</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="idx">0</td><td>Alice</td><td>28</td><td>London</td><td>52000</td><td>True</td></tr>
+              <tr><td class="idx">1</td><td>Bob</td><td>35</td><td>Manchester</td><td>48000</td><td>False</td></tr>
+              <tr><td class="idx">2</td><td>Carol</td><td>42</td><td>London</td><td>71000</td><td>True</td></tr>
+              <tr><td class="idx">3</td><td>Dave</td><td>26</td><td>Bristol</td><td>38000</td><td>False</td></tr>
+              <tr><td class="idx">4</td><td>Eve</td><td>31</td><td>London</td><td>65000</td><td>True</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-header">
+            <div class="code-lang"><div class="lang-dot" style="background:#150458"></div> Python — Pandas Fundamentals</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><span class="kw">import</span> pandas <span class="kw">as</span> <span class="cls">pd</span>
+
+<span class="cm">## Load data</span>
+<span class="var">df</span> = <span class="cls">pd</span>.read_csv(<span class="str">"customers.csv"</span>)
+
+<span class="cm">## Explore</span>
+<span class="var">df</span>.head()          <span class="cm"># first 5 rows</span>
+<span class="var">df</span>.shape           <span class="cm"># (rows, columns)</span>
+<span class="var">df</span>.info()          <span class="cm"># dtypes, null counts</span>
+<span class="var">df</span>.describe()      <span class="cm"># stats: mean, std, min, max</span>
+
+<span class="cm">## Select columns</span>
+<span class="var">df</span>[<span class="str">"salary"</span>]               <span class="cm"># single column → Series</span>
+<span class="var">df</span>[[<span class="str">"name"</span>, <span class="str">"salary"</span>]]     <span class="cm"># multiple columns → DataFrame</span>
+
+<span class="cm">## Filter rows — boolean masking (like NumPy!)</span>
+<span class="var">london_customers</span> = <span class="var">df</span>[<span class="var">df</span>[<span class="str">"city"</span>] == <span class="str">"London"</span>]
+<span class="var">premium_london</span>   = <span class="var">df</span>[(<span class="var">df</span>[<span class="str">"city"</span>] == <span class="str">"London"</span>) & (<span class="var">df</span>[<span class="str">"is_premium"</span>] == <span class="kw">True</span>)]
+
+<span class="cm">## Sorting</span>
+<span class="var">df</span>.sort_values(<span class="str">"salary"</span>, ascending=<span class="kw">False</span>)
+
+<span class="cm">## New columns</span>
+<span class="var">df</span>[<span class="str">"salary_monthly"</span>] = <span class="var">df</span>[<span class="str">"salary"</span>] / <span class="num">12</span>
+<span class="var">df</span>[<span class="str">"is_senior"</span>] = <span class="var">df</span>[<span class="str">"age"</span>] >= <span class="num">35</span></pre>
+        </div>
+
+        <div class="section-header" style="margin-top: 32px;">
+          <div class="section-icon" style="background:rgba(21,4,88,0.4);">🧹</div>
+          <div>
+            <div class="section-title">Data Cleaning</div>
+            <div class="section-subtitle">Real data is messy — fix it before analysis</div>
+          </div>
+        </div>
+
+        <div class="info-box warning">
+          <div class="info-box-icon">⚠️</div>
+          <div><strong>Data Quality Fact:</strong> Data scientists spend ~80% of their time on data cleaning. Pandas makes this manageable — but you still need to know what you're looking for: missing values, duplicates, wrong types, outliers.</div>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-header">
+            <div class="code-lang"><div class="lang-dot" style="background:#150458"></div> Python — Data Cleaning</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><span class="cm">## Missing values</span>
+<span class="var">df</span>.isnull().sum()              <span class="cm"># count nulls per column</span>
+<span class="var">df</span>.dropna()                    <span class="cm"># drop ALL rows with any null</span>
+<span class="var">df</span>[<span class="str">"age"</span>].fillna(<span class="var">df</span>[<span class="str">"age"</span>].mean())  <span class="cm"># fill nulls with mean</span>
+
+<span class="cm">## Duplicates</span>
+<span class="var">df</span>.duplicated().sum()          <span class="cm"># count duplicate rows</span>
+<span class="var">df</span>.drop_duplicates()           <span class="cm"># remove them</span>
+
+<span class="cm">## Data types</span>
+<span class="var">df</span>[<span class="str">"salary"</span>] = <span class="var">df</span>[<span class="str">"salary"</span>].astype(<span class="fn">float</span>)
+<span class="var">df</span>[<span class="str">"date"</span>] = <span class="cls">pd</span>.to_datetime(<span class="var">df</span>[<span class="str">"date"</span>])  <span class="cm"># parse dates</span>
+
+<span class="cm">## String cleaning</span>
+<span class="var">df</span>[<span class="str">"city"</span>] = <span class="var">df</span>[<span class="str">"city"</span>].str.strip().str.title()  <span class="cm"># "  london " → "London"</span>
+
+<span class="cm">## Rename columns</span>
+<span class="var">df</span>.rename(columns={<span class="str">"salary"</span>: <span class="str">"annual_salary"</span>}, inplace=<span class="kw">True</span>)</pre>
+        </div>
+
+        <div class="section-header" style="margin-top: 32px;">
+          <div class="section-icon" style="background:rgba(21,4,88,0.4);">📊</div>
+          <div>
+            <div class="section-title">GroupBy — Split, Apply, Combine</div>
+            <div class="section-subtitle">The most powerful Pandas operation</div>
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-title">🔬 GroupBy: The Excel PivotTable but better</div>
+          <div class="concept-body">
+            GroupBy splits your data into groups, applies a function to each group, then combines the results. The pattern is: <strong>split → apply → combine</strong>.<br><br>
+            Example: "What's the average salary per city?" — group by <code>city</code>, then take the mean of <code>salary</code>.
+          </div>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-header">
+            <div class="code-lang"><div class="lang-dot" style="background:#150458"></div> Python — GroupBy & Merge</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><span class="cm">## GroupBy — split-apply-combine</span>
+<span class="var">avg_salary_by_city</span> = <span class="var">df</span>.groupby(<span class="str">"city"</span>)[<span class="str">"salary"</span>].mean()
+<span class="cm"># city</span>
+<span class="cm"># Bristol       38000</span>
+<span class="cm"># London        62666</span>
+<span class="cm"># Manchester    48000</span>
+
+<span class="cm">## Multiple aggregations at once</span>
+<span class="var">city_stats</span> = <span class="var">df</span>.groupby(<span class="str">"city"</span>).agg({
+    <span class="str">"salary"</span>: [<span class="str">"mean"</span>, <span class="str">"max"</span>, <span class="str">"count"</span>],
+    <span class="str">"age"</span>:    <span class="str">"mean"</span>
+})
+
+<span class="cm">## Merge (like SQL JOIN)</span>
+<span class="var">orders</span> = <span class="cls">pd</span>.read_csv(<span class="str">"orders.csv"</span>)
+<span class="var">merged</span> = <span class="cls">pd</span>.merge(<span class="var">df</span>, <span class="var">orders</span>, on=<span class="str">"customer_id"</span>, how=<span class="str">"left"</span>)
+<span class="cm">#  how = "inner", "left", "right", "outer"</span>
+
+<span class="cm">## Apply custom function to each row/column</span>
+<span class="kw">def</span> <span class="fn">salary_band</span>(<span class="var">salary</span>):
+    <span class="kw">if</span> <span class="var">salary</span> < <span class="num">40000</span>: <span class="kw">return</span> <span class="str">"Junior"</span>
+    <span class="kw">elif</span> <span class="var">salary</span> < <span class="num">60000</span>: <span class="kw">return</span> <span class="str">"Mid"</span>
+    <span class="kw">else</span>: <span class="kw">return</span> <span class="str">"Senior"</span>
+
+<span class="var">df</span>[<span class="str">"band"</span>] = <span class="var">df</span>[<span class="str">"salary"</span>].apply(<span class="fn">salary_band</span>)</pre>
+        </div>
+
+        <div class="quiz-card" id="q7">
+          <div class="quiz-xp">+50 XP</div>
+          <div class="quiz-question">You have a DataFrame of sales with columns <code>product</code>, <code>region</code>, and <code>revenue</code>. Which code finds the total revenue per product?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="answer('q7',this,false,'❌ This would sum the revenue column as a whole — not broken down by product.')">
+              <div class="option-letter">A</div> <code>df["revenue"].sum()</code>
+            </div>
+            <div class="quiz-option" onclick="answer('q7',this,true,'✅ Correct! GroupBy splits data by product, then .sum() adds up revenue within each group. Classic split-apply-combine!')">
+              <div class="option-letter">B</div> <code>df.groupby("product")["revenue"].sum()</code>
+            </div>
+            <div class="quiz-option" onclick="answer('q7',this,false,'❌ You have the logic right but the syntax is backwards — groupby goes on the DataFrame, not on the column.')">
+              <div class="option-letter">C</div> <code>df["revenue"].groupby("product").sum()</code>
+            </div>
+            <div class="quiz-option" onclick="answer('q7',this,false,'❌ This groups by region, not product — you\'d get revenue per region instead.')">
+              <div class="option-letter">D</div> <code>df.groupby("region")["revenue"].sum()</code>
+            </div>
+          </div>
+          <div class="quiz-feedback" id="fb-q7"></div>
+        </div>
+
+        <div class="quiz-card" id="q8">
+          <div class="quiz-xp">+50 XP</div>
+          <div class="quiz-question">A dataset has 1,000 rows and you run <code>df.isnull().sum()</code> and see <code>age: 45</code>. What does this mean and what should you do?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="answer('q8',this,false,'❌ This assumes the 45 missing values are all the same pattern — you\'d lose the entire dataset by filling the average column, not just null rows.')">
+              <div class="option-letter">A</div> 45 rows are correct; fill all with the column average
+            </div>
+            <div class="quiz-option" onclick="answer('q8',this,false,'❌ With 4.5% missing data, dropping all 45 rows might lose important patterns. Consider filling (imputing) instead.')">
+              <div class="option-letter">B</div> Drop all 45 rows immediately using dropna()
+            </div>
+            <div class="quiz-option" onclick="answer('q8',this,true,'✅ Correct! 45/1000 = 4.5% missing. Investigate the pattern first (are they random or systematic?), then choose between dropping, mean/median imputation, or a smarter method.')">
+              <div class="option-letter">C</div> 45 rows have missing age values (4.5%); investigate why, then decide whether to drop or impute
+            </div>
+            <div class="quiz-option" onclick="answer('q8',this,false,'❌ isnull().sum() counts null values per column — 45 is the count, not the sum of the age column.')">
+              <div class="option-letter">D</div> The age column sums to 45
+            </div>
+          </div>
+          <div class="quiz-feedback" id="fb-q8"></div>
+        </div>
+
+        <div class="badge-earned" id="badge-pandas">
+          <div class="badge-icon">🐼</div>
+          <div class="badge-title">Data Wrangler</div>
+          <div class="badge-subtitle">Mastered Pandas — DataFrames, Cleaning, GroupBy & Merge!</div>
+        </div>
+
+        <div class="badge-earned" id="badge-module1" style="background: linear-gradient(135deg, #6c63ff, #ff6584);">
+          <div class="badge-icon">🏆</div>
+          <div class="badge-title" style="color:white;">Module 1 Complete!</div>
+          <div class="badge-subtitle" style="color:rgba(255,255,255,0.8);">You've completed the Data Science Toolbox. Ready for Machine Learning! 🚀</div>
+        </div>
+
+        <div class="nav-btns">
+          <button class="btn btn-outline" onclick="showPage('numpy')">← Back</button>
+          <button class="btn btn-primary" onclick="completeLesson('pandas')">🎉 Complete Module 1!</button>
+        </div>
+      </div>
+    </div><!-- /page-pandas -->
+
+  </main>
+</div><!-- /app -->
+
+<!-- TOAST -->
+<div id="toast">
+  <span id="toast-icon">⭐</span>
+  <span id="toast-msg"></span>
+</div>
+
+<script>
+// ── STATE ──
+const state = {
+  xp: 0,
+  level: 1,
+  score: 0,
+  streak: 0,
+  completedLessons: new Set(),
+  answeredQuizzes: new Set(),
+  badges: []
+};
+
+const XP_PER_LEVEL = 200;
+const LEVEL_NAMES = ['Novice', 'Apprentice', 'Analyst', 'Engineer', 'Scientist', 'Expert'];
+const LESSON_XP = { python: 60, conda: 40, git: 50, numpy: 60, pandas: 80 };
+
+// ── XP SYSTEM ──
+function addXP(amount, label) {
+  state.xp += amount;
+  state.score += amount;
+  state.streak++;
+
+  const level = Math.floor(state.xp / XP_PER_LEVEL) + 1;
+  if (level > state.level) {
+    state.level = level;
+    showToast(`🎉 Level Up! You're now Level ${state.level}!`, '🎊');
+  }
+
+  updateUI();
+  if (label) showToast(`+${amount} XP — ${label}`, '⭐');
+}
+
+function updateUI() {
+  const xpInLevel = state.xp % XP_PER_LEVEL;
+  const pct = (xpInLevel / XP_PER_LEVEL) * 100;
+  document.getElementById('xp-bar').style.width = pct + '%';
+  document.getElementById('xp-label').textContent = `${state.xp} XP | Lv ${state.level} — ${xpInLevel}/${XP_PER_LEVEL}`;
+  document.getElementById('level-badge').textContent = `Lv ${state.level} ${LEVEL_NAMES[Math.min(state.level-1, LEVEL_NAMES.length-1)]}`;
+  document.getElementById('streak-count').textContent = state.streak;
+  document.getElementById('total-score').textContent = state.score;
+}
+
+// ── QUIZ SYSTEM ──
+function answer(quizId, optionEl, isCorrect, feedback) {
+  if (state.answeredQuizzes.has(quizId)) return;
+  state.answeredQuizzes.add(quizId);
+
+  const card = document.getElementById(quizId);
+  const options = card.querySelectorAll('.quiz-option');
+  const fbEl = document.getElementById('fb-' + quizId);
+
+  options.forEach(o => o.classList.add('locked'));
+
+  const xpMatch = card.querySelector('.quiz-xp').textContent.match(/\d+/);
+  const xpReward = xpMatch ? parseInt(xpMatch[0]) : 30;
+
+  if (isCorrect) {
+    optionEl.classList.add('correct');
+    fbEl.className = 'quiz-feedback correct-fb show';
+    fbEl.innerHTML = feedback;
+    addXP(xpReward, 'Correct answer!');
+    confetti(optionEl);
+  } else {
+    optionEl.classList.add('wrong');
+    fbEl.className = 'quiz-feedback wrong-fb show';
+    fbEl.innerHTML = feedback;
+    state.streak = 0;
+    updateUI();
+    showToast('Keep going — read the explanation and try the next one!', '💪');
+  }
+}
+
+// ── LESSON COMPLETE ──
+function completeLesson(lesson) {
+  if (state.completedLessons.has(lesson)) return;
+  state.completedLessons.add(lesson);
+
+  const xp = LESSON_XP[lesson] || 50;
+  addXP(xp, `${lesson.charAt(0).toUpperCase()+lesson.slice(1)} lesson complete!`);
+
+  document.getElementById('prog-' + lesson).style.width = '100%';
+  document.getElementById('nav-' + lesson).classList.add('completed');
+
+  // Show badges
+  if (lesson === 'python') {
+    const badge = document.getElementById('badge-python');
+    if (badge) { badge.classList.add('show'); unlockBadge('🐍'); }
+  }
+  if (lesson === 'pandas') {
+    const badge1 = document.getElementById('badge-pandas');
+    const badge2 = document.getElementById('badge-module1');
+    if (badge1) badge1.classList.add('show');
+    if (badge2) badge2.classList.add('show');
+    unlockBadge('🐼');
+    unlockBadge('🏆');
+  }
+}
+
+function unlockBadge(icon) {
+  if (!state.badges.includes(icon)) {
+    state.badges.push(icon);
+    const bd = document.getElementById('badges-display');
+    bd.textContent = state.badges.join('') + '🏆🥇🎯🚀⚡'.slice(state.badges.length * 2).split('').filter((_,i)=>i%2===0).join('');
+    // simpler:
+    const all = ['🏆','🥇','🎯','🚀','⚡'];
+    bd.innerHTML = all.map((b,i) =>
+      `<span style="color:${state.badges[i] ? 'inherit' : 'var(--border)'};${state.badges[i]?'filter:drop-shadow(0 0 8px gold)':''}">${b}</span>`
+    ).join('');
+  }
+}
+
+// ── PAGE NAVIGATION ──
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.module-item').forEach(n => n.classList.remove('active'));
+
+  document.getElementById('page-' + page).classList.add('active');
+  document.getElementById('nav-' + page).classList.add('active');
+
+  // Update progress mini bar to show partial on visit
+  const prog = document.getElementById('prog-' + page);
+  if (!state.completedLessons.has(page) && prog.style.width === '0%') {
+    prog.style.width = '20%';
+  }
+
+  window.scrollTo(0, 0);
+  document.getElementById('main').scrollTop = 0;
+}
+
+// ── TOAST ──
+let toastTimer;
+function showToast(msg, icon = '⭐') {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  document.getElementById('toast-icon').textContent = icon;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ── COPY CODE ──
+function copyCode(btn) {
+  const pre = btn.closest('.code-wrap').querySelector('pre');
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
+
+// ── CONFETTI MINI ──
+function confetti(el) {
+  const rect = el.getBoundingClientRect();
+  const colours = ['#6c63ff','#43e97b','#f7971e','#ff6584','#fff'];
+  for (let i = 0; i < 20; i++) {
+    const dot = document.createElement('div');
+    dot.style.cssText = `
+      position:fixed;
+      width:8px;height:8px;border-radius:50%;
+      background:${colours[Math.floor(Math.random()*colours.length)]};
+      left:${rect.left + rect.width/2}px;
+      top:${rect.top}px;
+      pointer-events:none;
+      z-index:9999;
+      transition:all 1s cubic-bezier(0,.9,.57,1);
+    `;
+    document.body.appendChild(dot);
+    requestAnimationFrame(() => {
+      dot.style.left = (rect.left + rect.width/2 + (Math.random()-0.5)*200) + 'px';
+      dot.style.top = (rect.top - 100 - Math.random()*100) + 'px';
+      dot.style.opacity = '0';
+      dot.style.transform = `scale(${Math.random()*2})`;
+    });
+    setTimeout(() => dot.remove(), 1100);
+  }
+}
+
+// ── LAB GUIDE BANNER ──
+function initLabBanner() {
+  if (localStorage.getItem('lab-banner-dismissed') === '1') return;
+
+  const banner = document.createElement('div');
+  banner.id = 'lab-banner';
+  banner.innerHTML = `
+    <div id="lab-banner-inner">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;">
+        <div style="font-size:1.6rem;flex-shrink:0;">🧪</div>
+        <div style="flex:1;min-width:200px;">
+          <div style="font-weight:700;font-size:0.95rem;margin-bottom:6px;">How to use the code examples</div>
+          <div style="font-size:0.85rem;line-height:1.6;color:rgba(255,255,255,0.85);">
+            The code blocks throughout this course are <strong>not runnable here</strong> — they are reference examples to read and learn from.<br>
+            To <strong>run and experiment</strong> with the code, open a separate <strong>Jupyter Notebook</strong> (or JupyterLab) session alongside this page:
+          </div>
+          <ol style="font-size:0.83rem;line-height:1.8;margin:8px 0 0 16px;color:rgba(255,255,255,0.85);">
+            <li>Activate your conda environment: <code style="background:rgba(0,0,0,0.3);padding:1px 6px;border-radius:4px;">conda activate ds_env</code></li>
+            <li>Launch Jupyter: <code style="background:rgba(0,0,0,0.3);padding:1px 6px;border-radius:4px;">jupyter notebook</code></li>
+            <li>Create a new notebook, then <strong>copy → paste → run</strong> any code block you want to explore</li>
+            <li>Use the <strong>📋 Copy</strong> button on each code block to grab the code instantly</li>
+          </ol>
+          <div style="margin-top:10px;font-size:0.8rem;color:rgba(255,255,255,0.6);">💡 Tip: Work through the lesson here first to understand the concept, then experiment in Jupyter to build muscle memory.</div>
+        </div>
+        <button onclick="dismissLabBanner()" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:0.82rem;flex-shrink:0;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">Got it ✓</button>
+      </div>
+    </div>`;
+  document.getElementById('main').prepend(banner);
+}
+
+function dismissLabBanner() {
+  const b = document.getElementById('lab-banner');
+  if (b) { b.style.opacity = '0'; b.style.transform = 'translateY(-8px)'; setTimeout(() => b.remove(), 300); }
+  localStorage.setItem('lab-banner-dismissed', '1');
+}
+
+// ── JUPYTER PILL on every code block ──
+function injectJupyterPills() {
+  document.querySelectorAll('.code-header').forEach(hdr => {
+    if (hdr.querySelector('.jupyter-pill')) return;
+    const pill = document.createElement('span');
+    pill.className = 'jupyter-pill';
+    pill.innerHTML = '▶ Run in Jupyter';
+    pill.title = 'Copy this code and paste it into a Jupyter Notebook cell to run it';
+    hdr.insertBefore(pill, hdr.querySelector('.copy-btn'));
+  });
+}
+
+// ── INIT ──
+initLabBanner();
+injectJupyterPills();
+showToast('Welcome to Module 1! 🎉 Complete quizzes to earn XP and level up!', '👋');
+</script>
+</body>
+</html>

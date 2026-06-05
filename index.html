@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Level 7 AI Fellowship — Course Hub</title>
+<style>
+:root{
+  --bg:#06080f;--card:#0d1117;--border:#1e2433;
+  --txt:#e2e8f0;--muted:#64748b;--success:#10b981;--warn:#f59e0b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+
+/* HERO */
+.hero{
+  background:linear-gradient(160deg,#060818 0%,#0f0a1e 40%,#06111a 100%);
+  border-bottom:1px solid var(--border);
+  padding:3.5rem 2rem 2.5rem;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(99,102,241,.15),transparent);
+  pointer-events:none;
+}
+.hero h1{
+  font-size:clamp(2rem,5vw,3.2rem);font-weight:900;letter-spacing:-.02em;
+  background:linear-gradient(135deg,#818cf8 0%,#38bdf8 40%,#34d399 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:.75rem;
+}
+.hero p{color:var(--muted);font-size:1.1rem;max-width:600px;margin:0 auto 1.5rem}
+.hero .stats{display:flex;justify-content:center;gap:2.5rem;flex-wrap:wrap;margin-top:1.5rem}
+.stat{text-align:center}
+.stat .num{font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,#818cf8,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat .lbl{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+
+/* SEARCH */
+.search-bar{
+  max-width:480px;margin:2rem auto 0;
+  display:flex;gap:.5rem;
+}
+.search-bar input{
+  flex:1;padding:.65rem 1rem;background:var(--card);border:1px solid var(--border);
+  border-radius:.5rem;color:var(--txt);font-size:.95rem;outline:none;
+}
+.search-bar input:focus{border-color:#818cf8}
+.search-bar input::placeholder{color:var(--muted)}
+
+/* MAIN */
+main{max-width:1100px;margin:0 auto;padding:2.5rem 1.5rem}
+
+/* FILTER PILLS */
+.filters{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem}
+.pill{padding:.35rem .9rem;border-radius:999px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:.8rem;cursor:pointer;transition:all .2s}
+.pill.active{background:#818cf8;border-color:#818cf8;color:#fff}
+.pill:hover:not(.active){border-color:#818cf8;color:#818cf8}
+
+/* MODULE GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem}
+
+/* MODULE CARD */
+.mod-card{
+  background:var(--card);border:1px solid var(--border);border-radius:.85rem;
+  overflow:hidden;transition:all .25s;position:relative;
+  display:flex;flex-direction:column;
+  text-decoration:none;color:inherit;
+}
+.mod-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.5);border-color:var(--accent)}
+.mod-card.hidden{display:none}
+
+.card-top{padding:1.25rem 1.25rem .75rem;position:relative}
+.card-top .module-num{
+  font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:.35rem;
+}
+.card-top h2{font-size:1.1rem;font-weight:700;line-height:1.3;margin-bottom:.5rem;color:var(--txt)}
+.card-top p{font-size:.83rem;color:var(--muted);line-height:1.5}
+
+.card-icon{
+  position:absolute;top:1rem;right:1.1rem;
+  font-size:2rem;opacity:.85;
+}
+
+.card-bottom{
+  margin-top:auto;padding:.85rem 1.25rem;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:.5rem;
+  background:rgba(0,0,0,.15);
+}
+.tags{display:flex;gap:.35rem;flex-wrap:wrap}
+.tag{padding:.2rem .5rem;border-radius:.3rem;font-size:.7rem;font-weight:600;letter-spacing:.03em}
+
+.open-btn{
+  padding:.4rem .9rem;border-radius:.4rem;font-size:.8rem;font-weight:700;
+  background:var(--accent);color:#fff;border:none;cursor:pointer;
+  white-space:nowrap;transition:opacity .2s;text-decoration:none;display:inline-block;
+}
+.open-btn:hover{opacity:.85}
+
+/* ACCENT COLORS per module group */
+.mod-card[data-group="foundations"]{ --accent:#818cf8 }
+.mod-card[data-group="ml"]{          --accent:#38bdf8 }
+.mod-card[data-group="advanced"]{    --accent:#34d399 }
+.mod-card[data-group="deep"]{        --accent:#fb923c }
+.mod-card[data-group="applied"]{     --accent:#a78bfa }
+
+/* PROGRESS BAR */
+.progress-wrap{height:3px;background:var(--border)}
+.progress-bar{height:3px;background:linear-gradient(90deg,var(--accent),var(--accent));border-radius:0}
+
+/* SECTION HEADING */
+.section-heading{
+  font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--muted);margin:2rem 0 1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);
+}
+
+/* FOOTER */
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.82rem;border-top:1px solid var(--border);margin-top:3rem}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Level 7 AI Fellowship</h1>
+  <p>12 interactive modules from Python fundamentals to neural networks, explainability, and beyond.</p>
+  <div class="stats">
+    <div class="stat"><div class="num">12</div><div class="lbl">Modules</div></div>
+    <div class="stat"><div class="num">60+</div><div class="lbl">Lessons</div></div>
+    <div class="stat"><div class="num">120</div><div class="lbl">Quizzes</div></div>
+    <div class="stat"><div class="num">80+</div><div class="lbl">Interactive Demos</div></div>
+  </div>
+
+  <!-- Search -->
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search modules… e.g. SHAP, neural net, clustering" oninput="filterModules()">
+  </div>
+</div>
+
+<main>
+
+  <!-- Filter pills -->
+  <div class="filters">
+    <button class="pill active" onclick="setFilter('all',this)">All Modules</button>
+    <button class="pill" onclick="setFilter('foundations',this)">🛠️ Foundations</button>
+    <button class="pill" onclick="setFilter('ml',this)">🤖 Machine Learning</button>
+    <button class="pill" onclick="setFilter('advanced',this)">🔬 Advanced ML</button>
+    <button class="pill" onclick="setFilter('deep',this)">🧠 Deep Learning</button>
+    <button class="pill" onclick="setFilter('applied',this)">⚡ Applied</button>
+  </div>
+
+  <!-- MODULE GRID -->
+  <div class="grid" id="moduleGrid">
+
+    <!-- M1 -->
+    <a class="mod-card" data-group="foundations"
+       data-keywords="python pandas numpy jupyter git data science toolbox tools"
+       href="module1-interactive/data-science-toolbox.html">
+      <div class="progress-wrap"><div class="progress-bar" style="width:100%"></div></div>
+      <div class="card-top">
+        <div class="module-num">Module 01</div>
+        <div class="card-icon">🛠️</div>
+        <h2>Data Science Tool Box</h2>
+        <p>Python, Pandas, NumPy, Jupyter, Git & GitHub — the essential toolkit for every data scientist.</p>
+      </div>
+      <div class="card-bottom">
+        <div class="tags">
+          <span class="tag" style="background:#818cf820;color:#818cf8">Python</span>
+          <span class="tag" style="background:#818cf820;color:#818cf8">Pandas</span>
+          <span class="tag" style="background:#818cf820;color:#818cf8">Git</span>
+        </div>
+        <span class="open-btn">Open →</span>
+      </div>
+    </a>
+
+    <!-- M2 -->
+    <a class="mod-card" data-group="foundations"
+       data-keywords="machine learning intro supervised unsupervised regression classification bias variance overfitting"
+       href="module2-interactive/intro-to-machine-learning.html">
+      <div class="progress-wrap"><div class="progress-bar" style="width:100%"></div></div>
+      <div class="card-top">
+        <div class="module-num">Module 02</div>
+        <div class="card-icon">🤖</div>
+        <h2>Intro to Machine Learning</h2>
+        <p>Core ML concepts — supervised vs unsupervised, bias-variance tradeoff, the ML pipeline, and feature engineering.</p>
+      </div>
+      <div class="card-bottom">
+        <div class="tags">
+          <span class="tag" style="background:#818cf820;color:#818cf8">ML Concepts</span>
+          <span class="tag" style="background:#818cf820;color:#818cf8">Regression</span>
+        </div>
+        <span class="open-btn">Open →</span>
+      </div>
+    </a>
+
+    <!-- M3 -->
+    <a class="mod-card" data-group="foundations"
+       data-keywords="product management AI products roadmap metrics OKR user research agile PRD"
+       href="module3-interactive/product-management.html">
+      <div class="progress-wrap"><div class="progress-bar" style="width:100%"></div></div>
+      <div class="card-top">
+        <div class="module-num">Module 03</div>
+        <div class="card-icon">📋</div>
+        <h2>Product Management</h2>
+        <p>Building AI products — product thinking, roadmaps, OKRs, user research, and communicating with stakeholders.</p>
+      </div>
+      <div class="card-bottom">
+        <div class="tags">
+          <span class="tag" style="background:#818cf820;color:#818cf8">Strategy</span>
+          <span class="tag" style="background:#818cf820;color:#818cf8">OKRs</span>
+        </div>
+        <span class="open-btn">Open →</span>
+      </div>
+    </a>
+
+    <!-- M4 -->
+    <a class="mod-card" data-group="ml"
+       data-keywords="supervised classification logistic regression KNN SVM decision tree ROC AUC precision recall"
+       href="module4-interactive/supervised-classification.html">
+      <div class="progress-wrap"><div class="progress-bar" style="width:100%"></div></div>
+      <div class="card-top">
+        <div class="module-num">Module 04</div>
+        <div class="card-icon">🎯</div>
+        <h2>Supervised Classification</h2>
+        <p>Logistic regression, KNN, SVM, decision trees, ROC curves, precision-recall, and classification metrics.</p>
+      </div>
+      <div class="card-bottom">
+        <div class="tags">
+          <span class="tag" style="background:#38bdf820;color:#38bdf8">Logistic Reg</span>
+          <span class="tag" style="background:#38bdf820;color:#38bdf8">ROC / AUC</span>
+        </div>
+        <span class="open-btn">Open →</span>
+      </div>
+    </a>
+
+    <!-- M5 -->
+    <a class="mod-card" data-group="ml"
+       data-keywords="ensemble random forest boosting bagging XGBoost gradient boosting feature importance"
+       href="module5-interactive/ensemble-methods.html">
+      <div class="progress-wrap"><div class="progress-bar" style="width:100%"></div></div>
+      <div class="card-top">
+        <div class="module-num">Module 05</div>
+        <div class="card-icon">🌲</div>
+        <h2>Ensemble Methods</h2>
+        <p>Random forests, gradient boosting, bagging vs boosting, XGBoost, and feature importance from tree models.</p>
+      </div>
+      <div class="card-bottom">
+        <div class="tags">
+          <span class="tag" style="background:#38bdf820;color:#38bdf8">Random Forest</span>
+          <span class="tag" style="background:#38bdf820;color:#38bdf8">XGBoost</span>
+        </div>
+        <span class="open-btn">Open →</span>
+      </div>
+    </a>
+
+    <!-- M6 -->
+    <a class="mod-card" data-group="ml"
+       data-keywords="model evaluation cross validation hyperparameter tuning regularisation class imbalance SMOTE"
+       href="module6-interactive/pragmatic-model-evaluation.html">
+      <div class="progress-wrap"><div class="progress-bar" style="width:100%"></div></div>
+      <div class="card-top">
+        <div class="module-num">Module 06</div>
+        <div class="card-icon">📊</div>
+        <h2>Pragmatic Model Evaluation</h2>
+        <p>Cross-validation strategies, hyperparameter tuning, regularisation, class imbalance, and SMOTE.</p>
+      </div>
+      <div class="card-bottom">
+        <div class="tags">
+          <span class="tag" style="background:#38bdf820;color:#38bdf8">Evaluation</span>
+          <span class="tag" style="background:#38bdf820;color:#38bdf8">Tuning</span>
+        </div>
+        <span class="open-btn">Open →</span>
+      </div>
+    </a>
+
+    <!-- M7 -->
+    <a class="mod-card" data-group="advanced"
+       data-keywords="unsupervised learning clustering k-means DBSCAN PCA dimensionality reduction t-SNE"
+       href="module7-interactive/unsupervised-learning.html">
+      <div class="progress-wrap"><div class="progress-bar" style="width:100%"></div></div>
+      <div class="card-top">
+        <div class="module-num">Module 07</div>
+        <div class="card-icon">🔵</div>
+        <h2>Unsupervised Learning</h2>
+        <p>K-means, DBSCAN, hierarchical clustering, PCA, t-SNE, and dimensionality reduction techniques.</p>
+      </div>
+      <div class="card-bottom">
+        <div class="tags">
+          <span class="tag" style="background:#34d39920;color:#34d399">K-Means</span>
+          <span class="tag" style="background:#34d39920;color:#34d399">PCA</span>
+          <span class="tag" style="background:#34d39920;color:#34d399">t-SNE</span>
+        </div>
+        <span class="open-btn">Open →</span>
+      </div>
+    </a>
+
+    <!-- M8 -->
+    <a class="mod-card" data-group="advanced"
+       data-keywords="AI landscape history deep learning LLM GPT generative AI ethics neural networks transformers"
+       href="module8-interactive/ai-landscape.html">
+      <div class="progress-wrap"><div class="progress-bar" style="width:100%"></div></div>
+      <div class="card-top">
+        <div class="module-num">Module 08</div>
+        <div class="card-icon">🌍</div>
+        <h2>The AI Landscape</h2>
+        <p>AI history, ML vs DL, neural networks, LLMs & generative AI, and AI ethics — the big picture.</p>
+      </div>
+      <div class="card-bottom">
+        <div class="tags">
+          <span class="tag" style="background:#34d39920;color:#34d399">LLMs</span>
+          <span class="tag" style="background:#34d39920;color:#34d399">Generative AI</span>
+          <span class="tag" style="background:#34d39920;color:#34d399">Ethics</span>
+        </div>
+        <span class="open-btn">Open →</span>
+      </div>
+    </a>
+
+    <!-- M9 -->
+    <a class="mod-card" data-group="advanced"
+       data-keywords="time series ARIMA SARIMA forecasting seasonal decomposition ACF PACF Prophet exponential smoothing"
+       href="module9-interactive/time-series-analysis.html">
+      <div class="progress-wrap"><div class="progress-bar" style="width:100%"></div></div>
+      <div class="card-top">
+        <div class="module-num">Module 09</div>
+        <div class="card-icon">📈</div>
+        <h2>Time Series Analysis</h2>
+        <p>Decomposition, stationarity, ARIMA, seasonal models, Prophet, and walk-forward cross-validation.</p>
+      </div>
+      <div class="card-bottom">
+        <div class="tags">
+          <span class="tag" style="background:#34d39920;color:#34d399">ARIMA</span>
+          <span class="tag" style="background:#34d39920;color:#34d399">Prophet</span>
+          <span class="tag" style="background:#34d39920;color:#34d399">Forecasting</span>
+        </div>
+        <span class="open-btn">Open →</span>
+      </div>
+    </a>
+
+    <!-- M10 -->
+    <a class="mod-card" data-group="applied"
+       data-keywords="hackathon COVID-19 corona prediction EDA SMOTE class imbalance XGBoost AUC feature importance"
+       href="module10-interactive/covid19-hackathon.html">
+      <div class="progress-wrap"><div class="progress-bar" style="width:100%"></div></div>
+      <div class="card-top">
+        <div class="module-num">Module 10</div>
+        <div class="card-icon">🦠</div>
+        <h2>COVID-19 Prediction Hackathon</h2>
+        <p>End-to-end ML project — EDA, class imbalance, model ladder, AUC-ROC, and presentation skills.</p>
+      </div>
+      <div class="card-bottom">
+        <div class="tags">
+          <span class="tag" style="background:#a78bfa20;color:#a78bfa">Hackathon</span>
+          <span class="tag" style="background:#a78bfa20;color:#a78bfa">End-to-End</span>
+        </div>
+        <span class="open-btn">Open →</span>
+      </div>
+    </a>
+
+    <!-- M11 -->
+    <a class="mod-card" data-group="deep"
+       data-keywords="neural networks calculus backpropagation gradient descent CNN RNN LSTM GNN activation functions"
+       href="module11-interactive/neural-networks.html">
+      <div class="progress-wrap"><div class="progress-bar" style="width:100%"></div></div>
+      <div class="card-top">
+        <div class="module-num">Module 11</div>
+        <div class="card-icon">🧠</div>
+        <h2>Neural Networks</h2>
+        <p>Calculus foundations, forward & backward pass, CNNs, RNNs, LSTMs, and Graph Neural Networks.</p>
+      </div>
+      <div class="card-bottom">
+        <div class="tags">
+          <span class="tag" style="background:#fb923c20;color:#fb923c">CNNs</span>
+          <span class="tag" style="background:#fb923c20;color:#fb923c">RNNs</span>
+          <span class="tag" style="background:#fb923c20;color:#fb923c">Backprop</span>
+        </div>
+        <span class="open-btn">Open →</span>
+      </div>
+    </a>
+
+    <!-- M12 -->
+    <a class="mod-card" data-group="advanced"
+       data-keywords="explainability interpretability LIME SHAP anchors counterfactual PFI PDP fairness bias XAI"
+       href="module12-interactive/model-explainability.html">
+      <div class="progress-wrap"><div class="progress-bar" style="width:100%"></div></div>
+      <div class="card-top">
+        <div class="module-num">Module 12</div>
+        <div class="card-icon">🔍</div>
+        <h2>Model Explainability & Interpretability</h2>
+        <p>LIME, SHAP, Anchors, counterfactuals, PFI, PDPs, fairness metrics, and XAI in production.</p>
+      </div>
+      <div class="card-bottom">
+        <div class="tags">
+          <span class="tag" style="background:#34d39920;color:#34d399">SHAP</span>
+          <span class="tag" style="background:#34d39920;color:#34d399">LIME</span>
+          <span class="tag" style="background:#34d39920;color:#34d399">Fairness</span>
+        </div>
+        <span class="open-btn">Open →</span>
+      </div>
+    </a>
+
+  </div><!-- /grid -->
+
+  <!-- No results -->
+  <div id="noResults" style="display:none;text-align:center;padding:3rem;color:var(--muted)">
+    <div style="font-size:2.5rem;margin-bottom:.75rem">🔍</div>
+    <p>No modules match "<span id="noQuery"></span>". Try a different keyword.</p>
+  </div>
+
+</main>
+
+<footer>
+  Level 7 AI Fellowship &nbsp;·&nbsp; 12 Modules &nbsp;·&nbsp; Built with interactive HTML5 canvas &nbsp;·&nbsp;
+  <a href="#" onclick="window.scrollTo(0,0);return false" style="color:#818cf8">Back to top ↑</a>
+</footer>
+
+<script>
+let currentFilter = 'all';
+
+function setFilter(group, btn) {
+  currentFilter = group;
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function filterModules() {
+  applyFilters();
+}
+
+function applyFilters() {
+  const query = document.getElementById('searchInput').value.toLowerCase().trim();
+  const cards = document.querySelectorAll('.mod-card');
+  let visible = 0;
+
+  cards.forEach(card => {
+    const group = card.dataset.group;
+    const keywords = (card.dataset.keywords + ' ' + card.querySelector('h2').textContent + ' ' + card.querySelector('p').textContent).toLowerCase();
+
+    const groupMatch = currentFilter === 'all' || group === currentFilter;
+    const searchMatch = !query || keywords.includes(query);
+
+    if (groupMatch && searchMatch) {
+      card.classList.remove('hidden');
+      visible++;
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+
+  const noRes = document.getElementById('noResults');
+  noRes.style.display = visible === 0 ? 'block' : 'none';
+  document.getElementById('noQuery').textContent = query || currentFilter;
+}
+</script>
+</body>
+</html>
