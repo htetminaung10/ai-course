@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -14,18 +14,35 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,sans
 a{color:var(--s);text-decoration:none}
 
 /* NAV */
-nav{background:#07051a;border-bottom:1px solid var(--border);padding:.75rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;position:sticky;top:0;z-index:100}
-nav .logo{font-weight:700;font-size:1.1rem;background:linear-gradient(135deg,var(--p),var(--s));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-nav .nav-links{display:flex;gap:.5rem;margin-left:auto;align-items:center}
-nav .nav-links a{padding:.35rem .75rem;border-radius:.4rem;border:1px solid var(--border);font-size:.85rem;transition:all .2s}
-nav .nav-links a:hover{background:var(--p);border-color:var(--p);color:#fff;-webkit-text-fill-color:#fff}
+/* ── TOP BAR ── */
+#topbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(7,5,26,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;gap:1rem}
+#topbar .brand{font-weight:700;font-size:1.05rem;background:linear-gradient(135deg,var(--p),var(--s));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .xp-bar{display:flex;align-items:center;gap:.5rem;font-size:.85rem}
-.xp-track{width:100px;height:8px;background:#1e1b4b;border-radius:4px;overflow:hidden}
+.xp-track{width:100px;height:8px;background:#1a1040;border-radius:4px;overflow:hidden}
 .xp-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--s));border-radius:4px;transition:width .4s}
 .streak{font-size:.85rem;color:var(--warn)}
 
-/* PAGES */
-.page{display:none;padding:2rem 1.5rem;max-width:900px;margin:0 auto}
+/* ── APP LAYOUT ── */
+#app{display:flex;margin-top:60px;height:calc(100vh - 60px);overflow:hidden}
+
+/* ── SIDEBAR ── */
+#sidebar{width:240px;min-width:240px;background:#07051a;border-right:1px solid var(--border);padding:20px 0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;display:flex;flex-direction:column}
+.sidebar-title{padding:0 20px 12px;font-size:.7rem;text-transform:uppercase;letter-spacing:2px;color:var(--muted)}
+.module-item{display:flex;align-items:center;gap:12px;padding:12px 20px;cursor:pointer;border-left:3px solid transparent;transition:all .2s;font-size:.9rem;color:var(--txt)}
+.module-item:hover{background:#130d30}
+.module-item.active{border-left-color:var(--p);background:#130d30;color:var(--p)}
+.module-item.completed{color:var(--success)}
+.module-item.completed::after{content:'✓';margin-left:auto;font-weight:700}
+.module-icon{font-size:1.2rem;min-width:24px;text-align:center}
+.module-name{flex:1;line-height:1.3}
+.progress-mini{margin-top:4px;height:3px;background:var(--border);border-radius:3px;overflow:hidden}
+.progress-mini-fill{height:100%;background:var(--p);border-radius:3px;transition:width .3s}
+.sidebar-footer{margin-top:auto;padding:16px 20px;border-top:1px solid var(--border)}
+
+/* ── MAIN CONTENT ── */
+#main{flex:1;overflow-y:auto;padding:2.5rem 3rem}
+
+.page{display:none;max-width:860px}
 .page.active{display:block}
 .page-header{margin-bottom:2rem}
 .page-header h1{font-size:2rem;font-weight:800;margin-bottom:.5rem;background:linear-gradient(135deg,var(--p),var(--s));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
@@ -132,78 +149,78 @@ pre{background:#06040f;border:1px solid var(--border);border-radius:.5rem;paddin
 .xp-toast{position:fixed;top:80px;right:1.5rem;background:var(--p);color:#fff;padding:.5rem 1rem;border-radius:.5rem;font-weight:700;font-size:.9rem;pointer-events:none;opacity:0;transform:translateY(-10px);transition:all .4s;z-index:999}
 .xp-toast.show{opacity:1;transform:translateY(0)}
 
-/* MOBILE MENU */
-#mob-menu-toggle{display:none;background:none;border:1px solid var(--border);color:var(--txt);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:1.1rem;line-height:1;flex-shrink:0;margin-left:auto}
-#mob-dropdown{display:none;position:fixed;top:0;left:0;right:0;z-index:200;background:#07051a;border-bottom:1px solid var(--border);padding:1rem;flex-direction:column;gap:.5rem}
-#mob-dropdown.open{display:flex}
-#mob-dropdown a{padding:.6rem 1rem;border-radius:.4rem;border:1px solid var(--border);font-size:.9rem;color:var(--txt);text-decoration:none}
-#mob-dropdown a:hover{background:var(--p);border-color:var(--p);color:#fff}
-#mob-close{background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer;align-self:flex-end;padding:.25rem .5rem}
 @media(max-width:768px){
-  #mob-menu-toggle{display:block}
-  .xp-bar{display:none}
-  .streak{display:none}
-  nav .logo{font-size:.95rem}
-  nav .nav-links{display:none}
-  nav{flex-wrap:nowrap;padding:.6rem 1rem}
+  #sidebar{display:none}
   .page{padding:1.5rem 1rem}
-  .page-header h1{font-size:1.5rem}
   .two-col,.three-col{grid-template-columns:1fr!important}
   canvas{max-width:100%;height:auto!important}
+}
   .lesson-nav{gap:.35rem}
   .lesson-nav button{font-size:.78rem;padding:.4rem .7rem}
 }</style>
 </head>
 <body>
 
-<!-- XP Toast -->
 <div class="xp-toast" id="toast"></div>
 
-<!-- MOBILE DROPDOWN -->
-<div id="mob-dropdown">
-  <button id="mob-close" onclick="closeMobMenu()">✕</button>
-  <a href="../index.html" onclick="closeMobMenu()">🏠 Home</a>
-  <a href="../module10-interactive/covid19-hackathon.html">← M10</a>
-  <a href="#" onclick="goPage('calc');closeMobMenu();return false">Calculus</a>
-  <a href="#" onclick="goPage('nn');closeMobMenu();return false">Neural Nets</a>
-  <a href="#" onclick="goPage('opt');closeMobMenu();return false">Optimisation</a>
-  <a href="#" onclick="goPage('cnn');closeMobMenu();return false">CNNs</a>
-  <a href="#" onclick="goPage('rnn');closeMobMenu();return false">RNNs & GNNs</a>
-  <a href="../module12-interactive/model-explainability.html">M12 →</a>
-</div>
-
-<!-- NAV -->
-<nav>
-  <span class="logo">🧠 Module 11 — Neural Networks</span>
+<div id="topbar">
+  <div class="brand">🧠 Module 11 — Neural Networks</div>
   <div class="xp-bar">
     <span style="color:var(--p);font-weight:700">XP</span>
     <div class="xp-track"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
     <span id="xpVal">0</span>
     <span class="streak" id="streakEl">🔥 0</span>
   </div>
-  <div class="nav-links"><a href="../index.html">🏠 Home</a>
-    <a href="../module10-interactive/covid19-hackathon.html">← M10</a>
-    <a href="#" onclick="goPage('calc');return false" id="nav-calc">Calculus</a>
-    <a href="#" onclick="goPage('nn');return false" id="nav-nn">Neural Nets</a>
-    <a href="#" onclick="goPage('opt');return false" id="nav-opt">Optimisation</a>
-    <a href="#" onclick="goPage('cnn');return false" id="nav-cnn">CNNs</a>
-    <a href="#" onclick="goPage('rnn');return false" id="nav-rnn">RNNs & GNNs</a>
-    <a href="../module12-interactive/model-explainability.html">M12 →</a>
-  </div>
-  <button id="mob-menu-toggle" onclick="openMobMenu()" aria-label="Menu">☰</button>
-</nav>
-
-<!-- BADGES -->
-<div style="padding:.75rem 1.5rem;background:#07051a;border-bottom:1px solid var(--border)">
-  <div class="badge-row" id="badges">
-    <div class="badge" id="badge-calc"><span class="icon">∂</span> Calculus Wizard</div>
-    <div class="badge" id="badge-nn"><span class="icon">🕸️</span> Network Architect</div>
-    <div class="badge" id="badge-opt"><span class="icon">⛰️</span> Gradient Descender</div>
-    <div class="badge" id="badge-cnn"><span class="icon">🔍</span> Conv Master</div>
-    <div class="badge" id="badge-rnn"><span class="icon">🔁</span> Sequence Sage</div>
-  </div>
+  <a href="../index.html" style="margin-left:auto;padding:.35rem .75rem;border-radius:.4rem;border:1px solid var(--border);font-size:.85rem;color:var(--txt);text-decoration:none">🏠 Home</a>
 </div>
 
+<div id="app">
+  <nav id="sidebar">
+    <div class="sidebar-title">Module 11 Lessons</div>
+    <div id="nav-calc" class="module-item active" onclick="goPage('calc')">
+      <div class="module-icon">∂</div>
+      <div class="module-name">Calculus Foundations
+        <div class="progress-mini"><div class="progress-mini-fill" id="prog-calc" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div id="nav-nn" class="module-item" onclick="goPage('nn')">
+      <div class="module-icon">🕸️</div>
+      <div class="module-name">Neural Networks
+        <div class="progress-mini"><div class="progress-mini-fill" id="prog-nn" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div id="nav-opt" class="module-item" onclick="goPage('opt')">
+      <div class="module-icon">⛰️</div>
+      <div class="module-name">Optimisation
+        <div class="progress-mini"><div class="progress-mini-fill" id="prog-opt" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div id="nav-cnn" class="module-item" onclick="goPage('cnn')">
+      <div class="module-icon">🔍</div>
+      <div class="module-name">CNNs
+        <div class="progress-mini"><div class="progress-mini-fill" id="prog-cnn" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div id="nav-rnn" class="module-item" onclick="goPage('rnn')">
+      <div class="module-icon">🔁</div>
+      <div class="module-name">RNNs & GNNs
+        <div class="progress-mini"><div class="progress-mini-fill" id="prog-rnn" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="sidebar-footer">
+      <a href="../module10-interactive/covid19-hackathon.html" style="color:var(--muted);font-size:.85rem;display:block;margin-bottom:.5rem">← Back to M10</a>
+      <a href="../module12-interactive/model-explainability.html" style="color:var(--muted);font-size:.85rem;display:block;margin-bottom:1rem">Forward to M12 →</a>
+      <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:.5rem">Badges</div>
+      <div id="badges" style="display:flex;flex-direction:column;gap:.4rem">
+        <div class="badge" id="badge-calc"><span class="icon">∂</span> Calculus Wizard</div>
+        <div class="badge" id="badge-nn"><span class="icon">🕸️</span> Network Architect</div>
+        <div class="badge" id="badge-opt"><span class="icon">⛰️</span> Gradient Descender</div>
+        <div class="badge" id="badge-cnn"><span class="icon">🔍</span> Conv Master</div>
+        <div class="badge" id="badge-rnn"><span class="icon">🔁</span> Sequence Sage</div>
+      </div>
+    </div>
+  </nav>
+  <main id="main">
 <!-- ═══════════════════════════════════════════════════
      LESSON 1 — CALCULUS FOUNDATIONS
      ═══════════════════════════════════════════════════ -->
@@ -1154,12 +1171,12 @@ function goPage(id){
   pages.forEach(p=>{
     document.getElementById('page-'+p).classList.remove('active');
     const n=document.getElementById('nav-'+p);
-    if(n) n.style.fontWeight='normal';
+    if(n) n.classList.remove('active');
   });
   document.getElementById('page-'+id).classList.add('active');
   const n=document.getElementById('nav-'+id);
-  if(n) n.style.fontWeight='700';
-  window.scrollTo(0,0);
+  if(n) n.classList.add('active');
+  document.getElementById('main').scrollTo(0,0);
 }
 
 // ─── QUIZ ─────────────────────────────────────────────
@@ -2081,5 +2098,8 @@ window.addEventListener('load',()=>{
   <div class="rwt">Google Translate and Spotify — sequence models powering 500 million users daily</div>
   <div class="rwb">Google Translate (2016–2023) used a sequence-to-sequence LSTM architecture to translate 100+ languages. The encoder LSTM read the entire input sentence, compressing it into a hidden state vector (a fixed-length "thought vector" representing meaning). The decoder LSTM then unrolled this vector into the target language word by word. The vanishing gradient problem you just learned about was why early RNNs failed on long sentences — the gradient for "She" at position 1 was essentially zero by the time backpropagation reached it from position 30. LSTMs' gates (forget, input, output) fixed this by maintaining a cell state that carries information across arbitrarily long sequences. Meanwhile, Spotify's music recommendation uses a Graph Neural Network: songs are nodes, user co-listens are edges. GNN aggregates neighbourhood features — songs frequently played together share embedding space — enabling Spotify to generate the "Discover Weekly" playlist for 500 million users every Monday morning.</div>
 </div>
+</main>
+</div>
+
 </body>
 </html>
