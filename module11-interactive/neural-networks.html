@@ -157,7 +157,12 @@ pre{background:#06040f;border:1px solid var(--border);border-radius:.5rem;paddin
 }
   .lesson-nav{gap:.35rem}
   .lesson-nav button{font-size:.78rem;padding:.4rem .7rem}
-}</style>
+}
+/* ── REAL WORLD EXAMPLES ── */
+.rw{background:linear-gradient(135deg,rgba(79,70,229,0.08),rgba(6,182,212,0.08));border:1px solid rgba(79,70,229,0.28);border-radius:12px;padding:14px 18px;margin:16px 0;}
+.rwl{font-size:0.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--s);margin-bottom:5px;font-weight:600;}
+.rwt{font-weight:700;font-size:0.92rem;margin-bottom:5px;color:var(--txt);}
+.rwb{color:var(--muted);font-size:0.84rem;line-height:1.55;}</style>
 </head>
 <body>
 
@@ -421,7 +426,7 @@ pre{background:#06040f;border:1px solid var(--border);border-radius:.5rem;paddin
 </div>
 
 
-<div class="rw" style="margin:24px 0;">
+<div class="rw">
   <div class="rwl">🌍 Real World Example</div>
   <div class="rwt">DeepMind AlphaFold 2 — calculus solving the 50-year protein folding problem</div>
   <div class="rwb">Proteins are chains of amino acids that fold into 3D shapes determining their biological function. Predicting those shapes had stumped scientists for 50 years. DeepMind's AlphaFold 2 solved it in 2020 using a deep neural network trained with backpropagation — the same chain rule of calculus you just learned. The gradient of the loss function flows backward through 48 Evoformer layers, updating hundreds of millions of weights that represent physical constraints on how atoms can be positioned. AlphaFold 2 now predicts protein structures with atomic accuracy in minutes. In 2022, it released predictions for 200 million proteins — essentially the entire known protein universe. Researchers are using these structures to design new cancer drugs, antibiotics, and vaccines. The chain rule, applied at scale, is reshaping medicine.</div>
@@ -590,7 +595,7 @@ pre{background:#06040f;border:1px solid var(--border);border-radius:.5rem;paddin
 </div>
 
 
-<div class="rw" style="margin:24px 0;">
+<div class="rw">
   <div class="rwl">🌍 Real World Example</div>
   <div class="rwt">Tesla Autopilot — a neural network that processes 8 camera streams simultaneously</div>
   <div class="rwb">Tesla's Autopilot system uses a custom neural network architecture called "Hydra Net" — a single backbone network with multiple task-specific heads. Input: raw video from 8 cameras (forward, rear, side, pillar) = roughly 1.2 million pixels per frame at 36 frames/second. The network outputs simultaneously: road geometry, lane markings, traffic light state, pedestrian positions, vehicle distances, drivable area. Each output head is a separate branch of fully-connected layers. Training required 6 billion miles of human driving data to tune the weights. Without the multi-layer architecture (hidden layers learning increasingly abstract representations — edges → shapes → cars → "is this car braking?"), a single-layer network would need trillions of parameters. The hierarchy of layers IS the efficiency.</div>
@@ -795,7 +800,7 @@ pre{background:#06040f;border:1px solid var(--border);border-radius:.5rem;paddin
 </div>
 
 
-<div class="rw" style="margin:24px 0;">
+<div class="rw">
   <div class="rwl">🌍 Real World Example</div>
   <div class="rwt">OpenAI training GPT-4 — optimisation at a scale that cost $100 million</div>
   <div class="rwb">Training GPT-4 reportedly cost over $100 million and used thousands of NVIDIA A100 GPUs running for months. The optimiser was Adam (Adaptive Moment Estimation) — a variant of gradient descent that adapts the learning rate individually for each of GPT-4's ~1.8 trillion parameters. A naive SGD with a fixed learning rate would either diverge (rate too high) or take centuries to converge (rate too low). Adam's key insight: parameters that receive large gradients frequently should have their learning rate reduced; sparse parameters should receive a larger update. Without adaptive optimisation, training a model at this scale would be computationally impossible. The choice of optimiser — SGD vs Adam vs AdaGrad — is not academic. At GPT-4 scale, the wrong choice costs tens of millions of dollars.</div>
@@ -939,7 +944,7 @@ pre{background:#06040f;border:1px solid var(--border);border-radius:.5rem;paddin
 </div>
 
 
-<div class="rw" style="margin:24px 0;">
+<div class="rw">
   <div class="rwl">🌍 Real World Example</div>
   <div class="rwt">NHS Chest X-ray AI — a CNN diagnosing tuberculosis in 10 seconds</div>
   <div class="rwb">A standard chest X-ray review by a radiologist takes 5–10 minutes. In countries with radiologist shortages — India, Kenya, Bangladesh — patients wait days or weeks. Google's DeepMind and Qure.ai (an Indian startup) trained CNNs on millions of labelled chest X-rays to detect tuberculosis, pneumonia, and lung cancer. The convolutional layers learn to detect radiological features — consolidation patterns (lung filling), nodules (small masses), pleural effusions (fluid) — that map directly to disease signatures. Qure.ai's CNN achieved radiologist-level accuracy (AUC > 0.95) for TB detection. India's government now uses it as a screening tool in rural health centres, producing a diagnosis in under 10 seconds from a single X-ray image uploaded via a mobile phone. The CNN's feature hierarchy (edges → textures → radiological patterns → disease) is exactly the same structure you just learned.</div>
@@ -2093,7 +2098,7 @@ window.addEventListener('load',()=>{
 
 </script>
 
-<div class="rw" style="margin:24px 0;">
+<div class="rw">
   <div class="rwl">🌍 Real World Example</div>
   <div class="rwt">Google Translate and Spotify — sequence models powering 500 million users daily</div>
   <div class="rwb">Google Translate (2016–2023) used a sequence-to-sequence LSTM architecture to translate 100+ languages. The encoder LSTM read the entire input sentence, compressing it into a hidden state vector (a fixed-length "thought vector" representing meaning). The decoder LSTM then unrolled this vector into the target language word by word. The vanishing gradient problem you just learned about was why early RNNs failed on long sentences — the gradient for "She" at position 1 was essentially zero by the time backpropagation reached it from position 30. LSTMs' gates (forget, input, output) fixed this by maintaining a cell state that carries information across arbitrarily long sequences. Meanwhile, Spotify's music recommendation uses a Graph Neural Network: songs are nodes, user co-listens are edges. GNN aggregates neighbourhood features — songs frequently played together share embedding space — enabling Spotify to generate the "Discover Weekly" playlist for 500 million users every Monday morning.</div>
