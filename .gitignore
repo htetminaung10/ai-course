@@ -1,0 +1,19 @@
+# Only track interactive module HTML files and the index
+# Ignore everything else (Lessons, Codes, PDFs, Office docs, etc.)
+
+Lessons/
+Codes/
+*.pdf
+*.docx
+*.xlsx
+*.pptx
+*.ipynb
+*.csv
+*.svg
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Temp files from our build process
+module*-interactive/_*.txt
