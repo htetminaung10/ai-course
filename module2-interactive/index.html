@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 2: Intro to Machine Learning 🤖</title>
+<style>
+  :root {
+    --primary: #7c3aed;
+    --primary-light: #a78bfa;
+    --secondary: #06b6d4;
+    --accent: #10b981;
+    --accent2: #f59e0b;
+    --accent3: #ef4444;
+    --bg: #0a0a14;
+    --surface: #12121f;
+    --surface2: #1a1a2e;
+    --surface3: #1e1b4b;
+    --text: #e8e8f4;
+    --text-muted: #8888aa;
+    --border: #2a2a44;
+    --code-bg: #0d0d1a;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #ef4444;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+
+  /* TOP BAR */
+  #topbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,20,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;gap:16px;}
+  .brand{font-size:1rem;font-weight:800;background:linear-gradient(135deg,var(--primary-light),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap;}
+  .xp-section{display:flex;align-items:center;gap:10px;flex:1;}
+  .level-badge{background:linear-gradient(135deg,var(--primary),var(--secondary));padding:4px 12px;border-radius:20px;font-weight:700;font-size:0.82rem;white-space:nowrap;color:white;}
+  .xp-wrap{flex:1;max-width:280px;}
+  .xp-label{font-size:0.72rem;color:var(--text-muted);margin-bottom:3px;}
+  .xp-bg{background:var(--border);border-radius:10px;height:7px;overflow:hidden;}
+  .xp-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--secondary));border-radius:10px;transition:width 0.5s ease;}
+  .streak{font-size:0.82rem;color:var(--warning);display:flex;align-items:center;gap:4px;}
+  .score-d{font-weight:700;color:var(--accent);font-size:0.88rem;white-space:nowrap;}
+  .mod-nav{display:flex;gap:6px;margin-left:8px;}
+  .mod-btn{padding:4px 10px;border-radius:6px;font-size:0.75rem;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all 0.2s;text-decoration:none;}
+  .mod-btn:hover{border-color:var(--primary-light);color:var(--primary-light);}
+
+  /* LAYOUT */
+  #app{display:flex;margin-top:60px;min-height:calc(100vh - 60px);}
+
+  /* SIDEBAR */
+  #sidebar{width:260px;min-width:260px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;}
+  .sb-title{padding:0 16px 10px;font-size:0.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-muted);}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;border-left:3px solid transparent;transition:all 0.2s;font-size:0.87rem;}
+  .nav-item:hover{background:var(--surface2);}
+  .nav-item.active{border-left-color:var(--primary-light);background:var(--surface2);color:var(--primary-light);}
+  .nav-item.done{color:var(--accent);}
+  .nav-item.done::after{content:'✓';margin-left:auto;font-weight:700;}
+  .nav-icon{font-size:1.1rem;min-width:22px;text-align:center;}
+  .pmini{margin-top:3px;height:3px;background:var(--border);border-radius:3px;overflow:hidden;}
+  .pmini-fill{height:100%;background:var(--primary-light);border-radius:3px;transition:width 0.3s;}
+  .sb-section{padding:14px 16px 4px;border-top:1px solid var(--border);margin-top:8px;}
+
+  /* MAIN */
+  #main{flex:1;padding:36px 44px;max-width:920px;overflow-y:auto;}
+  .page{display:none;}
+  .page.active{display:block;}
+
+  /* HERO */
+  .hero{background:linear-gradient(135deg,var(--surface2),var(--surface3));border:1px solid var(--border);border-radius:20px;padding:36px;margin-bottom:36px;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:-30%;right:-5%;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.15),transparent);}
+  .hero::after{content:'';position:absolute;bottom:-20%;left:20%;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(6,182,212,0.1),transparent);}
+  .hero-tag{font-size:0.72rem;text-transform:uppercase;letter-spacing:2px;color:var(--primary-light);margin-bottom:6px;}
+  .hero-title{font-size:2rem;font-weight:800;margin-bottom:10px;line-height:1.2;}
+  .hero-sub{font-size:0.92rem;color:var(--text-muted);margin-bottom:20px;max-width:580px;line-height:1.6;}
+  .hero-pills{display:flex;gap:10px;flex-wrap:wrap;}
+  .pill{background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:0.78rem;color:var(--text-muted);display:flex;align-items:center;gap:5px;}
+
+  /* SECTIONS */
+  .section{margin-bottom:44px;}
+  .sec-hdr{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+  .sec-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+  .sec-title{font-size:1.4rem;font-weight:700;}
+  .sec-sub{font-size:0.82rem;color:var(--text-muted);margin-top:2px;}
+
+  /* CARDS */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:18px;transition:transform 0.2s,border-color 0.2s;}
+  .card:hover{transform:translateY(-2px);border-color:var(--primary);}
+  .card-title{font-size:1.05rem;font-weight:700;margin-bottom:9px;display:flex;align-items:center;gap:8px;}
+  .card-body{color:var(--text-muted);line-height:1.7;font-size:0.9rem;}
+  .card-body strong{color:var(--text);}
+  .card-body code{background:var(--code-bg);padding:2px 6px;border-radius:4px;font-family:'Consolas',monospace;font-size:0.83rem;color:var(--accent);}
+
+  /* REAL WORLD */
+  .rw{background:linear-gradient(135deg,rgba(16,185,129,0.07),rgba(124,58,237,0.07));border:1px solid rgba(16,185,129,0.22);border-radius:14px;padding:18px 22px;margin:18px 0;}
+  .rw-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--accent);margin-bottom:6px;display:flex;align-items:center;gap:5px;}
+  .rw-title{font-weight:700;margin-bottom:5px;}
+  .rw-body{color:var(--text-muted);font-size:0.88rem;line-height:1.6;}
+
+  /* CODE */
+  .code-wrap{margin:18px 0;border-radius:12px;overflow:hidden;border:1px solid var(--border);}
+  .code-hdr{background:var(--surface2);padding:9px 14px;display:flex;align-items:center;justify-content:space-between;font-size:0.78rem;color:var(--text-muted);}
+  .lang-dot{width:9px;height:9px;border-radius:50%;margin-right:6px;}
+  .copy-btn{background:none;border:1px solid var(--border);color:var(--text-muted);padding:3px 9px;border-radius:5px;cursor:pointer;font-size:0.73rem;transition:all 0.2s;}
+  .copy-btn:hover{border-color:var(--primary-light);color:var(--primary-light);}
+  pre{background:var(--code-bg);padding:18px;margin:0;overflow-x:auto;font-family:'Consolas','Courier New',monospace;font-size:0.86rem;line-height:1.65;}
+  .kw{color:#c792ea;} .fn{color:#82aaff;} .str{color:#c3e88d;} .num{color:#f78c6c;}
+  .cm{color:#546e7a;font-style:italic;} .cls{color:#ffcb6b;} .var{color:#89ddff;} .op{color:#89ddff;}
+
+  /* MATH BOX */
+  .math-box{background:var(--code-bg);border:1px solid var(--border);border-radius:12px;padding:22px;margin:18px 0;text-align:center;}
+  .math-box .formula{font-size:1.2rem;font-family:'Georgia',serif;color:var(--primary-light);margin:8px 0;line-height:2;}
+  .math-box .math-note{font-size:0.82rem;color:var(--text-muted);margin-top:8px;}
+
+  /* QUIZ */
+  .quiz{background:var(--surface2);border:2px solid var(--border);border-radius:16px;padding:26px;margin:26px 0;position:relative;}
+  .quiz::before{content:'🧠 QUIZ';position:absolute;top:-12px;left:18px;background:var(--primary);color:white;padding:3px 11px;border-radius:20px;font-size:0.73rem;font-weight:700;letter-spacing:1px;}
+  .quiz-xp{position:absolute;top:-12px;right:18px;background:var(--warning);color:#000;padding:3px 11px;border-radius:20px;font-size:0.73rem;font-weight:700;}
+  .quiz-q{font-size:0.97rem;font-weight:600;margin-bottom:16px;line-height:1.5;}
+  .opts{display:grid;gap:9px;}
+  .opt{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px 14px;cursor:pointer;transition:all 0.2s;font-size:0.88rem;display:flex;align-items:center;gap:9px;text-align:left;}
+  .opt:hover:not(.locked){border-color:var(--primary-light);background:rgba(124,58,237,0.1);}
+  .opt.correct{border-color:var(--success);background:rgba(16,185,129,0.12);color:var(--success);}
+  .opt.wrong{border-color:var(--error);background:rgba(239,68,68,0.12);color:var(--error);}
+  .opt.locked{cursor:default;}
+  .opt-letter{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;flex-shrink:0;}
+  .fb{margin-top:12px;padding:11px 14px;border-radius:9px;font-size:0.88rem;line-height:1.5;display:none;}
+  .fb.show{display:block;}
+  .fb.cfb{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:var(--success);}
+  .fb.wfb{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:var(--error);}
+
+  /* INFO BOXES */
+  .info{border-radius:9px;padding:12px 16px;margin:14px 0;display:flex;gap:10px;align-items:flex-start;font-size:0.87rem;line-height:1.6;}
+  .info.tip{background:rgba(124,58,237,0.1);border-left:3px solid var(--primary);}
+  .info.warn{background:rgba(245,158,11,0.1);border-left:3px solid var(--warning);}
+  .info.ok{background:rgba(16,185,129,0.1);border-left:3px solid var(--accent);}
+  .info.note{background:rgba(6,182,212,0.1);border-left:3px solid var(--secondary);}
+  .info-i{font-size:1rem;flex-shrink:0;margin-top:2px;}
+
+  /* VISUAL ELEMENTS */
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0;}
+  @media(max-width:680px){.two-col{grid-template-columns:1fr;}}
+  .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:18px 0;}
+  @media(max-width:680px){.three-col{grid-template-columns:1fr;}}
+
+  /* SCATTER PLOT VISUAL */
+  .plot-wrap{background:var(--code-bg);border:1px solid var(--border);border-radius:12px;padding:16px;margin:18px 0;}
+  .plot-title{font-size:0.82rem;color:var(--text-muted);margin-bottom:12px;text-align:center;}
+  svg.plot{display:block;margin:0 auto;}
+
+  /* BADGE */
+  .badge{display:none;border-radius:16px;padding:20px;margin:20px 0;text-align:center;animation:slideIn 0.4s ease;}
+  .badge.show{display:block;}
+  @keyframes slideIn{from{transform:translateY(-16px);opacity:0}to{transform:translateY(0);opacity:1}}
+  .badge-icon{font-size:2.8rem;margin-bottom:6px;}
+  .badge-title{font-size:1.15rem;font-weight:800;}
+  .badge-sub{font-size:0.82rem;opacity:0.8;}
+
+  /* NAV */
+  .nav-btns{display:flex;gap:10px;margin-top:36px;padding-top:20px;border-top:1px solid var(--border);}
+  .btn{padding:11px 22px;border-radius:9px;border:none;cursor:pointer;font-weight:600;font-size:0.88rem;transition:all 0.2s;display:flex;align-items:center;gap:7px;}
+  .btn-p{background:var(--primary);color:white;}
+  .btn-p:hover{background:#6d28d9;transform:translateY(-1px);}
+  .btn-o{background:transparent;border:1px solid var(--border);color:var(--text);}
+  .btn-o:hover{border-color:var(--primary-light);color:var(--primary-light);}
+
+  /* DIAGRAM */
+  .diag{background:var(--code-bg);border:1px solid var(--border);border-radius:12px;padding:20px;margin:18px 0;font-family:'Consolas',monospace;font-size:0.83rem;line-height:1.9;overflow-x:auto;}
+  .dh{color:var(--primary-light);font-weight:700;}
+  .da{color:var(--accent);}
+  .db{color:var(--warning);}
+  .dc{color:var(--secondary);}
+
+  /* TABLE */
+  table.nice{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.85rem;}
+  table.nice th{background:var(--surface3);padding:9px 12px;text-align:left;color:var(--primary-light);font-weight:600;}
+  table.nice td{padding:8px 12px;border-bottom:1px solid var(--border);}
+  table.nice tr:hover td{background:var(--surface);}
+  table.nice .muted{color:var(--text-muted);}
+
+  /* STEPS */
+  .steps{counter-reset:s;}
+  .step{display:flex;gap:14px;margin-bottom:14px;}
+  .step-n{width:28px;height:28px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.82rem;flex-shrink:0;margin-top:2px;color:white;}
+  .step-c{flex:1;}
+  .step-t{font-weight:600;margin-bottom:3px;}
+  .step-d{color:var(--text-muted);font-size:0.87rem;line-height:1.6;}
+
+  /* INTERACTIVE SLIDER */
+  .slider-wrap{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:22px;margin:18px 0;}
+  .slider-title{font-weight:700;margin-bottom:12px;font-size:0.95rem;}
+  .slider-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+  .slider-label{font-size:0.82rem;color:var(--text-muted);min-width:90px;}
+  input[type=range]{flex:1;accent-color:var(--primary);}
+  .slider-val{font-weight:700;color:var(--primary-light);min-width:44px;text-align:right;}
+  .slider-output{background:var(--code-bg);border-radius:8px;padding:14px;font-family:monospace;font-size:0.88rem;margin-top:8px;}
+  .slider-pred{color:var(--accent);font-weight:700;}
+
+  /* GRADIENT DESCENT VISUAL */
+  .gd-wrap{background:var(--code-bg);border:1px solid var(--border);border-radius:12px;padding:16px;margin:18px 0;}
+  .gd-title{font-size:0.82rem;color:var(--text-muted);text-align:center;margin-bottom:10px;}
+
+  /* TOAST */
+  #toast{position:fixed;bottom:28px;right:28px;z-index:9999;background:var(--surface);border:1px solid var(--accent);border-radius:12px;padding:12px 18px;font-size:0.88rem;display:none;align-items:center;gap:9px;box-shadow:0 8px 32px rgba(0,0,0,0.4);animation:slideUp 0.3s ease;}
+  #toast.show{display:flex;}
+  @keyframes slideUp{from{transform:translateY(18px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+  ::-webkit-scrollbar{width:5px;height:5px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+  ::-webkit-scrollbar-thumb:hover{background:var(--primary);}
+
+  /* ── LAB BANNER ── */
+  #lab-banner{margin-bottom:28px;transition:opacity 0.3s,transform 0.3s;}
+  #lab-banner-inner{background:linear-gradient(135deg,#1a2744,#1e3a5f);border:1px solid rgba(124,58,237,0.4);border-left:4px solid var(--primary);border-radius:14px;padding:20px 22px;}
+  .jupyter-pill{display:inline-flex;align-items:center;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);color:#10b981;border-radius:6px;padding:2px 9px;font-size:0.72rem;font-weight:600;letter-spacing:0.5px;margin-right:8px;cursor:default;}
+
+  .tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-right:4px;}
+  .tg-stat{background:rgba(6,182,212,0.15);color:var(--secondary);border:1px solid rgba(6,182,212,0.3);}
+  .tg-ml{background:rgba(124,58,237,0.15);color:var(--primary-light);border:1px solid rgba(124,58,237,0.3);}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="brand">🤖 Intro to ML</div>
+  <div class="xp-section">
+    <div id="lvl" class="level-badge">Lv 1</div>
+    <div class="xp-wrap">
+      <div id="xlbl" class="xp-label">0 / 200 XP</div>
+      <div class="xp-bg"><div id="xbar" class="xp-fill" style="width:0%"></div></div>
+    </div>
+    <div class="streak">🔥 <span id="stk">0</span></div>
+    <div class="score-d">⭐ <span id="pts">0</span></div>
+  </div>
+  <div class="mod-nav">
+    <a class="mod-btn" href="../module1-interactive/index.html">← M1</a>
+  </div>
+</div>
+
+<div id="app">
+  <nav id="sidebar">
+    <div class="sb-title">Module 2 Lessons</div>
+    <div id="n-lr" class="nav-item active" onclick="go('lr')"><span class="nav-icon">📈</span><span>Linear Regression<div class="pmini"><div class="pmini-fill" id="p-lr" style="width:0%"></div></div></span></div>
+    <div id="n-gd" class="nav-item" onclick="go('gd')"><span class="nav-icon">⛰️</span><span>Gradient Descent<div class="pmini"><div class="pmini-fill" id="p-gd" style="width:0%"></div></div></span></div>
+    <div id="n-pp" class="nav-item" onclick="go('pp')"><span class="nav-icon">🧹</span><span>Data Preprocessing<div class="pmini"><div class="pmini-fill" id="p-pp" style="width:0%"></div></div></span></div>
+    <div id="n-sk" class="nav-item" onclick="go('sk')"><span class="nav-icon">🔧</span><span>Scikit-Learn<div class="pmini"><div class="pmini-fill" id="p-sk" style="width:0%"></div></div></span></div>
+    <div id="n-fe" class="nav-item" onclick="go('fe')"><span class="nav-icon">🔨</span><span>Feature Engineering<div class="pmini"><div class="pmini-fill" id="p-fe" style="width:0%"></div></div></span></div>
+    <div id="n-pca" class="nav-item" onclick="go('pca')"><span class="nav-icon">🔭</span><span>PCA<div class="pmini"><div class="pmini-fill" id="p-pca" style="width:0%"></div></div></span></div>
+    <div id="n-la" class="nav-item" onclick="go('la')"><span class="nav-icon">🧮</span><span>Linear Algebra<div class="pmini"><div class="pmini-fill" id="p-la" style="width:0%"></div></div></span></div>
+    <div class="sb-section">
+      <div class="sb-title">Badges</div>
+      <div id="bdg" style="font-size:1.4rem;letter-spacing:3px;">
+        <span id="b0" style="color:var(--border)">📈</span>
+        <span id="b1" style="color:var(--border)">⛰️</span>
+        <span id="b2" style="color:var(--border)">🧮</span>
+        <span id="b3" style="color:var(--border)">🏆</span>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+
+<!-- ═══════════ PAGE: LINEAR REGRESSION ═══════════ -->
+<div id="page-lr" class="page active">
+  <div class="hero">
+    <div class="hero-tag">Lesson 1 of 7 · Module 2</div>
+    <div class="hero-title">📈 Linear Regression</div>
+    <div class="hero-sub">The most fundamental ML model — and the gateway to understanding all others. Learn to find the "line of best fit" through data and make predictions.</div>
+    <div class="hero-pills">
+      <div class="pill">⏱ ~40 min</div>
+      <div class="pill">🎯 3 Quizzes</div>
+      <div class="pill">⭐ 200 XP</div>
+      <div class="pill">📊 Core ML</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-hdr">
+      <div class="sec-icon" style="background:rgba(124,58,237,0.12);">🏠</div>
+      <div><div class="sec-title">What is Linear Regression?</div><div class="sec-sub">Modelling relationships between variables</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎯 The Core Idea</div>
+      <div class="card-body">
+        Linear regression finds a <strong>straight line (or hyperplane)</strong> that best describes the relationship between input features and a continuous output.<br><br>
+        It has two main uses:<br>
+        • <strong>Hypothesis testing</strong> — Is there a relationship between X and Y?<br>
+        • <strong>Forecasting</strong> — Given new X values, what will Y be?<br><br>
+        The model assumes: <code>y ≈ β₀ + β₁x₁ + β₂x₂ + ... + βₙxₙ</code>
+      </div>
+    </div>
+
+    <div class="rw">
+      <div class="rw-label">🌍 Real World Example</div>
+      <div class="rw-title">Zoopla — Predicting UK House Prices</div>
+      <div class="rw-body">Zoopla's "Zestimate" uses linear regression as a baseline: predict house price from floor area, number of bedrooms, location score, and age of property. Each feature gets a <strong>weight (β)</strong> — e.g., β₁ = £2,500 means "each extra m² adds £2,500 to the price." Simple, interpretable, and a foundation for more complex models.</div>
+    </div>
+
+    <!-- Interactive Scatter Plot -->
+    <div class="plot-wrap">
+      <div class="plot-title">House Size vs Price — drag the line to fit the data</div>
+      <svg class="plot" id="scatter" width="500" height="280" viewBox="0 0 500 280" style="max-width:100%">
+        <defs>
+          <clipPath id="clip"><rect x="50" y="10" width="430" height="230"/></clipPath>
+        </defs>
+        <!-- Axes -->
+        <line x1="50" y1="240" x2="490" y2="240" stroke="#2a2a44" stroke-width="1.5"/>
+        <line x1="50" y1="10" x2="50" y2="240" stroke="#2a2a44" stroke-width="1.5"/>
+        <!-- Axis labels -->
+        <text x="270" y="272" fill="#546e7a" font-size="11" text-anchor="middle">House Size (m²)</text>
+        <text x="14" y="130" fill="#546e7a" font-size="11" text-anchor="middle" transform="rotate(-90,14,130)">Price (£k)</text>
+        <!-- Grid lines -->
+        <line x1="50" y1="190" x2="490" y2="190" stroke="#1a1a2e" stroke-width="1"/>
+        <line x1="50" y1="140" x2="490" y2="140" stroke="#1a1a2e" stroke-width="1"/>
+        <line x1="50" y1="90" x2="490" y2="90" stroke="#1a1a2e" stroke-width="1"/>
+        <line x1="50" y1="40" x2="490" y2="40" stroke="#1a1a2e" stroke-width="1"/>
+        <text x="44" y="243" fill="#546e7a" font-size="9" text-anchor="end">100</text>
+        <text x="44" y="193" fill="#546e7a" font-size="9" text-anchor="end">250</text>
+        <text x="44" y="143" fill="#546e7a" font-size="9" text-anchor="end">400</text>
+        <text x="44" y="93" fill="#546e7a" font-size="9" text-anchor="end">550</text>
+        <text x="44" y="43" fill="#546e7a" font-size="9" text-anchor="end">700</text>
+        <!-- Data points -->
+        <g id="pts"></g>
+        <!-- Regression line -->
+        <line id="regline" x1="50" y1="240" x2="490" y2="40" stroke="#a78bfa" stroke-width="2.5" stroke-dasharray="none" clip-path="url(#clip)"/>
+        <!-- SSE label -->
+        <text id="sse-txt" x="270" y="22" fill="#f59e0b" font-size="10" text-anchor="middle">SSE: --</text>
+      </svg>
+      <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:140px;">
+          <label style="font-size:0.78rem;color:var(--text-muted);">Slope (β₁): <span id="slope-v" style="color:var(--primary-light);font-weight:700;">2.0</span></label>
+          <input type="range" id="slope" min="0.5" max="4" step="0.1" value="2.0" style="width:100%;" oninput="updatePlot()">
+        </div>
+        <div style="flex:1;min-width:140px;">
+          <label style="font-size:0.78rem;color:var(--text-muted);">Intercept (β₀): <span id="intcpt-v" style="color:var(--primary-light);font-weight:700;">50</span></label>
+          <input type="range" id="intcpt" min="-50" max="200" step="5" value="50" style="width:100%;" oninput="updatePlot()">
+        </div>
+      </div>
+      <div id="sse-display" style="font-size:0.82rem;color:var(--text-muted);margin-top:6px;text-align:center;"></div>
+    </div>
+
+    <div class="math-box">
+      <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px;">The Linear Regression Model</div>
+      <div class="formula">ŷ = β₀ + β₁x₁ + β₂x₂ + ... + βₙxₙ</div>
+      <div class="formula" style="font-size:1rem;color:var(--secondary);">Loss = SSE = Σ(yᵢ − ŷᵢ)²</div>
+      <div class="math-note">ŷ = prediction &nbsp;|&nbsp; β₀ = intercept (bias) &nbsp;|&nbsp; β₁...βₙ = feature weights &nbsp;|&nbsp; SSE = Sum of Squared Errors</div>
+    </div>
+
+    <table class="nice">
+      <thead><tr><th>Statistics term</th><th>Machine Learning term</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>Explanatory variable</td><td>Input feature (X)</td><td class="muted">What we use to predict</td></tr>
+        <tr><td>Response variable</td><td>Target / label (y)</td><td class="muted">What we're predicting</td></tr>
+        <tr><td>Parameter / coefficient</td><td>Weight (β)</td><td class="muted">How much each feature matters</td></tr>
+        <tr><td>Estimate a model</td><td>Fit / train a model</td><td class="muted">Finding the best β values</td></tr>
+        <tr><td>Forecasting</td><td>Prediction / inference</td><td class="muted">Using model on new data</td></tr>
+      </tbody>
+    </table>
+
+    <div class="quiz" id="q1">
+      <div class="quiz-xp">+40 XP</div>
+      <div class="quiz-q">A linear regression model predicts salary (£) from years of experience. The model is: <code>salary = 22,000 + 3,500 × years</code>. What salary does it predict for someone with 5 years of experience?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q1',this,false,'❌ That would be 22,000 + 5 = 22,005. Remember to multiply years by the coefficient 3,500!')"><div class="opt-letter">A</div>£22,005</div>
+        <div class="opt" onclick="ans('q1',this,false,'❌ £17,500 = 5 × 3,500 but you forgot to add the intercept £22,000!')"><div class="opt-letter">B</div>£17,500</div>
+        <div class="opt" onclick="ans('q1',this,true,'✅ Correct! β₀ + β₁×x = 22,000 + 3,500×5 = 22,000 + 17,500 = £39,500. The intercept is the base salary, and each year adds £3,500.')"><div class="opt-letter">C</div>£39,500</div>
+        <div class="opt" onclick="ans('q1',this,false,'❌ Check the formula again: intercept + (slope × value) = 22,000 + (3,500 × 5) = ?')"><div class="opt-letter">D</div>£110,000</div>
+      </div>
+      <div class="fb" id="fb-q1"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-p" onclick="done('lr');go('gd')">Next: Gradient Descent ⛰️ →</button>
+  </div>
+</div><!-- /page-lr -->
+
+<!-- ═══════════ PAGE: GRADIENT DESCENT ═══════════ -->
+<div id="page-gd" class="page">
+  <div class="hero">
+    <div class="hero-tag">Lesson 2 of 7</div>
+    <div class="hero-title">⛰️ Gradient Descent</div>
+    <div class="hero-sub">The engine behind almost all machine learning. Gradient descent is an iterative optimisation algorithm that "walks downhill" to find the minimum of a loss function.</div>
+    <div class="hero-pills">
+      <div class="pill">⏱ ~35 min</div><div class="pill">🎯 3 Quizzes</div><div class="pill">⭐ 180 XP</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-hdr">
+      <div class="sec-icon" style="background:rgba(245,158,11,0.12);">🏔️</div>
+      <div><div class="sec-title">The Intuition</div><div class="sec-sub">Imagine hiking in fog — how do you find the valley?</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🏔️ Hiking Analogy</div>
+      <div class="card-body">
+        Imagine you're blindfolded on a mountain and want to reach the valley (the minimum loss). You can only feel the <strong>slope under your feet</strong>. Your strategy:<br><br>
+        1. Feel which direction is downhill (compute the <strong>gradient</strong>)<br>
+        2. Take a step in that direction (update the <strong>parameters</strong>)<br>
+        3. Repeat until you stop descending (reach the <strong>minimum</strong>)<br><br>
+        The step size is the <strong>learning rate (α)</strong>. Too big → overshoot. Too small → very slow.
+      </div>
+    </div>
+
+    <div class="rw">
+      <div class="rw-label">🌍 Real World Example</div>
+      <div class="rw-title">Training ChatGPT / GPT-4</div>
+      <div class="rw-body">OpenAI trains GPT using gradient descent with billions of parameters. Each iteration: compute the prediction error (loss), calculate gradients across all parameters, update each parameter by a tiny step. After trillions of such steps, the model learns to generate human-like text. Same principle as your linear regression, just scaled up by a factor of billions.</div>
+    </div>
+
+    <!-- Interactive GD Demo -->
+    <div class="slider-wrap">
+      <div class="slider-title">⚡ Interactive: Watch Gradient Descent Learn</div>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:14px;">Adjust the learning rate and watch how quickly the model converges to the best line.</p>
+      <div class="slider-row">
+        <span class="slider-label">Learning Rate α:</span>
+        <input type="range" id="lr-rate" min="0.01" max="1.5" step="0.01" value="0.1" oninput="updateGD()">
+        <span class="slider-val" id="lr-val">0.05</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-label">Iterations:</span>
+        <input type="range" id="gd-iter" min="1" max="100" step="1" value="20" oninput="updateGD()">
+        <span class="slider-val" id="iter-val">20</span>
+      </div>
+      <div class="slider-output" id="gd-out">
+        <div>β₀ (intercept): <span class="slider-pred" id="gd-b0">0.00</span></div>
+        <div>β₁ (slope): <span class="slider-pred" id="gd-b1">0.00</span></div>
+        <div>Final Loss: <span class="slider-pred" id="gd-loss">--</span></div>
+        <div id="gd-status" style="margin-top:6px;color:var(--warning);font-size:0.82rem;"></div>
+      </div>
+    </div>
+
+    <div class="math-box">
+      <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px;">Gradient Descent Update Rule</div>
+      <div class="formula">β := β − α · ∇L(β)</div>
+      <div class="formula" style="font-size:0.95rem;color:var(--secondary);">β₁ := β₁ − α · (2/n) Σ(ŷᵢ − yᵢ) · xᵢ</div>
+      <div class="math-note">α = learning rate &nbsp;|&nbsp; ∇L = gradient of loss &nbsp;|&nbsp; β := β means "update β in place"</div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">🐢 Learning Rate Too Small</div>
+        <div class="card-body">Takes thousands of tiny steps to converge. Wastes compute. May get stuck in local minima. <strong>Underfits</strong> if you stop training early.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">🐇 Learning Rate Too Large</div>
+        <div class="card-body">Overshoots the minimum. Loss bounces up and down. May <strong>diverge</strong> (loss goes to infinity). Never converges.</div>
+      </div>
+    </div>
+
+    <div class="info note">
+      <div class="info-i">💡</div>
+      <div><strong>OLS vs Gradient Descent:</strong> For simple linear regression, there's a mathematical closed-form solution (OLS: β* = (XᵀX)⁻¹Xᵀy). Use OLS for small datasets. Use gradient descent when data is too large to invert matrices — which is always the case for neural networks.</div>
+    </div>
+
+    <div class="quiz" id="q2">
+      <div class="quiz-xp">+40 XP</div>
+      <div class="quiz-q">During training, you notice the loss is oscillating wildly — going up, then down, then up again, never settling. What's the most likely cause?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q2',this,false,'❌ Too few iterations would mean it stops early but the loss wouldn\'t oscillate — it would just plateau.')"><div class="opt-letter">A</div>Too few training iterations</div>
+        <div class="opt" onclick="ans('q2',this,true,'✅ Correct! A learning rate that\'s too large causes the model to overshoot the minimum on each step — it bounces past and back again. Solution: reduce α.')"><div class="opt-letter">B</div>The learning rate is too large</div>
+        <div class="opt" onclick="ans('q2',this,false,'❌ Too much data would slow training but wouldn\'t cause oscillating loss.')"><div class="opt-letter">C</div>Too much training data</div>
+        <div class="opt" onclick="ans('q2',this,false,'❌ Missing features would hurt model performance but wouldn\'t cause loss to oscillate.')"><div class="opt-letter">D</div>Missing input features</div>
+      </div>
+      <div class="fb" id="fb-q2"></div>
+    </div>
+
+    <div class="quiz" id="q3">
+      <div class="quiz-xp">+40 XP</div>
+      <div class="quiz-q">Why do we use gradient descent instead of the OLS closed-form solution for training neural networks?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q3',this,false,'❌ OLS is actually more accurate for linear regression — it finds the exact solution.')"><div class="opt-letter">A</div>Gradient descent gives more accurate results</div>
+        <div class="opt" onclick="ans('q3',this,true,'✅ Correct! OLS requires computing (XᵀX)⁻¹ — for a model with millions of parameters, this matrix would be enormous and computing its inverse is computationally infeasible. Gradient descent scales to billions of parameters.')"><div class="opt-letter">B</div>OLS requires inverting huge matrices — impossible with millions of parameters</div>
+        <div class="opt" onclick="ans('q3',this,false,'❌ Gradient descent is generally slower than OLS for small models. OLS solves directly in one step.')"><div class="opt-letter">C</div>Gradient descent is faster than OLS in all cases</div>
+        <div class="opt" onclick="ans('q3',this,false,'❌ OLS works fine for linear regression specifically, but it doesn\'t generalise to non-linear models.')"><div class="opt-letter">D</div>OLS doesn\'t work for linear regression</div>
+      </div>
+      <div class="fb" id="fb-q3"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('lr')">← Back</button>
+    <button class="btn btn-p" onclick="done('gd');go('pp')">Next: Data Preprocessing 🧹 →</button>
+  </div>
+</div><!-- /page-gd -->
+
+<!-- ═══════════ PAGE: PREPROCESSING ═══════════ -->
+<div id="page-pp" class="page">
+  <div class="hero">
+    <div class="hero-tag">Lesson 3 of 7</div>
+    <div class="hero-title">🧹 Data Preprocessing</div>
+    <div class="hero-sub">Data scientists spend 60–80% of their time here. Raw data is messy — the wrong preprocessing can destroy a model's performance, the right choices unlock it.</div>
+    <div class="hero-pills">
+      <div class="pill">⏱ ~45 min</div><div class="pill">🎯 3 Quizzes</div><div class="pill">⭐ 200 XP</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-hdr">
+      <div class="sec-icon" style="background:rgba(16,185,129,0.12);">🏷️</div>
+      <div><div class="sec-title">Handling Categorical Data</div><div class="sec-sub">ML models need numbers — not text</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔢 One-Hot Encoding</div>
+      <div class="card-body">
+        Most ML algorithms can't handle text categories directly. <strong>One-hot encoding</strong> converts each category into a binary column — one column per unique value, with 1 where it applies and 0 elsewhere.<br><br>
+        Example: <code>city ∈ {London, Manchester, Bristol}</code> becomes 3 binary columns.
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;margin:16px 0;">
+      <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:6px;">Before encoding → After one-hot encoding:</div>
+      <div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;">
+        <table class="nice" style="min-width:140px;">
+          <thead><tr><th>Name</th><th>City</th></tr></thead>
+          <tbody>
+            <tr><td>Alice</td><td>London</td></tr>
+            <tr><td>Bob</td><td>Manchester</td></tr>
+            <tr><td>Carol</td><td>London</td></tr>
+            <tr><td>Dave</td><td>Bristol</td></tr>
+          </tbody>
+        </table>
+        <div style="font-size:1.5rem;color:var(--primary-light);align-self:center;">→</div>
+        <table class="nice" style="min-width:260px;">
+          <thead><tr><th>Name</th><th>city_London</th><th>city_Mcr</th><th>city_Bristol</th></tr></thead>
+          <tbody>
+            <tr><td>Alice</td><td style="color:var(--accent)">1</td><td>0</td><td>0</td></tr>
+            <tr><td>Bob</td><td>0</td><td style="color:var(--accent)">1</td><td>0</td></tr>
+            <tr><td>Carol</td><td style="color:var(--accent)">1</td><td>0</td><td>0</td></tr>
+            <tr><td>Dave</td><td>0</td><td>0</td><td style="color:var(--accent)">1</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔢 Ordinal Encoding</div>
+      <div class="card-body">
+        When categories have a <strong>natural order</strong>, encode them as integers that preserve the ranking.<br><br>
+        Example: <code>size ∈ {Small, Medium, Large}</code> → <code>{0, 1, 2}</code><br>
+        Example: <code>rating ∈ {Poor, Fair, Good, Excellent}</code> → <code>{0, 1, 2, 3}</code><br><br>
+        <strong>Warning:</strong> Never use ordinal encoding for nominal data (e.g. cities) — it implies a false ordering!
+      </div>
+    </div>
+
+    <div class="sec-hdr" style="margin-top:28px;">
+      <div class="sec-icon" style="background:rgba(6,182,212,0.12);">📏</div>
+      <div><div class="sec-title">Feature Scaling</div><div class="sec-sub">Put all features on the same playing field</div></div>
+    </div>
+
+    <div class="rw">
+      <div class="rw-label">🌍 Real World Example</div>
+      <div class="rw-title">Predicting Loan Default — Why Scaling Matters</div>
+      <div class="rw-body">Suppose your features are: <em>age (18–80), income (£15k–£200k), credit score (300–850)</em>. Without scaling, income dominates the model — its large range makes its weight appear tiny, while age's small range gives it an inflated weight. Gradient descent also converges much slower on unscaled features. Always scale!</div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">📐 Min-Max Normalisation</div>
+        <div class="card-body">
+          Scales every value to <strong>[0, 1]</strong>.<br>
+          <code>x' = (x − xₘᵢₙ) / (xₘₐₓ − xₘᵢₙ)</code><br><br>
+          ✅ Preserves shape of distribution<br>
+          ⚠️ Sensitive to outliers
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">📊 Standardisation (Z-score)</div>
+        <div class="card-body">
+          Rescales to <strong>mean=0, std=1</strong>.<br>
+          <code>x' = (x − μ) / σ</code><br><br>
+          ✅ Robust to outliers<br>
+          ✅ Required for many algorithms (SVM, PCA, KNN)
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-hdr" style="margin-top:28px;">
+      <div class="sec-icon" style="background:rgba(239,68,68,0.12);">❓</div>
+      <div><div class="sec-title">Missing Values</div><div class="sec-sub">The most common data quality issue</div></div>
+    </div>
+
+    <div class="info warn">
+      <div class="info-i">⚠️</div>
+      <div><strong>Critical Rule:</strong> Always fit preprocessing (mean, std, encoder categories) on the <strong>training set only</strong>, then apply to test set. Fitting on test data causes <strong>data leakage</strong> — your model secretly "sees" the test data during training, giving falsely optimistic results.</div>
+    </div>
+
+    <div class="code-wrap">
+      <div class="code-hdr"><span style="display:flex;align-items:center;"><span class="lang-dot" style="background:#7c3aed"></span> Python — Preprocessing Pipeline</span><button class="copy-btn" onclick="cp(this)">Copy</button></div>
+      <pre><span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler, OneHotEncoder
+<span class="kw">from</span> sklearn.impute <span class="kw">import</span> SimpleImputer
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> train_test_split
+
+<span class="cm"># 1. Split FIRST (prevents leakage)</span>
+<span class="var">X_train</span>, <span class="var">X_test</span>, <span class="var">y_train</span>, <span class="var">y_test</span> = train_test_split(
+    <span class="var">X</span>, <span class="var">y</span>, test_size=<span class="num">0.2</span>, random_state=<span class="num">42</span>
+)
+
+<span class="cm"># 2. Handle missing values — fit on TRAIN only</span>
+<span class="var">imputer</span> = SimpleImputer(strategy=<span class="str">'mean'</span>)
+<span class="var">X_train</span> = <span class="var">imputer</span>.fit_transform(<span class="var">X_train</span>)  <span class="cm"># fit AND transform</span>
+<span class="var">X_test</span>  = <span class="var">imputer</span>.transform(<span class="var">X_test</span>)        <span class="cm"># transform ONLY</span>
+
+<span class="cm"># 3. Scale features — fit on TRAIN only</span>
+<span class="var">scaler</span> = StandardScaler()
+<span class="var">X_train</span> = <span class="var">scaler</span>.fit_transform(<span class="var">X_train</span>)
+<span class="var">X_test</span>  = <span class="var">scaler</span>.transform(<span class="var">X_test</span>)
+
+<span class="cm"># 4. Encode categoricals (pandas approach)</span>
+<span class="var">df</span> = pd.get_dummies(<span class="var">df</span>, columns=[<span class="str">'city'</span>, <span class="str">'category'</span>], drop_first=<span class="kw">True</span>)</pre>
+    </div>
+
+    <div class="quiz" id="q4">
+      <div class="quiz-xp">+40 XP</div>
+      <div class="quiz-q">You're building a model to predict customer churn. The <em>subscription_tier</em> column has values: "Bronze", "Silver", "Gold", "Platinum" (in order of value). Which encoding should you use?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q4',this,false,'❌ One-hot would work but ignores the natural ordering. Ordinal is better here since Bronze &lt; Silver &lt; Gold &lt; Platinum.')"><div class="opt-letter">A</div>One-hot encoding — create 4 binary columns</div>
+        <div class="opt" onclick="ans('q4',this,true,'✅ Correct! The tiers have a meaningful order (Bronze=0, Silver=1, Gold=2, Platinum=3), so ordinal encoding preserves this relationship and is more informative than one-hot.')"><div class="opt-letter">B</div>Ordinal encoding — map to 0, 1, 2, 3</div>
+        <div class="opt" onclick="ans('q4',this,false,'❌ You can\'t feed text strings directly to most ML algorithms — they need numerical inputs.')"><div class="opt-letter">C</div>Leave as-is — keep the text strings</div>
+        <div class="opt" onclick="ans('q4',this,false,'❌ Mapping to random numbers (e.g. Bronze=5, Silver=1) would destroy the ordering information entirely.')"><div class="opt-letter">D</div>Random integer assignment</div>
+      </div>
+      <div class="fb" id="fb-q4"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('gd')">← Back</button>
+    <button class="btn btn-p" onclick="done('pp');go('sk')">Next: Scikit-Learn 🔧 →</button>
+  </div>
+</div><!-- /page-pp -->
+
+<!-- ═══════════ PAGE: SCIKIT-LEARN ═══════════ -->
+<div id="page-sk" class="page">
+  <div class="hero">
+    <div class="hero-tag">Lesson 4 of 7</div>
+    <div class="hero-title">🔧 Scikit-Learn</div>
+    <div class="hero-sub">Python's premier ML library. A consistent API for training, evaluating, and deploying hundreds of models — and the backbone of your entire ML workflow.</div>
+    <div class="hero-pills">
+      <div class="pill">⏱ ~30 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 150 XP</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-hdr">
+      <div class="sec-icon" style="background:rgba(6,182,212,0.12);">📐</div>
+      <div><div class="sec-title">The Unified API</div><div class="sec-sub">Every model in sklearn follows the same pattern</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎯 Fit → Predict → Score — Always the Same</div>
+      <div class="card-body">
+        Sklearn's genius is its <strong>consistent interface</strong>. Whether you're using linear regression, random forests, or SVMs — the code pattern is identical:<br><br>
+        <code>model.fit(X_train, y_train)</code> → trains the model<br>
+        <code>model.predict(X_test)</code> → makes predictions<br>
+        <code>model.score(X_test, y_test)</code> → evaluates performance<br><br>
+        Swap any model in with the same 3 lines!
+      </div>
+    </div>
+
+    <div class="rw">
+      <div class="rw-label">🌍 Real World Example</div>
+      <div class="rw-title">Data Science at the NHS</div>
+      <div class="rw-body">An NHS data scientist building a readmission risk model can try LinearRegression, RandomForest, and GradientBoosting in minutes using sklearn's unified API — just swap the model class. This <em>model agnosticism</em> is why sklearn dominates production ML pipelines across healthcare, finance, and retail.</div>
+    </div>
+
+    <div class="code-wrap">
+      <div class="code-hdr"><span style="display:flex;align-items:center;"><span class="lang-dot" style="background:#7c3aed"></span> Python — Scikit-Learn Workflow</span><button class="copy-btn" onclick="cp(this)">Copy</button></div>
+      <pre><span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> LinearRegression
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> train_test_split, cross_val_score
+<span class="kw">from</span> sklearn.metrics <span class="kw">import</span> mean_squared_error, r2_score
+<span class="kw">import</span> numpy <span class="kw">as</span> <span class="cls">np</span>
+
+<span class="cm"># 1. Split data</span>
+<span class="var">X_train</span>, <span class="var">X_test</span>, <span class="var">y_train</span>, <span class="var">y_test</span> = train_test_split(
+    <span class="var">X</span>, <span class="var">y</span>, test_size=<span class="num">0.2</span>, random_state=<span class="num">42</span>
+)
+
+<span class="cm"># 2. Create and train model</span>
+<span class="var">model</span> = LinearRegression()
+<span class="var">model</span>.fit(<span class="var">X_train</span>, <span class="var">y_train</span>)
+
+<span class="cm"># 3. Inspect learned parameters</span>
+<span class="fn">print</span>(<span class="str">f"Intercept: </span>{<span class="var">model</span>.intercept_:.2f}<span class="str">"</span>)
+<span class="fn">print</span>(<span class="str">f"Coefficients: </span>{<span class="var">model</span>.coef_}<span class="str">"</span>)
+
+<span class="cm"># 4. Predict</span>
+<span class="var">y_pred</span> = <span class="var">model</span>.predict(<span class="var">X_test</span>)
+
+<span class="cm"># 5. Evaluate</span>
+<span class="var">mse</span> = mean_squared_error(<span class="var">y_test</span>, <span class="var">y_pred</span>)
+<span class="var">r2</span>  = r2_score(<span class="var">y_test</span>, <span class="var">y_pred</span>)
+<span class="fn">print</span>(<span class="str">f"RMSE: </span>{<span class="cls">np</span>.sqrt(<span class="var">mse</span>):.2f}<span class="str">, R²: </span>{<span class="var">r2</span>:.3f}<span class="str">"</span>)
+
+<span class="cm"># 6. Cross-validation (better estimate of real performance)</span>
+<span class="var">cv_scores</span> = cross_val_score(<span class="var">model</span>, <span class="var">X</span>, <span class="var">y</span>, cv=<span class="num">5</span>, scoring=<span class="str">'r2'</span>)
+<span class="fn">print</span>(<span class="str">f"CV R² = </span>{<span class="var">cv_scores</span>.mean():.3f}<span class="str"> ± </span>{<span class="var">cv_scores</span>.std():.3f}<span class="str">"</span>)</pre>
+    </div>
+
+    <div class="sec-hdr" style="margin-top:28px;">
+      <div class="sec-icon" style="background:rgba(6,182,212,0.12);">📊</div>
+      <div><div class="sec-title">Regression Evaluation Metrics</div></div>
+    </div>
+
+    <div class="three-col">
+      <div class="card">
+        <div class="card-title">📉 MSE / RMSE</div>
+        <div class="card-body"><strong>Mean Squared Error</strong><br>Average of squared errors. RMSE = √MSE is in same units as y. Penalises large errors heavily.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">📏 MAE</div>
+        <div class="card-body"><strong>Mean Absolute Error</strong><br>Average of |error|. More robust to outliers than RMSE. Easier to interpret.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">📈 R²</div>
+        <div class="card-body"><strong>R-squared</strong><br>% of variance explained. 1.0 = perfect. 0 = model = mean line. Negative = worse than mean.</div>
+      </div>
+    </div>
+
+    <div class="quiz" id="q5">
+      <div class="quiz-xp">+40 XP</div>
+      <div class="quiz-q">Your linear regression model achieves R² = 0.85 on the training set but R² = 0.32 on the test set. What does this indicate?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q5',this,false,'❌ A gap between train and test performance is not good — it means the model isn\'t generalising to new data.')"><div class="opt-letter">A</div>The model is performing well</div>
+        <div class="opt" onclick="ans('q5',this,true,'✅ Correct! High training R² + low test R² = overfitting. The model has memorised the training data (including its noise) but fails to generalise. Solutions: regularisation, more data, simpler model, cross-validation.')"><div class="opt-letter">B</div>The model is overfitting the training data</div>
+        <div class="opt" onclick="ans('q5',this,false,'❌ Underfitting would show poor performance on BOTH train and test — not high train + low test.')"><div class="opt-letter">C</div>The model is underfitting</div>
+        <div class="opt" onclick="ans('q5',this,false,'❌ More features tend to increase overfitting, not fix it.')"><div class="opt-letter">D</div>You need to add more features</div>
+      </div>
+      <div class="fb" id="fb-q5"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('pp')">← Back</button>
+    <button class="btn btn-p" onclick="done('sk');go('fe')">Next: Feature Engineering 🔨 →</button>
+  </div>
+</div><!-- /page-sk -->
+
+<!-- ═══════════ PAGE: FEATURE ENGINEERING ═══════════ -->
+<div id="page-fe" class="page">
+  <div class="hero">
+    <div class="hero-tag">Lesson 5 of 7</div>
+    <div class="hero-title">🔨 Feature Engineering</div>
+    <div class="hero-sub">The art of creating better input features — often the single biggest lever to improve model performance. Turn domain knowledge into numerical signals your model can use.</div>
+    <div class="hero-pills">
+      <div class="pill">⏱ ~35 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 160 XP</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-hdr">
+      <div class="sec-icon" style="background:rgba(245,158,11,0.12);">⚗️</div>
+      <div><div class="sec-title">Why Engineer Features?</div><div class="sec-sub">Linear models can only capture linear relationships — unless you help them</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🧪 The Limitation of Linear Models</div>
+      <div class="card-body">
+        A linear model can only use features as-is: <code>price = β₀ + β₁ × size</code>.<br>
+        But what if price grows with the <em>square</em> of size? Linear regression won't capture that automatically.<br><br>
+        <strong>Feature engineering</strong> creates new features from existing ones, letting linear models capture non-linear relationships.
+      </div>
+    </div>
+
+    <div class="rw">
+      <div class="rw-label">🌍 Real World Example</div>
+      <div class="rw-title">Airbnb Price Prediction</div>
+      <div class="rw-body">Airbnb's pricing model uses engineered features like: <code>log(distance_to_centre)</code> (because price drops logarithmically with distance), <code>reviews_per_month × avg_rating</code> (an interaction), <code>is_weekend</code> (binary from date), <code>days_since_last_review</code> (freshness signal). Raw features alone would leave huge predictive power on the table.</div>
+    </div>
+
+    <div class="sec-hdr" style="margin-top:24px;">
+      <div class="sec-icon" style="background:rgba(245,158,11,0.12);">🛠️</div>
+      <div><div class="sec-title">Techniques</div></div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">📊 Binning</div>
+        <div class="card-body">Convert continuous values into discrete buckets.<br><code>age → [0-18, 19-35, 36-55, 56+]</code><br><br>Useful when the effect is non-linear or when you want to reduce noise from outliers.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">🔄 Non-linear Transforms</div>
+        <div class="card-body">Apply maths to linearise skewed relationships.<br><code>log(income)</code>, <code>√area</code>, <code>x²</code><br><br>Income data is typically log-normally distributed — log transform makes it more linear.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">🔗 Interactions</div>
+        <div class="card-body">Multiply features to capture combined effects.<br><code>bedrooms × bathrooms</code><br><br>A 5-bed/1-bath house is different from a 5-bed/4-bath, even with same bedroom count.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">📅 Date/Time Features</div>
+        <div class="card-body">Extract signals from timestamps.<br><code>hour, day_of_week, is_weekend, month, quarter</code><br><br>Critical for retail, transport, and financial data with seasonal patterns.</div>
+      </div>
+    </div>
+
+    <div class="code-wrap">
+      <div class="code-hdr"><span style="display:flex;align-items:center;"><span class="lang-dot" style="background:#7c3aed"></span> Python — Feature Engineering</span><button class="copy-btn" onclick="cp(this)">Copy</button></div>
+      <pre><span class="kw">import</span> numpy <span class="kw">as</span> <span class="cls">np</span>
+<span class="kw">import</span> pandas <span class="kw">as</span> <span class="cls">pd</span>
+
+<span class="cm"># Non-linear transforms</span>
+<span class="var">df</span>[<span class="str">'log_income'</span>]    = <span class="cls">np</span>.log1p(<span class="var">df</span>[<span class="str">'income'</span>])      <span class="cm"># log(1+x) avoids log(0)</span>
+<span class="var">df</span>[<span class="str">'sqrt_area'</span>]     = <span class="cls">np</span>.sqrt(<span class="var">df</span>[<span class="str">'area'</span>])
+<span class="var">df</span>[<span class="str">'age_squared'</span>]   = <span class="var">df</span>[<span class="str">'age'</span>] ** <span class="num">2</span>
+
+<span class="cm"># Interactions</span>
+<span class="var">df</span>[<span class="str">'bed_bath'</span>]      = <span class="var">df</span>[<span class="str">'bedrooms'</span>] * <span class="var">df</span>[<span class="str">'bathrooms'</span>]
+<span class="var">df</span>[<span class="str">'price_per_m2'</span>]  = <span class="var">df</span>[<span class="str">'price'</span>] / <span class="var">df</span>[<span class="str">'area'</span>]
+
+<span class="cm"># Binning</span>
+<span class="var">df</span>[<span class="str">'age_group'</span>] = <span class="cls">pd</span>.cut(<span class="var">df</span>[<span class="str">'age'</span>],
+    bins=[<span class="num">0</span>, <span class="num">18</span>, <span class="num">35</span>, <span class="num">55</span>, <span class="num">100</span>],
+    labels=[<span class="str">'Youth'</span>, <span class="str">'Young Adult'</span>, <span class="str">'Middle Age'</span>, <span class="str">'Senior'</span>]
+)
+
+<span class="cm"># Date features</span>
+<span class="var">df</span>[<span class="str">'timestamp'</span>] = <span class="cls">pd</span>.to_datetime(<span class="var">df</span>[<span class="str">'timestamp'</span>])
+<span class="var">df</span>[<span class="str">'hour'</span>]        = <span class="var">df</span>[<span class="str">'timestamp'</span>].dt.hour
+<span class="var">df</span>[<span class="str">'day_of_week'</span>] = <span class="var">df</span>[<span class="str">'timestamp'</span>].dt.dayofweek
+<span class="var">df</span>[<span class="str">'is_weekend'</span>]  = (<span class="var">df</span>[<span class="str">'day_of_week'</span>] >= <span class="num">5</span>).astype(<span class="fn">int</span>)
+
+<span class="cm"># Polynomial features (sklearn)</span>
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> PolynomialFeatures
+<span class="var">poly</span> = PolynomialFeatures(degree=<span class="num">2</span>, include_bias=<span class="kw">False</span>)
+<span class="var">X_poly</span> = <span class="var">poly</span>.fit_transform(<span class="var">X</span>)</pre>
+    </div>
+
+    <div class="quiz" id="q6">
+      <div class="quiz-xp">+40 XP</div>
+      <div class="quiz-q">A data scientist is predicting energy consumption from temperature. They notice that both very cold AND very hot temperatures lead to high consumption (AC in summer, heating in winter). The relationship is U-shaped. Which feature engineering approach is most appropriate?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q6',this,false,'❌ Dropping temperature would remove the strongest predictor entirely!')"><div class="opt-letter">A</div>Drop the temperature feature</div>
+        <div class="opt" onclick="ans('q6',this,false,'❌ Binning could help capture the U-shape but might lose granularity. Adding a polynomial term is more precise.')"><div class="opt-letter">B</div>Bin temperature into 3 groups (cold, mild, hot)</div>
+        <div class="opt" onclick="ans('q6',this,true,'✅ Correct! A U-shaped relationship is quadratic. Adding temperature² as a feature lets the linear model capture "high at both extremes, low in middle". This is polynomial feature engineering.')"><div class="opt-letter">C</div>Add temperature² as a new feature</div>
+        <div class="opt" onclick="ans('q6',this,false,'❌ Log transform handles right-skewed distributions, not U-shaped relationships.')"><div class="opt-letter">D</div>Apply log(temperature)</div>
+      </div>
+      <div class="fb" id="fb-q6"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('sk')">← Back</button>
+    <button class="btn btn-p" onclick="done('fe');go('pca')">Next: PCA 🔭 →</button>
+  </div>
+</div><!-- /page-fe -->
+
+<!-- ═══════════ PAGE: PCA ═══════════ -->
+<div id="page-pca" class="page">
+  <div class="hero">
+    <div class="hero-tag">Lesson 6 of 7</div>
+    <div class="hero-title">🔭 Principal Component Analysis</div>
+    <div class="hero-sub">When you have hundreds of features, PCA finds the directions of maximum variance and compresses them into fewer, more meaningful dimensions. The Swiss Army knife of dimensionality reduction.</div>
+    <div class="hero-pills">
+      <div class="pill">⏱ ~35 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 180 XP</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-hdr">
+      <div class="sec-icon" style="background:rgba(16,185,129,0.12);">🔎</div>
+      <div><div class="sec-title">What Does PCA Do?</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📦 The Curse of Dimensionality</div>
+      <div class="card-body">
+        With 200 features, your data lives in 200-dimensional space. Most of those dimensions are <strong>redundant or correlated</strong> (height & weight are correlated; shoe size & height are correlated).<br><br>
+        PCA finds <strong>principal components</strong> — new axes that are:<br>
+        1. <strong>Orthogonal</strong> (uncorrelated with each other)<br>
+        2. <strong>Ranked by variance</strong> explained (PC1 explains most variance, PC2 next, etc.)<br><br>
+        You can then keep only the top K components and discard the rest — often retaining 95%+ of information with a fraction of the features.
+      </div>
+    </div>
+
+    <div class="rw">
+      <div class="rw-label">🌍 Real World Example</div>
+      <div class="rw-title">Face Recognition at Scale</div>
+      <div class="rw-body">A 100×100 pixel face image has 10,000 features. PCA (called "Eigenfaces" in this context) reduces this to ~150 components that capture the main modes of face variation (lighting direction, face orientation, expression). Facebook's face recognition uses this to compare millions of faces efficiently — comparing 150-dimensional vectors instead of 10,000-dimensional ones.</div>
+    </div>
+
+    <!-- PCA Visual -->
+    <div class="plot-wrap">
+      <div class="plot-title">PCA: Projecting 2D data onto the direction of maximum variance (PC1)</div>
+      <svg width="460" height="220" viewBox="0 0 460 220" style="display:block;margin:0 auto;max-width:100%">
+        <!-- Grid -->
+        <line x1="30" y1="190" x2="440" y2="190" stroke="#2a2a44" stroke-width="1"/>
+        <line x1="30" y1="10" x2="30" y2="190" stroke="#2a2a44" stroke-width="1"/>
+        <!-- PC1 direction -->
+        <line x1="60" y1="170" x2="410" y2="30" stroke="#a78bfa" stroke-width="2" stroke-dasharray="6,3"/>
+        <text x="415" y="28" fill="#a78bfa" font-size="11" font-weight="600">PC1</text>
+        <!-- Data points -->
+        <circle cx="80" cy="155" r="5" fill="#06b6d4" opacity="0.8"/>
+        <circle cx="110" cy="140" r="5" fill="#06b6d4" opacity="0.8"/>
+        <circle cx="150" cy="125" r="5" fill="#06b6d4" opacity="0.8"/>
+        <circle cx="180" cy="110" r="5" fill="#06b6d4" opacity="0.8"/>
+        <circle cx="200" cy="100" r="5" fill="#06b6d4" opacity="0.8"/>
+        <circle cx="230" cy="90" r="5" fill="#06b6d4" opacity="0.8"/>
+        <circle cx="260" cy="80" r="5" fill="#06b6d4" opacity="0.8"/>
+        <circle cx="290" cy="65" r="5" fill="#06b6d4" opacity="0.8"/>
+        <circle cx="320" cy="58" r="5" fill="#06b6d4" opacity="0.8"/>
+        <circle cx="360" cy="45" r="5" fill="#06b6d4" opacity="0.8"/>
+        <!-- Projected points on PC1 -->
+        <circle cx="88" cy="150" r="4" fill="#10b981" opacity="0.9"/>
+        <circle cx="117" cy="136" r="4" fill="#10b981" opacity="0.9"/>
+        <circle cx="152" cy="122" r="4" fill="#10b981" opacity="0.9"/>
+        <circle cx="181" cy="109" r="4" fill="#10b981" opacity="0.9"/>
+        <circle cx="201" cy="98" r="4" fill="#10b981" opacity="0.9"/>
+        <circle cx="231" cy="88" r="4" fill="#10b981" opacity="0.9"/>
+        <circle cx="260" cy="78" r="4" fill="#10b981" opacity="0.9"/>
+        <circle cx="289" cy="64" r="4" fill="#10b981" opacity="0.9"/>
+        <circle cx="319" cy="56" r="4" fill="#10b981" opacity="0.9"/>
+        <circle cx="360" cy="43" r="4" fill="#10b981" opacity="0.9"/>
+        <!-- Legend -->
+        <circle cx="50" cy="207" r="4" fill="#06b6d4"/>
+        <text x="60" y="211" fill="#546e7a" font-size="10">Original 2D data</text>
+        <circle cx="160" cy="207" r="4" fill="#10b981"/>
+        <text x="170" y="211" fill="#546e7a" font-size="10">Projected onto PC1 (1D)</text>
+      </svg>
+    </div>
+
+    <div class="code-wrap">
+      <div class="code-hdr"><span style="display:flex;align-items:center;"><span class="lang-dot" style="background:#7c3aed"></span> Python — PCA with Sklearn</span><button class="copy-btn" onclick="cp(this)">Copy</button></div>
+      <pre><span class="kw">from</span> sklearn.decomposition <span class="kw">import</span> PCA
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> <span class="cls">plt</span>
+
+<span class="cm"># ALWAYS scale before PCA — it's sensitive to feature magnitudes</span>
+<span class="var">scaler</span> = StandardScaler()
+<span class="var">X_scaled</span> = <span class="var">scaler</span>.fit_transform(<span class="var">X_train</span>)
+
+<span class="cm"># Step 1: Fit PCA with all components to see explained variance</span>
+<span class="var">pca_full</span> = PCA()
+<span class="var">pca_full</span>.fit(<span class="var">X_scaled</span>)
+
+<span class="cm"># Plot the "elbow" — how many components do we need?</span>
+<span class="var">cumvar</span> = <span class="cls">np</span>.cumsum(<span class="var">pca_full</span>.explained_variance_ratio_)
+<span class="cls">plt</span>.plot(<span class="var">cumvar</span>)
+<span class="cls">plt</span>.axhline(y=<span class="num">0.95</span>, color=<span class="str">'r'</span>, linestyle=<span class="str">'--'</span>, label=<span class="str">'95% variance'</span>)
+<span class="cls">plt</span>.xlabel(<span class="str">'Number of Components'</span>)
+<span class="cls">plt</span>.ylabel(<span class="str">'Cumulative Explained Variance'</span>)
+
+<span class="cm"># Step 2: Fit with chosen number of components</span>
+<span class="var">pca</span> = PCA(n_components=<span class="num">50</span>)  <span class="cm"># keep 50 components</span>
+<span class="var">X_pca_train</span> = <span class="var">pca</span>.fit_transform(<span class="var">X_scaled</span>)
+<span class="var">X_pca_test</span>  = <span class="var">pca</span>.transform(<span class="var">scaler</span>.transform(<span class="var">X_test</span>))
+
+<span class="fn">print</span>(<span class="str">f"Variance retained: </span>{<span class="var">pca</span>.explained_variance_ratio_.sum():.1%}<span class="str">"</span>)
+<span class="fn">print</span>(<span class="str">f"Shape: </span>{<span class="var">X_train</span>.shape}<span class="str"> → </span>{<span class="var">X_pca_train</span>.shape}<span class="str">"</span>)</pre>
+    </div>
+
+    <div class="quiz" id="q7">
+      <div class="quiz-xp">+40 XP</div>
+      <div class="quiz-q">You fit PCA on a dataset and the first 3 principal components explain 95% of the variance (out of 200 original features). What should you do before fitting PCA?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q7',this,false,'❌ One-hot encoding is for categorical data before any modelling — not specifically required before PCA.')"><div class="opt-letter">A</div>Apply one-hot encoding to all features</div>
+        <div class="opt" onclick="ans('q7',this,true,'✅ Correct! PCA finds directions of maximum variance. If income is in £100,000s and age is in tens, PCA would be dominated by income\'s larger scale. StandardScaler (mean=0, std=1) ensures all features contribute equally.')"><div class="opt-letter">B</div>Standardise all features with StandardScaler</div>
+        <div class="opt" onclick="ans('q7',this,false,'❌ Keeping all 200 features defeats the purpose of PCA — you\'re trying to reduce dimensionality!')"><div class="opt-letter">C</div>Keep all 200 features after PCA</div>
+        <div class="opt" onclick="ans('q7',this,false,'❌ Missing values should be handled before scaling and PCA, but standardisation is the critical step immediately before PCA.')"><div class="opt-letter">D</div>Nothing — apply PCA directly to raw data</div>
+      </div>
+      <div class="fb" id="fb-q7"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('fe')">← Back</button>
+    <button class="btn btn-p" onclick="done('pca');go('la')">Next: Linear Algebra 🧮 →</button>
+  </div>
+</div><!-- /page-pca -->
+
+<!-- ═══════════ PAGE: LINEAR ALGEBRA ═══════════ -->
+<div id="page-la" class="page">
+  <div class="hero">
+    <div class="hero-tag">Lesson 7 of 7 ⭐</div>
+    <div class="hero-title">🧮 Linear Algebra for ML</div>
+    <div class="hero-sub">The language of machine learning. Vectors, matrices, and dot products are how ML models represent and manipulate data mathematically. You don't need a maths degree — you need the intuition.</div>
+    <div class="hero-pills">
+      <div class="pill">⏱ ~40 min</div><div class="pill">🎯 3 Quizzes</div><div class="pill">⭐ 200 XP</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-hdr">
+      <div class="sec-icon" style="background:rgba(6,182,212,0.12);">➡️</div>
+      <div><div class="sec-title">Vectors</div><div class="sec-sub">Data points are vectors</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">➡️ What is a Vector?</div>
+      <div class="card-body">
+        A vector is just a <strong>list of numbers</strong> — but viewed geometrically as an arrow in space.<br><br>
+        A single data point with M features = an M-dimensional vector. A dataset of N points with M features = a collection of N vectors, each of dimension M.<br><br>
+        <code>patient = [age=45, bmi=28.3, blood_pressure=130]</code> → a 3D vector: <strong>[45, 28.3, 130]</strong>
+      </div>
+    </div>
+
+    <div class="rw">
+      <div class="rw-label">🌍 Real World Example</div>
+      <div class="rw-title">Word Embeddings in Google Search</div>
+      <div class="rw-body">In NLP, every word is a vector. Google's Word2Vec maps "king" → [0.2, 0.8, -0.3, ...] (300 dimensions). The famous equation: <strong>king − man + woman ≈ queen</strong> is vector arithmetic! Finding similar words = finding nearby vectors in 300D space. All of search, recommendation, and translation relies on vector geometry.</div>
+    </div>
+
+    <div class="sec-hdr" style="margin-top:24px;">
+      <div class="sec-icon" style="background:rgba(6,182,212,0.12);">📋</div>
+      <div><div class="sec-title">Matrices</div><div class="sec-sub">Your entire dataset is a matrix</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📊 Datasets as Matrices</div>
+      <div class="card-body">
+        A matrix with N rows and M columns: <strong>X ∈ ℝ^(N×M)</strong><br>
+        • Each <strong>row</strong> is one data point (observation)<br>
+        • Each <strong>column</strong> is one feature<br><br>
+        Matrix multiplication <strong>X · β</strong> computes predictions for ALL N data points simultaneously — this is how linear regression makes predictions for the entire dataset in one operation!
+      </div>
+    </div>
+
+    <div class="math-box">
+      <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:10px;">Linear Regression in Matrix Form</div>
+      <div class="formula">ŷ = Xβ</div>
+      <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:10px;">
+        <div style="text-align:center;font-family:monospace;font-size:0.85rem;color:var(--secondary);">
+          X = ⎡ 1  x₁₁  x₁₂ ⎤<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;⎢ 1  x₂₁  x₂₂ ⎥<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;⎣ 1  x₃₁  x₃₂ ⎦<br>
+          <span style="color:var(--text-muted);font-size:0.78rem;">(N × M+1)</span>
+        </div>
+        <div style="align-self:center;color:var(--primary-light);font-size:1.3rem;">×</div>
+        <div style="text-align:center;font-family:monospace;font-size:0.85rem;color:var(--warning);">
+          β = ⎡ β₀ ⎤<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;⎢ β₁ ⎥<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;⎣ β₂ ⎦<br>
+          <span style="color:var(--text-muted);font-size:0.78rem;">(M+1 × 1)</span>
+        </div>
+        <div style="align-self:center;color:var(--primary-light);font-size:1.3rem;">=</div>
+        <div style="text-align:center;font-family:monospace;font-size:0.85rem;color:var(--accent);">
+          ŷ = ⎡ ŷ₁ ⎤<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;⎢ ŷ₂ ⎥<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;⎣ ŷ₃ ⎦<br>
+          <span style="color:var(--text-muted);font-size:0.78rem;">(N × 1)</span>
+        </div>
+      </div>
+      <div class="math-note">OLS Solution: β* = (XᵀX)⁻¹Xᵀy</div>
+    </div>
+
+    <div class="code-wrap">
+      <div class="code-hdr"><span style="display:flex;align-items:center;"><span class="lang-dot" style="background:#7c3aed"></span> Python — Linear Algebra with NumPy</span><button class="copy-btn" onclick="cp(this)">Copy</button></div>
+      <pre><span class="kw">import</span> numpy <span class="kw">as</span> <span class="cls">np</span>
+
+<span class="cm"># Vectors</span>
+<span class="var">v1</span> = <span class="cls">np</span>.array([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>])
+<span class="var">v2</span> = <span class="cls">np</span>.array([<span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>])
+
+<span class="var">dot</span> = <span class="cls">np</span>.dot(<span class="var">v1</span>, <span class="var">v2</span>)         <span class="cm"># dot product: 1×4 + 2×5 + 3×6 = 32</span>
+<span class="var">norm</span> = <span class="cls">np</span>.linalg.norm(<span class="var">v1</span>)     <span class="cm"># magnitude: √(1+4+9) = 3.74</span>
+
+<span class="cm"># Matrices</span>
+<span class="var">X</span> = <span class="cls">np</span>.array([[<span class="num">1</span>, <span class="num">2</span>], [<span class="num">3</span>, <span class="num">4</span>], [<span class="num">5</span>, <span class="num">6</span>]])  <span class="cm"># shape: (3, 2)</span>
+<span class="var">beta</span> = <span class="cls">np</span>.array([[<span class="num">0.5</span>], [<span class="num">1.0</span>]])         <span class="cm"># shape: (2, 1)</span>
+
+<span class="var">y_pred</span> = <span class="var">X</span> @ <span class="var">beta</span>   <span class="cm"># matrix multiplication: (3,2) @ (2,1) = (3,1)</span>
+<span class="cm"># [[1×0.5 + 2×1.0],  = [[2.5],</span>
+<span class="cm">#  [3×0.5 + 4×1.0],     [5.5],</span>
+<span class="cm">#  [5×0.5 + 6×1.0]]     [8.5]]</span>
+
+<span class="cm"># OLS closed-form: β* = (XᵀX)⁻¹Xᵀy</span>
+<span class="var">beta_star</span> = <span class="cls">np</span>.linalg.inv(<span class="var">X</span>.T @ <span class="var">X</span>) @ <span class="var">X</span>.T @ <span class="var">y</span>
+
+<span class="cm"># Transpose</span>
+<span class="var">X_T</span> = <span class="var">X</span>.T          <span class="cm"># shape: (2, 3)</span>
+
+<span class="cm"># Eigendecomposition (foundation of PCA)</span>
+<span class="var">eigenvalues</span>, <span class="var">eigenvectors</span> = <span class="cls">np</span>.linalg.eig(<span class="var">X</span>.T @ <span class="var">X</span>)</pre>
+    </div>
+
+    <div class="quiz" id="q8">
+      <div class="quiz-xp">+50 XP</div>
+      <div class="quiz-q">A dataset has 1,000 patients and 20 features. In matrix notation, what shape is the feature matrix X, and what shape is the weight vector β for linear regression?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q8',this,false,'❌ Rows = observations (patients), columns = features. You\'ve swapped them!')"><div class="opt-letter">A</div>X: (20, 1000), β: (1000, 1)</div>
+        <div class="opt" onclick="ans('q8',this,true,'✅ Correct! X is (1000 patients × 20 features). β has one weight per feature: (20, 1). Matrix multiply: (1000×20) × (20×1) = (1000×1) predictions for all patients at once!')"><div class="opt-letter">B</div>X: (1000, 20), β: (20, 1)</div>
+        <div class="opt" onclick="ans('q8',this,false,'❌ β has one weight per feature (20), not per patient. The number of patients only affects X, not β.')"><div class="opt-letter">C</div>X: (1000, 20), β: (1000, 1)</div>
+        <div class="opt" onclick="ans('q8',this,false,'❌ β should have the same number of rows as X has columns (features), so it can be multiplied.')"><div class="opt-letter">D</div>X: (1000, 20), β: (1, 20)</div>
+      </div>
+      <div class="fb" id="fb-q8"></div>
+    </div>
+
+    <div class="badge" id="bdg-la" style="background:linear-gradient(135deg,#7c3aed,#06b6d4);">
+      <div class="badge-icon">🧮</div>
+      <div class="badge-title" style="color:white;">Algebra Ace</div>
+      <div class="badge-sub" style="color:rgba(255,255,255,0.8);">Mastered Vectors, Matrices & Linear Algebra!</div>
+    </div>
+
+    <div class="badge" id="bdg-m2" style="background:linear-gradient(135deg,#10b981,#7c3aed);">
+      <div class="badge-icon">🏆</div>
+      <div class="badge-title" style="color:white;">Module 2 Complete!</div>
+      <div class="badge-sub" style="color:rgba(255,255,255,0.8);">You've mastered Intro to Machine Learning. Ready for Classification! 🚀</div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('pca')">← Back</button>
+    <button class="btn btn-p" onclick="done('la')">🎉 Complete Module 2!</button>
+  </div>
+</div><!-- /page-la -->
+
+  </main>
+</div>
+
+<div id="toast"><span id="ti">⭐</span><span id="tm"></span></div>
+
+<script>
+// ── DATA POINTS for scatter plot (house size → price) ──
+const PTS = [
+  {x:60,y:180},{x:75,y:200},{x:90,y:240},{x:100,y:260},{x:115,y:295},
+  {x:130,y:310},{x:145,y:360},{x:160,y:380},{x:175,y:420},{x:190,y:450},
+  {x:200,y:460},{x:220,y:510},{x:240,y:530},{x:260,y:570}
+];
+const X_MIN=50,X_MAX=280,Y_MIN=100,Y_MAX=700;
+const SX=w=>50+(w-X_MIN)/(X_MAX-X_MIN)*440;
+const SY=h=>240-(h-Y_MIN)/(Y_MAX-Y_MIN)*230;
+
+function initScatter(){
+  const g=document.getElementById('pts');
+  PTS.forEach(p=>{
+    const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',SX(p.x));c.setAttribute('cy',SY(p.y));
+    c.setAttribute('r','5');c.setAttribute('fill','#06b6d4');c.setAttribute('opacity','0.85');
+    g.appendChild(c);
+  });
+  updatePlot();
+}
+
+function updatePlot(){
+  const slope=parseFloat(document.getElementById('slope').value);
+  const intcpt=parseFloat(document.getElementById('intcpt').value);
+  document.getElementById('slope-v').textContent=slope.toFixed(1);
+  document.getElementById('intcpt-v').textContent=intcpt.toFixed(0);
+  const line=document.getElementById('regline');
+  const x1=X_MIN,y1=intcpt+slope*x1;
+  const x2=X_MAX,y2=intcpt+slope*x2;
+  line.setAttribute('x1',SX(x1));line.setAttribute('y1',SY(y1));
+  line.setAttribute('x2',SX(x2));line.setAttribute('y2',SY(y2));
+  const sse=PTS.reduce((acc,p)=>{const pred=intcpt+slope*p.x;return acc+(p.y-pred)**2;},0);
+  document.getElementById('sse-txt').textContent=`SSE: ${Math.round(sse).toLocaleString()}`;
+  const minSSE=PTS.reduce((acc,p)=>{const pred=150+2.1*p.x;return acc+(p.y-pred)**2;},0);
+  const pct=Math.max(0,100-Math.round((sse-minSSE)/minSSE*30));
+  document.getElementById('sse-display').textContent=`Fit quality: ${pct}% (lower SSE = better fit — try β₀≈150, β₁≈2.1)`;
+}
+
+// ── GD SIMULATION (uses normalised x internally, displays real-scale params) ──
+const GD_RAW_X=[60,75,90,100,115,130,145,160,175,190,200,220,240,260];
+const GD_Y=[180,200,240,260,295,310,360,380,420,450,460,510,530,570];
+const GD_X_MEAN=GD_RAW_X.reduce((a,v)=>a+v,0)/GD_RAW_X.length;
+const GD_X_STD=Math.sqrt(GD_RAW_X.reduce((a,v)=>a+(v-GD_X_MEAN)**2,0)/GD_RAW_X.length);
+const GD_X=GD_RAW_X.map(x=>(x-GD_X_MEAN)/GD_X_STD); // standardised
+const GD_Y_MEAN=GD_Y.reduce((a,v)=>a+v,0)/GD_Y.length;
+function updateGD(){
+  const lr=parseFloat(document.getElementById('lr-rate').value);
+  const iters=parseInt(document.getElementById('gd-iter').value);
+  document.getElementById('lr-val').textContent=lr.toFixed(3);
+  document.getElementById('iter-val').textContent=iters;
+  let b0=0,b1=0;
+  const n=GD_X.length;
+  let diverged=false;
+  for(let i=0;i<iters;i++){
+    const preds=GD_X.map(x=>b0+b1*x);
+    const errs=preds.map((p,j)=>p-GD_Y[j]);
+    const db0=(2/n)*errs.reduce((a,e)=>a+e,0);
+    const db1=(2/n)*errs.reduce((a,e,j)=>a+e*GD_X[j],0);
+    b0-=lr*db0; b1-=lr*db1;
+    if(!isFinite(b0)||!isFinite(b1)){diverged=true;break;}
+  }
+  const loss=GD_X.reduce((acc,x,j)=>{const e=(b0+b1*x)-GD_Y[j];return acc+e*e;},0)/n;
+  // Convert normalised params back to original scale for display
+  const b1_real = b1/GD_X_STD;
+  const b0_real = b0 - b1*(GD_X_MEAN/GD_X_STD);
+  document.getElementById('gd-b0').textContent=diverged?'∞ (diverged!)':b0_real.toFixed(1);
+  document.getElementById('gd-b1').textContent=diverged?'∞ (diverged!)':b1_real.toFixed(2);
+  document.getElementById('gd-loss').textContent=diverged?'∞ (diverged!)':loss.toFixed(1);
+  let status='';
+  if(diverged) status='💥 Diverged! Learning rate is too large — reduce α';
+  else if(lr>0.8) status='⚠️ Learning rate is very high — approaching instability!';
+  else if(loss<400) status='✅ Great convergence! β₀≈45, β₁≈2.1 (near optimal values)';
+  else if(iters<15) status='🔄 Try more iterations to let it converge further...';
+  else status='💡 Try a larger learning rate or more iterations';
+  document.getElementById('gd-status').textContent=status;
+}
+
+// ── XP STATE ──
+const S={xp:0,lv:1,pts:0,stk:0,done:new Set(),ans:new Set()};
+const XP_LV=200;
+const LVNAMES=['Novice','Learner','Analyst','Scientist','Expert','Master'];
+const LESSON_XP={lr:40,gd:40,pp:40,sk:30,fe:30,pca:35,la:40};
+
+function addXP(amt,lbl){
+  S.xp+=amt;S.pts+=amt;S.stk++;
+  const lv=Math.floor(S.xp/XP_LV)+1;
+  if(lv>S.lv){S.lv=lv;toast(`🎉 Level Up! Lv ${S.lv} ${LVNAMES[Math.min(S.lv-1,LVNAMES.length-1)]}!`,'🎊');}
+  updateUI();
+  if(lbl)toast(`+${amt} XP — ${lbl}`,'⭐');
+}
+function updateUI(){
+  const xpInLv=S.xp%XP_LV;
+  document.getElementById('xbar').style.width=(xpInLv/XP_LV*100)+'%';
+  document.getElementById('xlbl').textContent=`${S.xp} XP · Lv ${S.lv} — ${xpInLv}/${XP_LV}`;
+  document.getElementById('lvl').textContent=`Lv ${S.lv} ${LVNAMES[Math.min(S.lv-1,LVNAMES.length-1)]}`;
+  document.getElementById('stk').textContent=S.stk;
+  document.getElementById('pts').textContent=S.pts;
+}
+
+function ans(qid,el,ok,fb){
+  if(S.ans.has(qid))return;
+  S.ans.add(qid);
+  el.closest('.quiz').querySelectorAll('.opt').forEach(o=>o.classList.add('locked'));
+  const fbEl=document.getElementById('fb-'+qid);
+  const xp=parseInt(el.closest('.quiz').querySelector('.quiz-xp').textContent)||40;
+  if(ok){el.classList.add('correct');fbEl.className='fb cfb show';fbEl.innerHTML=fb;addXP(xp,'Correct!');confetti(el);}
+  else{el.classList.add('wrong');fbEl.className='fb wfb show';fbEl.innerHTML=fb;S.stk=0;updateUI();toast('Read the explanation and keep going! 💪','💡');}
+}
+
+function done(lesson){
+  if(S.done.has(lesson))return;
+  S.done.add(lesson);
+  const xp=LESSON_XP[lesson]||30;
+  addXP(xp,`${lesson.toUpperCase()} complete!`);
+  document.getElementById('p-'+lesson).style.width='100%';
+  document.getElementById('n-'+lesson).classList.add('done');
+  if(lesson==='la'){
+    document.getElementById('bdg-la').classList.add('show');
+    document.getElementById('bdg-m2').classList.add('show');
+    document.getElementById('b2').style.color='inherit';
+    document.getElementById('b3').style.color='inherit';
+  }
+  if(lesson==='lr') document.getElementById('b0').style.color='inherit';
+  if(lesson==='gd') document.getElementById('b1').style.color='inherit';
+}
+
+function go(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.getElementById('n-'+page).classList.add('active');
+  const p=document.getElementById('p-'+page);
+  if(!S.done.has(page)&&p.style.width==='0%')p.style.width='15%';
+  document.getElementById('main').scrollTop=0;
+}
+
+let toastT;
+function toast(msg,icon='⭐'){
+  document.getElementById('ti').textContent=icon;
+  document.getElementById('tm').textContent=msg;
+  const t=document.getElementById('toast');
+  t.classList.add('show');
+  clearTimeout(toastT);
+  toastT=setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+function cp(btn){
+  const text=btn.closest('.code-wrap').querySelector('pre').innerText;
+  navigator.clipboard.writeText(text).then(()=>{btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy',2000);});
+}
+
+function confetti(el){
+  const r=el.getBoundingClientRect();
+  const cols=['#a78bfa','#10b981','#f59e0b','#06b6d4','#fff'];
+  for(let i=0;i<18;i++){
+    const d=document.createElement('div');
+    d.style.cssText=`position:fixed;width:7px;height:7px;border-radius:50%;background:${cols[i%cols.length]};left:${r.left+r.width/2}px;top:${r.top}px;pointer-events:none;z-index:9999;transition:all 0.9s cubic-bezier(0,.9,.57,1);`;
+    document.body.appendChild(d);
+    requestAnimationFrame(()=>{d.style.left=(r.left+r.width/2+(Math.random()-.5)*180)+'px';d.style.top=(r.top-90-Math.random()*80)+'px';d.style.opacity='0';d.style.transform=`scale(${Math.random()*2})`;});
+    setTimeout(()=>d.remove(),1000);
+  }
+}
+
+// ── LAB GUIDE BANNER ──
+function initLabBanner() {
+  if (localStorage.getItem('lab-banner-dismissed') === '1') return;
+  const banner = document.createElement('div');
+  banner.id = 'lab-banner';
+  banner.innerHTML = `
+    <div id="lab-banner-inner">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;">
+        <div style="font-size:1.6rem;flex-shrink:0;">🧪</div>
+        <div style="flex:1;min-width:200px;">
+          <div style="font-weight:700;font-size:0.95rem;margin-bottom:6px;">How to use the code examples</div>
+          <div style="font-size:0.85rem;line-height:1.6;color:rgba(255,255,255,0.85);">
+            Code blocks here are <strong>reference examples to read and understand</strong> — they don't run inside this page.<br>
+            To <strong>experiment and run</strong> the code, keep a <strong>Jupyter Notebook</strong> open alongside this lesson:
+          </div>
+          <ol style="font-size:0.83rem;line-height:1.8;margin:8px 0 0 16px;color:rgba(255,255,255,0.85);">
+            <li>Activate your conda environment: <code style="background:rgba(0,0,0,0.3);padding:1px 6px;border-radius:4px;">conda activate ds_env</code></li>
+            <li>Launch Jupyter: <code style="background:rgba(0,0,0,0.3);padding:1px 6px;border-radius:4px;">jupyter notebook</code></li>
+            <li>Create a new notebook — use <strong>📋 Copy</strong> on any code block, paste into a cell, and press <strong>Shift+Enter</strong> to run</li>
+            <li>Modify the code and re-run to build intuition — that's where real learning happens!</li>
+          </ol>
+          <div style="margin-top:10px;font-size:0.8rem;color:rgba(255,255,255,0.6);">💡 Recommended workflow: read the concept here → answer the quiz → then reproduce the code in Jupyter from memory.</div>
+        </div>
+        <button onclick="dismissLabBanner()" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:0.82rem;flex-shrink:0;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">Got it ✓</button>
+      </div>
+    </div>`;
+  document.getElementById('main').prepend(banner);
+}
+
+function dismissLabBanner() {
+  const b = document.getElementById('lab-banner');
+  if (b) { b.style.opacity = '0'; b.style.transform = 'translateY(-8px)'; setTimeout(() => b.remove(), 300); }
+  localStorage.setItem('lab-banner-dismissed', '1');
+}
+
+function injectJupyterPills() {
+  document.querySelectorAll('.code-hdr').forEach(hdr => {
+    if (hdr.querySelector('.jupyter-pill')) return;
+    const pill = document.createElement('span');
+    pill.className = 'jupyter-pill';
+    pill.innerHTML = '▶ Run in Jupyter';
+    pill.title = 'Copy this code and paste it into a Jupyter Notebook cell to run it';
+    hdr.insertBefore(pill, hdr.querySelector('.copy-btn'));
+  });
+}
+
+initScatter();
+updateGD();
+initLabBanner();
+injectJupyterPills();
+toast('Welcome to Module 2: Machine Learning! 🤖','👋');
+</script>
+</body>
+</html>

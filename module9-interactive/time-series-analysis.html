@@ -1230,7 +1230,7 @@ function go(id){
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
   document.getElementById('nav-'+id).classList.add('active');
-  window.scrollTo(0,0);
+  var m=document.getElementById('main'); if(m) m.scrollTo(0,0);
 }
 function done(id){
   if(S.done[id]) return;

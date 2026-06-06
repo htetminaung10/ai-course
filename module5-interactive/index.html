@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 5: Ensemble Methods 🌲</title>
+<style>
+:root{--p:#10b981;--pd:#059669;--s:#f59e0b;--a:#8b5cf6;--a2:#06b6d4;--a3:#ef4444;--bg:#020d08;--sur:#071a10;--sur2:#0a2417;--sur3:#0d3020;--tx:#e0faf0;--txm:#5a9070;--bdr:#0d3020;--cbg:#010d06;--ok:#10b981;--warn:#f59e0b;--err:#ef4444;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden;}
+
+#tb{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(2,13,8,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--bdr);padding:0 24px;height:60px;display:flex;align-items:center;gap:16px;}
+.brand{font-size:1rem;font-weight:800;background:linear-gradient(135deg,var(--p),var(--s));-webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap;}
+.xps{display:flex;align-items:center;gap:10px;flex:1;}
+.lvb{background:linear-gradient(135deg,var(--p),var(--s));padding:4px 12px;border-radius:20px;font-weight:700;font-size:0.82rem;color:#000;white-space:nowrap;}
+.xw{flex:1;max-width:280px;}
+.xl{font-size:0.72rem;color:var(--txm);margin-bottom:3px;}
+.xbg{background:var(--bdr);border-radius:10px;height:7px;overflow:hidden;}
+.xfill{height:100%;background:linear-gradient(90deg,var(--p),var(--s));border-radius:10px;transition:width 0.5s;}
+.stk{font-size:0.82rem;color:var(--warn);display:flex;align-items:center;gap:4px;}
+.scd{font-weight:700;color:var(--a2);font-size:0.88rem;white-space:nowrap;}
+.mnav{display:flex;gap:6px;margin-left:8px;}
+.mbtn{padding:4px 10px;border-radius:6px;font-size:0.75rem;font-weight:600;border:1px solid var(--bdr);background:transparent;color:var(--txm);cursor:pointer;transition:all 0.2s;text-decoration:none;}
+.mbtn:hover{border-color:var(--p);color:var(--p);}
+
+#app{display:flex;margin-top:60px;min-height:calc(100vh - 60px);}
+#sbar{width:260px;min-width:260px;background:var(--sur);border-right:1px solid var(--bdr);padding:16px 0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;}
+.sbt{padding:0 16px 10px;font-size:0.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--txm);}
+.ni{display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;border-left:3px solid transparent;transition:all 0.2s;font-size:0.87rem;}
+.ni:hover{background:var(--sur2);}
+.ni.active{border-left-color:var(--p);background:var(--sur2);color:var(--p);}
+.ni.done{color:var(--ok);}
+.ni.done::after{content:'✓';margin-left:auto;font-weight:700;}
+.nic{font-size:1.1rem;min-width:22px;text-align:center;flex-shrink:0;}
+.nl{flex:1;}
+.pm{margin-top:3px;height:3px;background:var(--bdr);border-radius:3px;overflow:hidden;}
+.pmf{height:100%;background:var(--p);border-radius:3px;transition:width 0.3s;}
+.sbs{padding:14px 16px 4px;border-top:1px solid var(--bdr);margin-top:8px;}
+
+#main{flex:1;padding:36px 44px;max-width:920px;overflow-y:auto;}
+.page{display:none;}.page.active{display:block;}
+
+.hero{background:linear-gradient(135deg,var(--sur2),var(--sur3));border:1px solid var(--bdr);border-radius:20px;padding:36px;margin-bottom:36px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-30%;right:-5%;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,0.12),transparent);}
+.htag{font-size:0.72rem;text-transform:uppercase;letter-spacing:2px;color:var(--p);margin-bottom:6px;}
+.htitle{font-size:2rem;font-weight:800;margin-bottom:10px;line-height:1.2;}
+.hsub{font-size:0.92rem;color:var(--txm);margin-bottom:20px;max-width:580px;line-height:1.6;}
+.hpills{display:flex;gap:10px;flex-wrap:wrap;}
+.pill{background:rgba(255,255,255,0.05);border:1px solid var(--bdr);border-radius:20px;padding:5px 12px;font-size:0.78rem;color:var(--txm);}
+
+.sec{margin-bottom:44px;}
+.sh{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--bdr);}
+.si{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+.st{font-size:1.4rem;font-weight:700;}
+.ss{font-size:0.82rem;color:var(--txm);margin-top:2px;}
+
+.card{background:var(--sur);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin-bottom:18px;transition:transform 0.2s,border-color 0.2s;}
+.card:hover{transform:translateY(-2px);border-color:var(--p);}
+.ct{font-size:1.05rem;font-weight:700;margin-bottom:9px;}
+.cb{color:var(--txm);line-height:1.7;font-size:0.9rem;}
+.cb strong{color:var(--tx);}
+.cb code{background:var(--cbg);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:0.83rem;color:var(--p);}
+
+.rw{background:linear-gradient(135deg,rgba(16,185,129,0.07),rgba(245,158,11,0.07));border:1px solid rgba(16,185,129,0.22);border-radius:14px;padding:18px 22px;margin:18px 0;}
+.rwl{font-size:0.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--ok);margin-bottom:6px;}
+.rwt{font-weight:700;margin-bottom:5px;}
+.rwb{color:var(--txm);font-size:0.88rem;line-height:1.6;}
+
+.quiz{background:var(--sur2);border:2px solid var(--bdr);border-radius:16px;padding:26px;margin:26px 0;position:relative;}
+.quiz::before{content:'QUIZ';position:absolute;top:-12px;left:18px;background:var(--p);color:#000;padding:3px 11px;border-radius:20px;font-size:0.73rem;font-weight:700;letter-spacing:1px;}
+.qxp{position:absolute;top:-12px;right:18px;background:var(--s);color:#000;padding:3px 11px;border-radius:20px;font-size:0.73rem;font-weight:700;}
+.qq{font-size:0.97rem;font-weight:600;margin-bottom:16px;line-height:1.5;}
+.opts{display:grid;gap:9px;}
+.opt{background:var(--sur);border:1px solid var(--bdr);border-radius:10px;padding:11px 14px;cursor:pointer;transition:all 0.2s;font-size:0.88rem;display:flex;align-items:flex-start;gap:9px;text-align:left;}
+.opt:hover:not(.locked){border-color:var(--p);background:rgba(16,185,129,0.08);}
+.opt.correct{border-color:var(--ok);background:rgba(16,185,129,0.12);color:var(--ok);}
+.opt.wrong{border-color:var(--err);background:rgba(239,68,68,0.12);color:var(--err);}
+.opt.locked{cursor:default;}
+.ol{width:24px;height:24px;border-radius:50%;background:var(--bdr);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;flex-shrink:0;}
+.fb{margin-top:12px;padding:11px 14px;border-radius:9px;font-size:0.88rem;line-height:1.5;display:none;}
+.fb.show{display:block;}
+.fb.cfb{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:var(--ok);}
+.fb.wfb{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:var(--err);}
+
+.info{border-radius:9px;padding:12px 16px;margin:14px 0;display:flex;gap:10px;align-items:flex-start;font-size:0.87rem;line-height:1.6;}
+.info.tip{background:rgba(16,185,129,0.08);border-left:3px solid var(--p);}
+.info.warn{background:rgba(245,158,11,0.08);border-left:3px solid var(--warn);}
+.info.note{background:rgba(6,182,212,0.08);border-left:3px solid var(--a2);}
+.ii{font-size:1rem;flex-shrink:0;margin-top:2px;}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:18px 0;}
+@media(max-width:680px){.two-col,.three-col{grid-template-columns:1fr;}}
+
+.code-wrap{margin:18px 0;border-radius:12px;overflow:hidden;border:1px solid var(--bdr);}
+.ch{background:var(--sur2);padding:9px 14px;display:flex;align-items:center;justify-content:space-between;font-size:0.78rem;color:var(--txm);}
+.ld{width:9px;height:9px;border-radius:50%;margin-right:6px;}
+.cpb{background:none;border:1px solid var(--bdr);color:var(--txm);padding:3px 9px;border-radius:5px;cursor:pointer;font-size:0.73rem;transition:all 0.2s;}
+.cpb:hover{border-color:var(--p);color:var(--p);}
+pre{background:var(--cbg);padding:18px;margin:0;overflow-x:auto;font-family:'Consolas','Courier New',monospace;font-size:0.86rem;line-height:1.65;}
+.kw{color:#c792ea;}.fn{color:#82aaff;}.str{color:#c3e88d;}.num{color:#f78c6c;}.cm{color:#4a7060;font-style:italic;}.cls{color:#ffcb6b;}.vr{color:#89ddff;}
+
+.badge{display:none;border-radius:16px;padding:20px;margin:20px 0;text-align:center;animation:sI 0.4s ease;}
+.badge.show{display:block;}
+@keyframes sI{from{transform:translateY(-16px);opacity:0}to{transform:translateY(0);opacity:1}}
+.bi{font-size:2.8rem;margin-bottom:6px;}
+.bt{font-size:1.1rem;font-weight:800;}
+.bs{font-size:0.82rem;opacity:0.8;}
+
+.nav-btns{display:flex;gap:10px;margin-top:36px;padding-top:20px;border-top:1px solid var(--bdr);}
+.btn{padding:11px 22px;border-radius:9px;border:none;cursor:pointer;font-weight:600;font-size:0.88rem;transition:all 0.2s;display:flex;align-items:center;gap:7px;}
+.btn-p{background:var(--p);color:#000;}
+.btn-p:hover{background:var(--pd);transform:translateY(-1px);}
+.btn-o{background:transparent;border:1px solid var(--bdr);color:var(--tx);}
+.btn-o:hover{border-color:var(--p);color:var(--p);}
+
+/* Ensemble voting demo */
+.vote-demo{background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;}
+.models-row{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0;justify-content:center;}
+.model-card{border-radius:10px;padding:12px 16px;min-width:80px;text-align:center;border:2px solid;cursor:pointer;transition:all 0.2s;user-select:none;}
+.model-card:hover{transform:scale(1.05);}
+.vote-result{background:var(--cbg);border-radius:10px;padding:14px;margin-top:14px;text-align:center;font-size:1rem;font-weight:700;}
+.vote-bar{height:24px;border-radius:6px;margin:6px 0;display:flex;align-items:center;padding:0 8px;font-size:0.82rem;font-weight:700;transition:width 0.4s;}
+
+/* Bootstrap visual */
+.bootstrap-wrap{background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;}
+.sample-dots{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0;}
+.dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;border:2px solid;cursor:default;}
+.bootstrap-sets{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;}
+.bs-set{background:var(--cbg);border-radius:8px;padding:10px;}
+.bs-title{font-size:0.75rem;color:var(--txm);margin-bottom:6px;}
+.bs-dots{display:flex;flex-wrap:wrap;gap:4px;}
+.bs-dot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;}
+
+/* Boosting weights visual */
+.boost-visual{background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;}
+.boost-step{margin-bottom:18px;}
+.boost-step-title{font-size:0.85rem;font-weight:700;margin-bottom:8px;color:var(--p);}
+.boost-pts{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.bpt{border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;border:2px solid;transition:all 0.4s;}
+
+/* RF slider */
+.rf-demo{background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;}
+.rf-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.rf-lbl{font-size:0.82rem;color:var(--txm);min-width:140px;}
+input[type=range]{flex:1;accent-color:var(--p);}
+.rf-val{font-weight:700;color:var(--p);min-width:44px;text-align:right;}
+.rf-out{background:var(--cbg);border-radius:8px;padding:14px;margin-top:10px;font-size:0.88rem;font-family:monospace;}
+
+/* Feature importance bars */
+.fi-bar-wrap{margin:18px 0;}
+.fi-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.fi-label{font-size:0.82rem;color:var(--txm);min-width:140px;text-align:right;}
+.fi-bar-bg{flex:1;background:var(--bdr);border-radius:4px;height:20px;overflow:hidden;}
+.fi-bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:0.75rem;font-weight:700;color:#000;transition:width 0.6s ease;}
+.fi-pct{font-size:0.8rem;color:var(--txm);min-width:36px;}
+
+/* Comparison table */
+table.nice{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.85rem;}
+table.nice th{background:var(--sur3);padding:9px 12px;text-align:left;color:var(--p);font-weight:600;}
+table.nice td{padding:8px 12px;border-bottom:1px solid var(--bdr);}
+table.nice tr:hover td{background:var(--sur);}
+.muted{color:var(--txm);}
+
+#toast{position:fixed;bottom:28px;right:28px;z-index:9999;background:var(--sur);border:1px solid var(--p);border-radius:12px;padding:12px 18px;font-size:0.88rem;display:none;align-items:center;gap:9px;box-shadow:0 8px 32px rgba(0,0,0,0.4);animation:slideUp 0.3s ease;}
+#toast.show{display:flex;}
+@keyframes slideUp{from{transform:translateY(18px);opacity:0}to{transform:translateY(0);opacity:1}}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:var(--p);}
+</style>
+</head>
+<body>
+
+<div id="tb">
+  <div class="brand">🌲 Ensemble Methods</div>
+  <div class="xps">
+    <div id="lvl" class="lvb">Lv 1</div>
+    <div class="xw"><div id="xl" class="xl">0 / 200 XP</div><div class="xbg"><div id="xfill" class="xfill" style="width:0%"></div></div></div>
+    <div class="stk">🔥 <span id="stk">0</span></div>
+    <div class="scd">⭐ <span id="pts">0</span></div>
+  </div>
+  <div class="mnav">
+    <a class="mbtn" href="../module4-interactive/index.html">← M4</a>
+    <a class="mbtn" href="../module6-interactive/index.html">M6 →</a>
+  </div>
+</div>
+
+<div id="app">
+<nav id="sbar">
+  <div class="sbt">Module 5 Lessons</div>
+  <div id="n-en" class="ni active" onclick="go('en')"><div class="nic">🎪</div><div class="nl">Intro to Ensembles<div class="pm"><div class="pmf" id="p-en" style="width:0%"></div></div></div></div>
+  <div id="n-ba" class="ni" onclick="go('ba')"><div class="nic">👜</div><div class="nl">Bagging<div class="pm"><div class="pmf" id="p-ba" style="width:0%"></div></div></div></div>
+  <div id="n-rf" class="ni" onclick="go('rf')"><div class="nic">🌲</div><div class="nl">Random Forests<div class="pm"><div class="pmf" id="p-rf" style="width:0%"></div></div></div></div>
+  <div id="n-bo" class="ni" onclick="go('bo')"><div class="nic">⬆️</div><div class="nl">Boosting<div class="pm"><div class="pmf" id="p-bo" style="width:0%"></div></div></div></div>
+  <div id="n-xg" class="ni" onclick="go('xg')"><div class="nic">🚀</div><div class="nl">XGBoost<div class="pm"><div class="pmf" id="p-xg" style="width:0%"></div></div></div></div>
+  <div id="n-st" class="ni" onclick="go('st')"><div class="nic">🏗️</div><div class="nl">Stacking<div class="pm"><div class="pmf" id="p-st" style="width:0%"></div></div></div></div>
+  <div class="sbs">
+    <div class="sbt">Badges</div>
+    <div style="font-size:1.4rem;letter-spacing:3px;">
+      <span id="b0" style="color:var(--bdr)">🌲</span>
+      <span id="b1" style="color:var(--bdr)">🚀</span>
+      <span id="b2" style="color:var(--bdr)">🏗️</span>
+      <span id="b3" style="color:var(--bdr)">🏆</span>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- ══ INTRO TO ENSEMBLES ══ -->
+<div id="page-en" class="page active">
+  <div class="hero">
+    <div class="htag">Lesson 1 of 6 · Module 5</div>
+    <div class="htitle">🎪 Introduction to Ensemble Methods</div>
+    <div class="hsub">Why ask one expert when you can ask a thousand? Ensemble methods combine multiple models to produce predictions stronger than any individual model — the mathematical formalisation of "wisdom of crowds."</div>
+    <div class="hpills"><div class="pill">⏱ ~30 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 150 XP</div><div class="pill">🎮 Interactive</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(16,185,129,0.12)">🐄</div>
+      <div><div class="st">The Wisdom of Crowds</div><div class="ss">The intuition behind why ensembles work</div></div>
+    </div>
+
+    <div class="card">
+      <div class="ct">🐄 The Cow-Weighing Experiment</div>
+      <div class="cb">
+        In 1906, Francis Galton visited a county fair where 800 people guessed the weight of an ox. No single expert got it right — but the <strong>median of all 800 guesses was 1,207 lbs</strong>. The ox weighed 1,198 lbs.<br><br>
+        The crowd was more accurate than any individual, including the livestock experts. This is the core insight behind ensemble ML: <strong>diverse, partially-correct models combined outperform any single model</strong>.
+      </div>
+    </div>
+
+    <!-- Interactive vote demo -->
+    <div class="vote-demo">
+      <div style="font-weight:700;margin-bottom:6px;color:var(--p);">🗳️ Ensemble Voting — click models to toggle their votes</div>
+      <div style="font-size:0.82rem;color:var(--txm);margin-bottom:12px;">Each "weak learner" alone is only slightly better than random. But together...</div>
+      <div class="models-row" id="models-row"></div>
+      <div class="vote-result" id="vote-result"></div>
+    </div>
+
+    <div class="sh" style="margin-top:28px;"><div class="si" style="background:rgba(16,185,129,0.12)">🗂️</div>
+      <div><div class="st">Three Ensemble Strategies</div></div>
+    </div>
+
+    <div class="three-col">
+      <div class="card">
+        <div class="ct">👜 Bagging</div>
+        <div class="cb"><strong>B</strong>ootstrap <strong>Agg</strong>regat<strong>ing</strong><br>Train models in <strong>parallel</strong> on random subsets of data. Average predictions.<br><br>Reduces <strong>variance</strong>. Good for high-variance models (trees).<br>Example: <strong>Random Forest</strong></div>
+      </div>
+      <div class="card">
+        <div class="ct">⬆️ Boosting</div>
+        <div class="cb">Train models <strong>sequentially</strong>. Each new model focuses on the mistakes of the previous one.<br><br>Reduces <strong>bias</strong>. Converts weak learners into strong ones.<br>Example: <strong>AdaBoost, XGBoost</strong></div>
+      </div>
+      <div class="card">
+        <div class="ct">🏗️ Stacking</div>
+        <div class="cb">Train diverse base models, then train a <strong>meta-learner</strong> on their predictions.<br><br>Most flexible. Can combine any model types.<br>Example: <strong>Blended model pipelines</strong></div>
+      </div>
+    </div>
+
+    <div class="rw">
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">Kaggle Competition Winners — Almost Always Use Ensembles</div>
+      <div class="rwb">Since 2012, the top solutions in nearly every Kaggle ML competition use ensemble methods. The 2015 Netflix Prize ($1M) was won with a blend of 107 models. Modern winning solutions typically stack XGBoost, LightGBM, Neural Networks, and Linear models — each capturing different patterns — with a meta-learner combining them. Individual models plateau around 85% accuracy; well-constructed ensembles routinely push to 92%+.</div>
+    </div>
+
+    <div class="quiz" id="q1">
+      <div class="qxp">+30 XP</div>
+      <div class="qq">You have 5 weak classifiers, each with 60% accuracy. They make <em>independent</em> errors. What happens when you combine them with majority voting?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q1',this,false,'❌ The ensemble is better — with independent errors, the majority vote theorem guarantees improvement above any single member.')"><div class="ol">A</div>Accuracy stays at 60% — averaging doesn't help</div>
+        <div class="opt" onclick="ans('q1',this,true,'✅ Correct! By the law of large numbers and the "wisdom of crowds" effect, independent errors cancel out. 5 classifiers at 60% with majority voting achieve ≈68% accuracy. With 101 such classifiers: ≈73%. The key requirement is that errors must be <em>independent</em> (diverse models).')"><div class="ol">B</div>Accuracy improves — independent errors cancel out via majority vote</div>
+        <div class="opt" onclick="ans('q1',this,false,'❌ The ensemble won\'t achieve 100% — there are still correlated wrong predictions and irreducible error.')"><div class="ol">C</div>Accuracy reaches 100% with enough models</div>
+        <div class="opt" onclick="ans('q1',this,false,'❌ If errors are independent, combining models always helps. Performance only stays the same if models are perfectly correlated (identical).')"><div class="ol">D</div>Accuracy decreases — combining weak models makes things worse</div>
+      </div>
+      <div class="fb" id="fb-q1"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-p" onclick="done('en');go('ba')">Next: Bagging 👜 →</button>
+  </div>
+</div>
+
+<!-- ══ BAGGING ══ -->
+<div id="page-ba" class="page">
+  <div class="hero">
+    <div class="htag">Lesson 2 of 6</div>
+    <div class="htitle">👜 Bagging — Bootstrap Aggregating</div>
+    <div class="hsub">Train dozens of models in parallel on random subsamples of your data, then average their predictions. This simple trick dramatically reduces variance without increasing bias.</div>
+    <div class="hpills"><div class="pill">⏱ ~30 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 160 XP</div><div class="pill">🎮 Interactive</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(245,158,11,0.12)">🔁</div>
+      <div><div class="st">Bootstrap Sampling</div><div class="ss">Sampling with replacement — the key ingredient</div></div>
+    </div>
+
+    <div class="card">
+      <div class="ct">🔁 What is "Sampling with Replacement"?</div>
+      <div class="cb">
+        Given a dataset of N samples, create a new dataset of N samples by:<br>
+        1. Pick a random sample → add to new dataset<br>
+        2. <strong>Put it back</strong> → it can be picked again<br>
+        3. Repeat N times<br><br>
+        Result: each bootstrap sample has the same size as the original, but ~63% unique samples (the rest are duplicates). About 37% of original samples are <strong>out-of-bag (OOB)</strong> — never selected.
+      </div>
+    </div>
+
+    <!-- Bootstrap visualiser -->
+    <div class="bootstrap-wrap">
+      <div style="font-weight:700;margin-bottom:8px;color:var(--p);">🎲 Interactive Bootstrap — click to resample</div>
+      <div style="font-size:0.82rem;color:var(--txm);margin-bottom:8px;">Original dataset (10 samples):</div>
+      <div class="sample-dots" id="orig-dots"></div>
+      <button class="btn btn-p" onclick="resample()" style="margin:10px 0;padding:8px 18px;font-size:0.82rem;">🎲 Generate 3 Bootstrap Samples</button>
+      <div class="bootstrap-sets" id="bootstrap-sets"></div>
+      <div id="oob-info" style="font-size:0.82rem;color:var(--txm);margin-top:8px;"></div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="ct">✅ Why Bagging Works</div>
+        <div class="cb">Each model sees a slightly different dataset → learns slightly different patterns → makes different errors. When you <strong>average predictions</strong>, random errors cancel out but systematic signal remains.<br><br>Mathematically: averaging n uncorrelated models with variance σ² gives variance <strong>σ²/n</strong>.</div>
+      </div>
+      <div class="card">
+        <div class="ct">📦 Out-of-Bag (OOB) Evaluation</div>
+        <div class="cb">The ~37% samples not used for training each model can be used to <strong>evaluate that model for free</strong>. Average OOB scores across all models = an unbiased performance estimate — like free cross-validation!<br><br>Set <code>oob_score=True</code> in sklearn.</div>
+      </div>
+    </div>
+
+    <div class="rw">
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">Bagging for Medical Image Diagnosis</div>
+      <div class="rwb">Oxford's medical AI group trained 50 CNN models on different bootstrap samples of chest X-rays to detect pneumonia. A single CNN had 87% accuracy and was brittle — small image rotations changed predictions. The bagged ensemble averaged 94% accuracy and was robust to rotations: each CNN had learned different orientations from its bootstrap sample. The OOB scores gave reliable performance estimates without needing a separate validation set.</div>
+    </div>
+
+    <div class="code-wrap">
+      <div class="ch"><span style="display:flex;align-items:center;"><span class="ld" style="background:#f59e0b"></span>Python — Bagging</span><button class="cpb" onclick="cp(this)">Copy</button></div>
+      <pre><span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> BaggingClassifier
+<span class="kw">from</span> sklearn.tree <span class="kw">import</span> DecisionTreeClassifier
+
+<span class="cm"># Bag 50 decision trees, each trained on a random 80% subsample</span>
+<span class="vr">bag</span> = BaggingClassifier(
+    estimator=DecisionTreeClassifier(max_depth=<span class="kw">None</span>),  <span class="cm"># deep trees = high variance</span>
+    n_estimators=<span class="num">50</span>,
+    max_samples=<span class="num">0.8</span>,       <span class="cm"># 80% of training samples per tree</span>
+    max_features=<span class="num">1.0</span>,       <span class="cm"># all features (RF uses a subset)</span>
+    bootstrap=<span class="kw">True</span>,         <span class="cm"># sampling WITH replacement</span>
+    oob_score=<span class="kw">True</span>,         <span class="cm"># free evaluation on out-of-bag samples</span>
+    random_state=<span class="num">42</span>
+)
+<span class="vr">bag</span>.fit(<span class="vr">X_train</span>, <span class="vr">y_train</span>)
+
+<span class="fn">print</span>(<span class="str">f"Test accuracy: </span>{<span class="vr">bag</span>.score(<span class="vr">X_test</span>, <span class="vr">y_test</span>):.3f}<span class="str">"</span>)
+<span class="fn">print</span>(<span class="str">f"OOB accuracy:  </span>{<span class="vr">bag</span>.oob_score_:.3f}<span class="str">"</span>)  <span class="cm"># free performance estimate</span></pre>
+    </div>
+
+    <div class="quiz" id="q2">
+      <div class="qxp">+35 XP</div>
+      <div class="qq">Which type of model benefits most from bagging?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q2',this,false,'❌ Linear regression has low variance — it makes similar predictions regardless of which subset it trains on. Bagging brings minimal benefit.')"><div class="ol">A</div>Linear regression — low variance model</div>
+        <div class="opt" onclick="ans('q2',this,true,'✅ Correct! Deep decision trees have high variance — small changes in training data can produce completely different trees. Bagging averages out this instability. Bagging is most useful for high-variance, unstable models like unpruned decision trees.')"><div class="ol">B</div>Deep decision trees — high variance, unstable models</div>
+        <div class="opt" onclick="ans('q2',this,false,'❌ Logistic regression is fairly stable (low variance). Bagging reduces variance; for already-stable models, the benefit is minimal.')"><div class="ol">C</div>Logistic regression — stable linear model</div>
+        <div class="opt" onclick="ans('q2',this,false,'❌ k-NN with large k is actually quite stable. Small k can be high-variance, but it\'s not the primary use case for bagging.')"><div class="ol">D</div>k-NN with k=100</div>
+      </div>
+      <div class="fb" id="fb-q2"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('en')">← Back</button>
+    <button class="btn btn-p" onclick="done('ba');go('rf')">Next: Random Forests 🌲 →</button>
+  </div>
+</div>
+
+<!-- ══ RANDOM FORESTS ══ -->
+<div id="page-rf" class="page">
+  <div class="hero">
+    <div class="htag">Lesson 3 of 6</div>
+    <div class="htitle">🌲 Random Forests</div>
+    <div class="hsub">Random Forest = Bagging + Feature Randomness. By restricting each tree to a random subset of features at every split, trees become decorrelated — and the ensemble becomes dramatically stronger.</div>
+    <div class="hpills"><div class="pill">⏱ ~35 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 180 XP</div><div class="pill">🎮 Interactive</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(16,185,129,0.12)">🎲</div>
+      <div><div class="st">Bagging vs Random Forest</div><div class="ss">One extra trick makes all the difference</div></div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="ct">👜 Plain Bagging</div>
+        <div class="cb">Each tree uses all features for every split. Problem: if one feature is very strong, <em>all</em> trees will use it at the root → trees are <strong>correlated</strong> → averaging correlated models doesn't reduce variance as much.</div>
+      </div>
+      <div class="card">
+        <div class="ct">🌲 Random Forest</div>
+        <div class="cb">At each split, only a <strong>random subset of features</strong> (typically √p for classification, p/3 for regression) is considered. This forces trees to use different features → trees are <strong>decorrelated</strong> → averaging works much better.</div>
+      </div>
+    </div>
+
+    <!-- RF hyperparameter demo -->
+    <div class="rf-demo">
+      <div style="font-weight:700;margin-bottom:14px;color:var(--p);">⚙️ Random Forest Hyperparameter Explorer</div>
+      <div class="rf-row">
+        <span class="rf-lbl">n_estimators (trees):</span>
+        <input type="range" id="rf-n" min="10" max="500" step="10" value="100" oninput="updateRF()">
+        <span class="rf-val" id="rf-n-val">100</span>
+      </div>
+      <div class="rf-row">
+        <span class="rf-lbl">max_depth:</span>
+        <input type="range" id="rf-d" min="2" max="30" step="1" value="10" oninput="updateRF()">
+        <span class="rf-val" id="rf-d-val">10</span>
+      </div>
+      <div class="rf-row">
+        <span class="rf-lbl">max_features:</span>
+        <input type="range" id="rf-f" min="1" max="20" step="1" value="4" oninput="updateRF()">
+        <span class="rf-val" id="rf-f-val">4 (√16)</span>
+      </div>
+      <div class="rf-out" id="rf-out"></div>
+    </div>
+
+    <div class="sh" style="margin-top:28px;"><div class="si" style="background:rgba(16,185,129,0.12)">📊</div>
+      <div><div class="st">Feature Importance</div><div class="ss">Random Forests reveal which features matter most</div></div>
+    </div>
+
+    <div class="card">
+      <div class="ct">📊 Mean Decrease in Impurity (MDI)</div>
+      <div class="cb">Every time a feature is used in a split, track how much it reduces Gini impurity, averaged across all trees. Features used more often in higher-level splits get higher importance.<br><br>This gives you a <strong>free feature ranking</strong> from every Random Forest — useful for feature selection and model understanding.</div>
+    </div>
+
+    <!-- Feature importance bars -->
+    <div class="fi-bar-wrap" id="fi-bars"></div>
+
+    <div class="rw">
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">NHS Patient Readmission Prediction</div>
+      <div class="rwb">The NHS uses Random Forests to predict 30-day hospital readmission risk. The model uses 40+ features — diagnoses, medications, ward stays, lab results. Feature importance reveals the top predictors: prior admission count (28%), discharge destination (18%), number of medications (14%), age (11%). This guides both model improvement and clinical insight: "patients discharged to care homes with 5+ prior admissions need a follow-up call within 3 days."</div>
+    </div>
+
+    <div class="code-wrap">
+      <div class="ch"><span style="display:flex;align-items:center;"><span class="ld" style="background:#10b981"></span>Python — Random Forest</span><button class="cpb" onclick="cp(this)">Copy</button></div>
+      <pre><span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> RandomForestClassifier
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="vr">rf</span> = RandomForestClassifier(
+    n_estimators=<span class="num">200</span>,       <span class="cm"># number of trees (more = better, diminishing returns)</span>
+    max_depth=<span class="kw">None</span>,         <span class="cm"># grow full trees (bagging handles variance)</span>
+    max_features=<span class="str">'sqrt'</span>,   <span class="cm"># √p features per split (classification default)</span>
+    min_samples_leaf=<span class="num">2</span>,    <span class="cm"># minimum samples per leaf</span>
+    oob_score=<span class="kw">True</span>,         <span class="cm"># out-of-bag score</span>
+    n_jobs=-<span class="num">1</span>,              <span class="cm"># use all CPU cores</span>
+    random_state=<span class="num">42</span>
+)
+<span class="vr">rf</span>.fit(<span class="vr">X_train</span>, <span class="vr">y_train</span>)
+<span class="fn">print</span>(<span class="str">f"Test: </span>{<span class="vr">rf</span>.score(<span class="vr">X_test</span>, <span class="vr">y_test</span>):.3f}<span class="str">, OOB: </span>{<span class="vr">rf</span>.oob_score_:.3f}<span class="str">"</span>)
+
+<span class="cm"># Feature importances</span>
+<span class="vr">importances</span> = pd.Series(<span class="vr">rf</span>.feature_importances_, index=<span class="vr">X_train</span>.columns)
+<span class="fn">print</span>(<span class="vr">importances</span>.sort_values(ascending=<span class="kw">False</span>).head(<span class="num">10</span>))</pre>
+    </div>
+
+    <div class="quiz" id="q3">
+      <div class="qxp">+40 XP</div>
+      <div class="qq">A dataset has 25 features. What is the typical <code>max_features</code> setting for Random Forest classification, and why?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q3',this,true,'✅ Correct! √25 = 5. By considering only 5 out of 25 features at each split, trees are forced to use different features, reducing correlation between trees. Less correlated trees → averaging is more effective → lower ensemble variance.')"><div class="ol">A</div>5 (√25) — decorrelates trees by forcing different features at each split</div>
+        <div class="opt" onclick="ans('q3',this,false,'❌ Using all 25 features is plain bagging, not Random Forest. The trees would all tend to use the strongest feature at the root, making them correlated.')"><div class="ol">B</div>25 (all features) — use maximum information at each split</div>
+        <div class="opt" onclick="ans('q3',this,false,'❌ Using only 1 feature per split creates trees that are almost completely random — too much decorrelation leads to very weak individual trees.')"><div class="ol">C</div>1 — maximum randomness, maximum decorrelation</div>
+        <div class="opt" onclick="ans('q3',this,false,'❌ Half (12-13) is more than the standard √p. It\'s a valid choice but not the default. Too many features → more correlated trees.')"><div class="ol">D</div>Half (12-13 features) — a balanced compromise</div>
+      </div>
+      <div class="fb" id="fb-q3"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('ba')">← Back</button>
+    <button class="btn btn-p" onclick="done('rf');go('bo')">Next: Boosting ⬆️ →</button>
+  </div>
+</div>
+
+<!-- ══ BOOSTING ══ -->
+<div id="page-bo" class="page">
+  <div class="hero">
+    <div class="htag">Lesson 4 of 6</div>
+    <div class="htitle">⬆️ Boosting</div>
+    <div class="hsub">While bagging builds trees in parallel and averages, boosting builds them <em>sequentially</em> — each tree focuses on fixing the mistakes of all previous trees. This turns weak learners into strong ones.</div>
+    <div class="hpills"><div class="pill">⏱ ~35 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 180 XP</div><div class="pill">🎮 Interactive</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(139,92,246,0.12)">🎯</div>
+      <div><div class="st">AdaBoost — Adaptive Boosting</div><div class="ss">Invented by Freund &amp; Schapire, 1995 — won the Gödel Prize</div></div>
+    </div>
+
+    <div class="card">
+      <div class="ct">🎯 The AdaBoost Algorithm</div>
+      <div class="cb">
+        <strong>Step 1:</strong> Train a weak classifier on the data (all samples equally weighted)<br>
+        <strong>Step 2:</strong> Identify misclassified samples → <strong>increase their weight</strong><br>
+        <strong>Step 3:</strong> Train the next classifier, paying more attention to hard cases<br>
+        <strong>Step 4:</strong> Combine all classifiers, weighted by their individual accuracy<br><br>
+        Repeat for T iterations. Final prediction = weighted vote of all T classifiers.
+      </div>
+    </div>
+
+    <!-- Boosting weights visual -->
+    <div class="boost-visual">
+      <div style="font-weight:700;margin-bottom:14px;color:var(--p);">🎮 Watch weights evolve — click NEXT to advance rounds</div>
+      <div id="boost-content"></div>
+      <div style="display:flex;gap:10px;margin-top:14px;">
+        <button class="btn btn-p" onclick="advanceBoost()" id="boost-btn" style="padding:8px 18px;font-size:0.82rem;">Next Round →</button>
+        <button class="btn btn-o" onclick="resetBoost()" style="padding:8px 18px;font-size:0.82rem;">Reset</button>
+      </div>
+    </div>
+
+    <div class="rw">
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">Face Detection — Viola-Jones Algorithm</div>
+      <div class="rwb">Every camera from 2001 onwards used a boosted ensemble for face detection (Viola-Jones). Each "weak learner" was a single Haar-like feature comparison — dead simple. But by AdaBoosting 200 of them, the detector achieved real-time face detection on 2001 hardware. The boosting insight: the early rounds eliminate easy backgrounds, later rounds focus on the ambiguous edge cases. This was the first practical real-time face detector.</div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="ct">⚡ Bagging vs Boosting</div>
+        <div class="cb">
+          <strong>Bagging:</strong> Parallel, independent trees. Reduces <em>variance</em>. Works even with strong learners. Harder to overfit.<br><br>
+          <strong>Boosting:</strong> Sequential, dependent trees. Reduces <em>bias</em>. Uses weak learners. Can overfit if too many rounds.
+        </div>
+      </div>
+      <div class="card">
+        <div class="ct">⚠️ Boosting Pitfalls</div>
+        <div class="cb">
+          • Sensitive to <strong>noisy data</strong> (outliers get huge weights)<br>
+          • Can <strong>overfit</strong> with too many estimators<br>
+          • Harder to parallelise (sequential nature)<br>
+          • Slower to train than Random Forest
+        </div>
+      </div>
+    </div>
+
+    <div class="code-wrap">
+      <div class="ch"><span style="display:flex;align-items:center;"><span class="ld" style="background:#8b5cf6"></span>Python — AdaBoost</span><button class="cpb" onclick="cp(this)">Copy</button></div>
+      <pre><span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> AdaBoostClassifier
+<span class="kw">from</span> sklearn.tree <span class="kw">import</span> DecisionTreeClassifier
+
+<span class="cm"># AdaBoost with decision stumps (depth=1) as weak learners</span>
+<span class="vr">ada</span> = AdaBoostClassifier(
+    estimator=DecisionTreeClassifier(max_depth=<span class="num">1</span>),  <span class="cm"># decision stumps</span>
+    n_estimators=<span class="num">200</span>,    <span class="cm"># rounds of boosting</span>
+    learning_rate=<span class="num">0.1</span>,   <span class="cm"># shrinks contribution of each tree</span>
+    random_state=<span class="num">42</span>
+)
+<span class="vr">ada</span>.fit(<span class="vr">X_train</span>, <span class="vr">y_train</span>)
+<span class="fn">print</span>(<span class="str">f"Accuracy: </span>{<span class="vr">ada</span>.score(<span class="vr">X_test</span>, <span class="vr">y_test</span>):.3f}<span class="str">"</span>)
+
+<span class="cm"># Monitor staged performance (accuracy vs n_estimators)</span>
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="vr">staged_scores</span> = [<span class="vr">ada</span>.score(<span class="vr">X_test</span>, <span class="vr">y_test</span>)
+                  <span class="kw">for</span> <span class="vr">_</span>, <span class="vr">pred</span> <span class="kw">in</span> <span class="fn">enumerate</span>(<span class="vr">ada</span>.staged_predict(<span class="vr">X_test</span>))]</pre>
+    </div>
+
+    <div class="quiz" id="q4">
+      <div class="qxp">+40 XP</div>
+      <div class="qq">In AdaBoost, a sample is misclassified by the first weak learner. What happens to it in the next round?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q4',this,false,'❌ AdaBoost doesn\'t remove samples — it changes their sampling probability so misclassified ones appear more often.')"><div class="ol">A</div>It is removed from the training set — it\'s an outlier</div>
+        <div class="opt" onclick="ans('q4',this,true,'✅ Correct! Misclassified samples get their weight increased — making them more likely to appear in the next learner\'s training. Each subsequent learner is forced to pay attention to the cases the previous one got wrong. This is the core boosting mechanism.')"><div class="ol">B</div>Its weight is increased — the next learner focuses more on it</div>
+        <div class="opt" onclick="ans('q4',this,false,'❌ The weight decreases for correctly classified samples, not for misclassified ones.')"><div class="ol">C</div>Its weight decreases — it\'s treated as noise</div>
+        <div class="opt" onclick="ans('q4',this,false,'❌ Weights change based on classification outcome — they are not kept equal.')"><div class="ol">D</div>All sample weights stay equal regardless of classification</div>
+      </div>
+      <div class="fb" id="fb-q4"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('rf')">← Back</button>
+    <button class="btn btn-p" onclick="done('bo');go('xg')">Next: XGBoost 🚀 →</button>
+  </div>
+</div>
+
+<!-- ══ XGBOOST ══ -->
+<div id="page-xg" class="page">
+  <div class="hero">
+    <div class="htag">Lesson 5 of 6</div>
+    <div class="htitle">🚀 Gradient Boosting &amp; XGBoost</div>
+    <div class="hsub">XGBoost won more Kaggle competitions than any other algorithm. It's gradient boosting with regularisation, parallel processing, and built-in handling of missing values — industrial-strength ensemble learning.</div>
+    <div class="hpills"><div class="pill">⏱ ~40 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 200 XP</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(6,182,212,0.12)">📐</div>
+      <div><div class="st">Gradient Boosting — the core idea</div></div>
+    </div>
+
+    <div class="card">
+      <div class="ct">📐 From AdaBoost to Gradient Boosting</div>
+      <div class="cb">
+        AdaBoost reweights samples. Gradient Boosting generalises this: instead of reweighting, each new tree is trained to predict the <strong>residual errors</strong> (pseudo-residuals) of all previous trees.<br><br>
+        It's literally applying gradient descent in <em>function space</em>: each tree is a "step" that nudges predictions in the direction that most reduces the loss.<br><br>
+        This works for <strong>any differentiable loss function</strong> — not just classification.
+      </div>
+    </div>
+
+    <!-- GBM diagram -->
+    <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;">
+      <div style="font-weight:700;margin-bottom:14px;color:var(--p);">Gradient Boosting — Residual Fitting</div>
+      <div style="font-size:0.85rem;line-height:2.2;font-family:monospace;">
+        <span style="color:var(--p);">F₀(x)</span> <span style="color:var(--txm);">= initial prediction (mean of y)</span><br>
+        <span style="color:var(--s);">r₁</span> <span style="color:var(--txm);">= y − F₀(x)</span> &nbsp;&nbsp;&nbsp;<span style="color:var(--txm);">(residuals after round 0)</span><br>
+        <span style="color:var(--p);">h₁(x)</span> <span style="color:var(--txm);">= tree fit to r₁</span><br>
+        <span style="color:var(--p);">F₁(x)</span> <span style="color:var(--txm);">= F₀(x) + η·h₁(x)</span> &nbsp;<span style="color:var(--txm);">(η = learning rate)</span><br>
+        <span style="color:var(--s);">r₂</span> <span style="color:var(--txm);">= y − F₁(x)</span> &nbsp;&nbsp;&nbsp;<span style="color:var(--txm);">(residuals after round 1)</span><br>
+        <span style="color:var(--p);">h₂(x)</span> <span style="color:var(--txm);">= tree fit to r₂</span><br>
+        <span style="color:var(--txm);">⋮</span><br>
+        <span style="color:var(--p);">F_T(x)</span> <span style="color:var(--txm);">= F₀(x) + η·h₁(x) + η·h₂(x) + ... + η·h_T(x)</span>
+      </div>
+    </div>
+
+    <div class="sh" style="margin-top:28px;"><div class="si" style="background:rgba(6,182,212,0.12)">🚀</div>
+      <div><div class="st">Why XGBoost Dominates</div></div>
+    </div>
+
+    <div class="three-col">
+      <div class="card">
+        <div class="ct">🛡️ Regularisation</div>
+        <div class="cb">L1 (alpha) and L2 (lambda) regularisation built in — penalises complex trees. Controls overfitting without needing <code>max_depth</code> alone.</div>
+      </div>
+      <div class="card">
+        <div class="ct">⚡ Speed</div>
+        <div class="cb">Column subsampling, parallel tree building, cache-aware computation. 10-100x faster than sklearn's GradientBoosting on large datasets.</div>
+      </div>
+      <div class="card">
+        <div class="ct">🔧 Missing Values</div>
+        <div class="cb">Automatically learns the best direction for missing values at each split. No manual imputation needed for XGBoost.</div>
+      </div>
+    </div>
+
+    <div class="rw">
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">Higgs Boson Discovery at CERN</div>
+      <div class="rwb">The 2014 Higgs Boson Kaggle challenge was solved with XGBoost. Physicists at CERN needed to identify Higgs boson decay signals from 11 million particle collision events with 30 features. XGBoost achieved 3.806 AMS (competition metric) vs 3.782 for Deep Neural Networks, in a fraction of the training time. The XGBoost paper (Chen &amp; Guestrin, 2016) has been cited 60,000+ times and the algorithm now runs in AWS, Google Cloud, and Azure ML as a built-in primitive.</div>
+    </div>
+
+    <div class="code-wrap">
+      <div class="ch"><span style="display:flex;align-items:center;"><span class="ld" style="background:#06b6d4"></span>Python — XGBoost</span><button class="cpb" onclick="cp(this)">Copy</button></div>
+      <pre><span class="kw">import</span> xgboost <span class="kw">as</span> xgb
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> cross_val_score
+
+<span class="vr">model</span> = xgb.XGBClassifier(
+    n_estimators=<span class="num">500</span>,       <span class="cm"># number of boosting rounds</span>
+    learning_rate=<span class="num">0.05</span>,     <span class="cm"># shrinkage — lower = more robust, needs more trees</span>
+    max_depth=<span class="num">6</span>,            <span class="cm"># tree depth (3-8 typical)</span>
+    subsample=<span class="num">0.8</span>,          <span class="cm"># row subsampling per tree</span>
+    colsample_bytree=<span class="num">0.8</span>,   <span class="cm"># column subsampling per tree</span>
+    reg_alpha=<span class="num">0.1</span>,          <span class="cm"># L1 regularisation</span>
+    reg_lambda=<span class="num">1.0</span>,         <span class="cm"># L2 regularisation</span>
+    use_label_encoder=<span class="kw">False</span>,
+    eval_metric=<span class="str">'logloss'</span>,
+    random_state=<span class="num">42</span>
+)
+
+<span class="cm"># Early stopping — stops when validation score doesn't improve</span>
+<span class="vr">model</span>.fit(
+    <span class="vr">X_train</span>, <span class="vr">y_train</span>,
+    eval_set=[(<span class="vr">X_val</span>, <span class="vr">y_val</span>)],
+    early_stopping_rounds=<span class="num">20</span>,   <span class="cm"># stop if no improvement for 20 rounds</span>
+    verbose=<span class="kw">False</span>
+)
+<span class="fn">print</span>(<span class="str">f"Best iteration: </span>{<span class="vr">model</span>.best_iteration}<span class="str">"</span>)
+
+<span class="cm"># LightGBM — often faster alternative</span>
+<span class="kw">import</span> lightgbm <span class="kw">as</span> lgb
+<span class="vr">lgb_model</span> = lgb.LGBMClassifier(n_estimators=<span class="num">500</span>, learning_rate=<span class="num">0.05</span>)</pre>
+    </div>
+
+    <div class="quiz" id="q5">
+      <div class="qxp">+40 XP</div>
+      <div class="qq">Your XGBoost model achieves 98% training accuracy but 79% validation accuracy. Which hyperparameter change is most likely to help?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q5',this,false,'❌ Adding more trees (rounds) would make overfitting worse — the model would memorise training data even more.')"><div class="ol">A</div>Increase n_estimators from 500 to 2000</div>
+        <div class="opt" onclick="ans('q5',this,false,'❌ A deeper tree would increase model complexity and make overfitting worse.')"><div class="ol">B</div>Increase max_depth from 6 to 12</div>
+        <div class="opt" onclick="ans('q5',this,true,'✅ Correct! The large gap between train (98%) and validation (79%) is classic overfitting. To regularise: reduce max_depth (simpler trees), increase reg_lambda/reg_alpha (L1/L2 penalties), add subsample/colsample (randomness), or use early stopping to stop before overfitting.')"><div class="ol">C</div>Reduce max_depth, add regularisation (reg_lambda), and use early stopping</div>
+        <div class="opt" onclick="ans('q5',this,false,'❌ A higher learning rate typically leads to faster overfitting, not less.')"><div class="ol">D</div>Increase learning_rate from 0.05 to 0.5</div>
+      </div>
+      <div class="fb" id="fb-q5"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('bo')">← Back</button>
+    <button class="btn btn-p" onclick="done('xg');go('st')">Next: Stacking 🏗️ →</button>
+  </div>
+</div>
+
+<!-- ══ STACKING ══ -->
+<div id="page-st" class="page">
+  <div class="hero">
+    <div class="htag">Lesson 6 of 6 ⭐</div>
+    <div class="htitle">🏗️ Stacking</div>
+    <div class="hsub">Train diverse base models, then train a meta-learner on their predictions. Stacking lets models specialise — the meta-learner learns when to trust which model, often outperforming any single approach.</div>
+    <div class="hpills"><div class="pill">⏱ ~30 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 160 XP</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(245,158,11,0.12)">🏗️</div>
+      <div><div class="st">How Stacking Works</div></div>
+    </div>
+
+    <div class="card">
+      <div class="ct">🏗️ Two-Layer Stacking</div>
+      <div class="cb">
+        <strong>Layer 1 — Base models:</strong> Train diverse models (RF, XGBoost, Logistic Reg, SVM) on the training data. Each makes predictions on the validation set.<br><br>
+        <strong>Layer 2 — Meta-learner:</strong> Train a simple model (Logistic Regression is common) on the base models' predictions as features. It learns <em>which base model to trust for which type of input</em>.<br><br>
+        Key trick: use <strong>out-of-fold predictions</strong> for layer 1 to prevent leakage.
+      </div>
+    </div>
+
+    <!-- Stacking diagram -->
+    <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;">
+      <svg width="560" height="240" viewBox="0 0 560 240" style="display:block;margin:0 auto;max-width:100%;">
+        <!-- Input -->
+        <rect x="20" y="95" width="80" height="50" rx="8" fill="rgba(16,185,129,0.15)" stroke="rgba(16,185,129,0.4)" stroke-width="1.5"/>
+        <text x="60" y="117" fill="#10b981" text-anchor="middle" font-size="11" font-weight="700">Training</text>
+        <text x="60" y="132" fill="#10b981" text-anchor="middle" font-size="11" font-weight="700">Data X</text>
+        <!-- Arrows to base models -->
+        <line x1="100" y1="105" x2="160" y2="70" stroke="#0d3020" stroke-width="1.5"/>
+        <line x1="100" y1="120" x2="160" y2="120" stroke="#0d3020" stroke-width="1.5"/>
+        <line x1="100" y1="135" x2="160" y2="170" stroke="#0d3020" stroke-width="1.5"/>
+        <!-- Base models -->
+        <rect x="160" y="45" width="100" height="40" rx="8" fill="rgba(6,182,212,0.15)" stroke="rgba(6,182,212,0.4)" stroke-width="1.5"/>
+        <text x="210" y="62" fill="#06b6d4" text-anchor="middle" font-size="10" font-weight="700">Random</text>
+        <text x="210" y="76" fill="#06b6d4" text-anchor="middle" font-size="10" font-weight="700">Forest</text>
+        <rect x="160" y="100" width="100" height="40" rx="8" fill="rgba(139,92,246,0.15)" stroke="rgba(139,92,246,0.4)" stroke-width="1.5"/>
+        <text x="210" y="117" fill="#8b5cf6" text-anchor="middle" font-size="10" font-weight="700">XGBoost</text>
+        <text x="210" y="131" fill="#8b5cf6" text-anchor="middle" font-size="10" font-weight="700">Classifier</text>
+        <rect x="160" y="155" width="100" height="40" rx="8" fill="rgba(245,158,11,0.15)" stroke="rgba(245,158,11,0.4)" stroke-width="1.5"/>
+        <text x="210" y="172" fill="#f59e0b" text-anchor="middle" font-size="10" font-weight="700">Logistic</text>
+        <text x="210" y="186" fill="#f59e0b" text-anchor="middle" font-size="10" font-weight="700">Regression</text>
+        <!-- Labels -->
+        <text x="210" y="208" fill="#5a9070" text-anchor="middle" font-size="9">Layer 1: Base models</text>
+        <!-- Arrows to predictions -->
+        <line x1="260" y1="65" x2="330" y2="105" stroke="#0d3020" stroke-width="1.5"/>
+        <line x1="260" y1="120" x2="330" y2="120" stroke="#0d3020" stroke-width="1.5"/>
+        <line x1="260" y1="175" x2="330" y2="135" stroke="#0d3020" stroke-width="1.5"/>
+        <!-- Predictions column -->
+        <rect x="330" y="90" width="90" height="60" rx="8" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.3)" stroke-width="1.5"/>
+        <text x="375" y="108" fill="#5a9070" text-anchor="middle" font-size="9">0.82 | 0.91 | 0.44</text>
+        <text x="375" y="122" fill="#5a9070" text-anchor="middle" font-size="9">0.23 | 0.17 | 0.78</text>
+        <text x="375" y="136" fill="#5a9070" text-anchor="middle" font-size="9">0.67 | 0.55 | 0.60</text>
+        <text x="375" y="162" fill="#5a9070" text-anchor="middle" font-size="9">Stacked features</text>
+        <!-- Arrow to meta -->
+        <line x1="420" y1="120" x2="460" y2="120" stroke="#0d3020" stroke-width="1.5"/>
+        <!-- Meta learner -->
+        <rect x="460" y="95" width="90" height="50" rx="8" fill="rgba(239,68,68,0.15)" stroke="rgba(239,68,68,0.4)" stroke-width="1.5"/>
+        <text x="505" y="116" fill="#ef4444" text-anchor="middle" font-size="10" font-weight="700">Meta</text>
+        <text x="505" y="130" fill="#ef4444" text-anchor="middle" font-size="10" font-weight="700">Learner</text>
+        <text x="505" y="160" fill="#5a9070" text-anchor="middle" font-size="9">Layer 2</text>
+      </svg>
+    </div>
+
+    <div class="rw">
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">Netflix Prize — 107-Model Blended Ensemble</div>
+      <div class="rwb">The 2009 Netflix Prize ($1M) was won by "BellKor's Pragmatic Chaos" — a 107-model stacked ensemble. Base models included SVD matrix factorisation, RBMs, Nearest Neighbour methods, and time-series models. The meta-learner (linear regression on OOF predictions) learned that SVD was best for users with many ratings, while neighbourhood methods excelled for new users. The ensemble achieved 10.06% RMSE improvement over Netflix's baseline — the threshold was 10%. Individual models maxed out at ~8%.</div>
+    </div>
+
+    <div class="code-wrap">
+      <div class="ch"><span style="display:flex;align-items:center;"><span class="ld" style="background:#f59e0b"></span>Python — Stacking</span><button class="cpb" onclick="cp(this)">Copy</button></div>
+      <pre><span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> StackingClassifier
+<span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> RandomForestClassifier, GradientBoostingClassifier
+<span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> LogisticRegression
+<span class="kw">from</span> sklearn.svm <span class="kw">import</span> SVC
+
+<span class="cm"># Diverse base models (diversity = key to stacking performance)</span>
+<span class="vr">base_models</span> = [
+    (<span class="str">'rf'</span>,  RandomForestClassifier(n_estimators=<span class="num">200</span>, random_state=<span class="num">42</span>)),
+    (<span class="str">'xgb'</span>, GradientBoostingClassifier(n_estimators=<span class="num">200</span>, random_state=<span class="num">42</span>)),
+    (<span class="str">'svc'</span>, SVC(probability=<span class="kw">True</span>, kernel=<span class="str">'rbf'</span>)),
+]
+
+<span class="cm"># Simple meta-learner (Logistic Regression is often best)</span>
+<span class="vr">meta</span> = LogisticRegression(C=<span class="num">0.1</span>)
+
+<span class="vr">stack</span> = StackingClassifier(
+    estimators=<span class="vr">base_models</span>,
+    final_estimator=<span class="vr">meta</span>,
+    cv=<span class="num">5</span>,              <span class="cm"># out-of-fold predictions (prevents leakage)</span>
+    passthrough=<span class="kw">False</span>,  <span class="cm"># don't include original features in meta-learner</span>
+)
+<span class="vr">stack</span>.fit(<span class="vr">X_train</span>, <span class="vr">y_train</span>)
+<span class="fn">print</span>(<span class="vr">stack</span>.score(<span class="vr">X_test</span>, <span class="vr">y_test</span>))</pre>
+    </div>
+
+    <table class="nice" style="margin-top:20px;">
+      <thead><tr><th>Method</th><th>Strategy</th><th>Reduces</th><th>Best for</th></tr></thead>
+      <tbody>
+        <tr><td>👜 Bagging</td><td class="muted">Parallel, bootstrap samples</td><td class="muted">Variance</td><td class="muted">High-variance models (deep trees)</td></tr>
+        <tr><td>🌲 Random Forest</td><td class="muted">Bagging + feature randomness</td><td class="muted">Variance + correlation</td><td class="muted">Most tabular classification tasks</td></tr>
+        <tr><td>⬆️ AdaBoost</td><td class="muted">Sequential, sample reweighting</td><td class="muted">Bias</td><td class="muted">Weak learners, clean data</td></tr>
+        <tr><td>🚀 XGBoost</td><td class="muted">Gradient boosting + regularisation</td><td class="muted">Bias + overfitting</td><td class="muted">Tabular data, competitions</td></tr>
+        <tr><td>🏗️ Stacking</td><td class="muted">Meta-learner on base predictions</td><td class="muted">Both</td><td class="muted">Maximum performance, diverse models</td></tr>
+      </tbody>
+    </table>
+
+    <div class="quiz" id="q6">
+      <div class="qxp">+40 XP</div>
+      <div class="qq">When building a stacking ensemble, why should you use <em>out-of-fold</em> predictions for the meta-learner, rather than training-set predictions?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q6',this,false,'❌ Out-of-fold predictions are slightly less accurate (unseen data) — the reason to use them is about data leakage, not accuracy.')"><div class="ol">A</div>Out-of-fold predictions are more accurate than training predictions</div>
+        <div class="opt" onclick="ans('q6',this,true,'✅ Correct! If you use training-set predictions for the meta-learner, the base models have already seen those examples — they\'ll produce near-perfect predictions on training data (overfitting). The meta-learner then learns "always trust these overfitted models" and fails on test data. Out-of-fold predictions simulate unseen data, giving the meta-learner honest signal to learn from.')"><div class="ol">B</div>Training-set predictions are overfit — the meta-learner would learn to trust overfit signals</div>
+        <div class="opt" onclick="ans('q6',this,false,'❌ Out-of-fold predictions are harder to implement, not easier.')"><div class="ol">C</div>Out-of-fold predictions are simpler to compute</div>
+        <div class="opt" onclick="ans('q6',this,false,'❌ Out-of-fold predictions actually take more compute (5× for 5-fold CV).')"><div class="ol">D</div>Using all training data is computationally expensive</div>
+      </div>
+      <div class="fb" id="fb-q6"></div>
+    </div>
+
+    <div class="badge" id="bdg-ens" style="background:linear-gradient(135deg,#10b981,#f59e0b);">
+      <div class="bi">🌲</div>
+      <div class="bt" style="color:#000;">Ensemble Master</div>
+      <div class="bs" style="color:rgba(0,0,0,0.7);">Mastered Bagging, Random Forests, Boosting &amp; Stacking!</div>
+    </div>
+    <div class="badge" id="bdg-m5" style="background:linear-gradient(135deg,#8b5cf6,#10b981);">
+      <div class="bi">🏆</div>
+      <div class="bt" style="color:white;">Module 5 Complete!</div>
+      <div class="bs" style="color:rgba(255,255,255,0.8);">Ready for Pragmatic Model Evaluation! 🚀</div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('xg')">← Back</button>
+    <button class="btn btn-p" onclick="done('st')">🎉 Complete Module 5!</button>
+  </div>
+</div>
+
+</main>
+</div>
+<div id="toast"><span id="ti">⭐</span><span id="tm"></span></div>
+
+<script>
+// ── STATE ──
+const S={xp:0,lv:1,pts:0,stk:0,done:new Set(),ans:new Set()};
+const XP_LV=200;
+const LVN=['Novice','Learner','Analyst','Data Scientist','ML Expert'];
+const LXP={en:30,ba:35,rf:40,bo:40,xg:45,st:35};
+
+function addXP(a,l){S.xp+=a;S.pts+=a;S.stk++;const lv=Math.floor(S.xp/XP_LV)+1;if(lv>S.lv){S.lv=lv;toast(`🎉 Level Up! Lv ${S.lv}!`,'🎊');}updateUI();if(l)toast(`+${a} XP — ${l}`,'⭐');}
+function updateUI(){const x=S.xp%XP_LV;document.getElementById('xfill').style.width=(x/XP_LV*100)+'%';document.getElementById('xl').textContent=`${S.xp} XP · Lv ${S.lv} — ${x}/${XP_LV}`;document.getElementById('lvl').textContent=`Lv ${S.lv} ${LVN[Math.min(S.lv-1,LVN.length-1)]}`;document.getElementById('stk').textContent=S.stk;document.getElementById('pts').textContent=S.pts;}
+
+function ans(qid,el,ok,fb){
+  if(S.ans.has(qid))return;S.ans.add(qid);
+  el.closest('.quiz').querySelectorAll('.opt').forEach(o=>o.classList.add('locked'));
+  const fbEl=document.getElementById('fb-'+qid);
+  const xp=parseInt(el.closest('.quiz').querySelector('.qxp').textContent)||35;
+  if(ok){el.classList.add('correct');fbEl.className='fb cfb show';fbEl.innerHTML=fb;addXP(xp,'Correct!');confetti(el);}
+  else{el.classList.add('wrong');fbEl.className='fb wfb show';fbEl.innerHTML=fb;S.stk=0;updateUI();toast('Keep going! 💡','💡');}
+}
+
+function done(l){
+  if(S.done.has(l))return;S.done.add(l);addXP(LXP[l]||30,`${l.toUpperCase()} complete!`);
+  document.getElementById('p-'+l).style.width='100%';document.getElementById('n-'+l).classList.add('done');
+  if(l==='rf')document.getElementById('b0').style.color='inherit';
+  if(l==='xg')document.getElementById('b1').style.color='inherit';
+  if(l==='st'){document.getElementById('b2').style.color='inherit';document.getElementById('b3').style.color='inherit';document.getElementById('bdg-ens').classList.add('show');document.getElementById('bdg-m5').classList.add('show');}
+}
+
+function go(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.getElementById('n-'+p).classList.add('active');
+  const pm=document.getElementById('p-'+p);
+  if(!S.done.has(p)&&pm.style.width==='0%')pm.style.width='15%';
+  document.getElementById('main').scrollTop=0;
+  if(p==='rf')setTimeout(updateRF,100);
+}
+
+let toastT;
+function toast(msg,icon='⭐'){document.getElementById('ti').textContent=icon;document.getElementById('tm').textContent=msg;const t=document.getElementById('toast');t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3500);}
+function cp(btn){const text=btn.closest('.code-wrap').querySelector('pre').innerText;navigator.clipboard.writeText(text).then(()=>{btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy',2000);});}
+function confetti(el){const r=el.getBoundingClientRect();const cols=['#10b981','#f59e0b','#8b5cf6','#06b6d4','#fff'];for(let i=0;i<16;i++){const d=document.createElement('div');d.style.cssText=`position:fixed;width:7px;height:7px;border-radius:50%;background:${cols[i%cols.length]};left:${r.left+r.width/2}px;top:${r.top}px;pointer-events:none;z-index:9999;transition:all 0.9s cubic-bezier(0,.9,.57,1);`;document.body.appendChild(d);requestAnimationFrame(()=>{d.style.left=(r.left+r.width/2+(Math.random()-.5)*180)+'px';d.style.top=(r.top-90-Math.random()*80)+'px';d.style.opacity='0';});setTimeout(()=>d.remove(),1000);}}
+
+// ── ENSEMBLE VOTE DEMO ──
+const MODELS=[
+  {name:'Tree 1',vote:1,acc:0.62,color:'#06b6d4'},{name:'Tree 2',vote:1,acc:0.58,color:'#8b5cf6'},
+  {name:'Tree 3',vote:0,acc:0.61,color:'#f59e0b'},{name:'Tree 4',vote:1,acc:0.64,color:'#ef4444'},
+  {name:'Tree 5',vote:0,acc:0.59,color:'#10b981'},{name:'Tree 6',vote:1,acc:0.63,color:'#06b6d4'},
+  {name:'Tree 7',vote:1,acc:0.60,color:'#8b5cf6'}
+];
+function renderVote(){
+  const row=document.getElementById('models-row');
+  if(!row)return;
+  row.innerHTML='';
+  MODELS.forEach((m,i)=>{
+    const el=document.createElement('div');
+    el.className='model-card';
+    el.style.cssText=`border-color:${m.color};background:${m.vote?m.color+'22':'rgba(0,0,0,0.2)'};`;
+    el.innerHTML=`<div style="font-size:1.1rem">${m.vote?'✅':'❌'}</div><div style="font-size:0.78rem;font-weight:700;color:${m.color};margin:3px 0">${m.name}</div><div style="font-size:0.72rem;color:var(--txm)">${(m.acc*100).toFixed(0)}% acc</div>`;
+    el.onclick=()=>{MODELS[i].vote=1-MODELS[i].vote;renderVote();};
+    row.appendChild(el);
+  });
+  const votes=MODELS.reduce((a,m)=>a+m.vote,0);
+  const total=MODELS.length;
+  const pred=votes>total/2?1:0;
+  const pct=(votes/total*100).toFixed(0);
+  const res=document.getElementById('vote-result');
+  if(res)res.innerHTML=`<div style="color:var(--txm);font-size:0.82rem;margin-bottom:8px;">Votes for Class 1: ${votes}/${total} (${pct}%)</div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;">
+      <div class="vote-bar" style="background:rgba(16,185,129,0.3);width:${pct}%;min-width:40px;">Class 1</div>
+    </div>
+    <div style="font-size:1.1rem;color:${pred?'#10b981':'#ef4444'};">Ensemble predicts: <strong>Class ${pred}</strong> ${pred?'✅':'❌'}</div>
+    <div style="font-size:0.78rem;color:var(--txm);margin-top:6px;">Click any model to toggle its vote — notice how the ensemble is robust to individual errors!</div>`;
+}
+
+// ── BOOTSTRAP VISUAL ──
+const ORIG=[{id:'A',c:'#06b6d4'},{id:'B',c:'#8b5cf6'},{id:'C',c:'#f59e0b'},{id:'D',c:'#10b981'},{id:'E',c:'#ef4444'},{id:'F',c:'#06b6d4'},{id:'G',c:'#f59e0b'},{id:'H',c:'#8b5cf6'},{id:'I',c:'#10b981'},{id:'J',c:'#ef4444'}];
+function renderOrig(){const d=document.getElementById('orig-dots');if(!d)return;d.innerHTML='';ORIG.forEach(s=>{d.innerHTML+=`<div class="dot" style="border-color:${s.c};background:${s.c}22;color:${s.c}">${s.id}</div>`;});}
+function resample(){
+  const sets=document.getElementById('bootstrap-sets');const info=document.getElementById('oob-info');
+  if(!sets)return;
+  const bsets=[];let allUsed=new Set();
+  for(let b=0;b<3;b++){const samp=[];for(let i=0;i<10;i++){const pick=ORIG[Math.floor(Math.random()*10)];samp.push(pick);allUsed.add(pick.id);}bsets.push(samp);}
+  sets.innerHTML='';
+  bsets.forEach((samp,i)=>{
+    const counts={};samp.forEach(s=>{counts[s.id]=(counts[s.id]||0)+1;});
+    const unique=Object.keys(counts).length;
+    const html=`<div class="bs-set"><div class="bs-title">Bootstrap ${i+1} (${unique}/10 unique)</div><div class="bs-dots">${samp.map(s=>`<div class="bs-dot" style="background:${s.c}33;border:1.5px solid ${s.c};color:${s.c}">${s.id}${counts[s.id]>1?'*':''}</div>`).join('')}</div></div>`;
+    sets.innerHTML+=html;
+  });
+  const oob=ORIG.filter(s=>!allUsed.has(s.id));
+  if(info)info.innerHTML=`Out-of-bag samples (never selected): ${oob.map(s=>`<span style="color:${s.c}">${s.id}</span>`).join(', ')||'None'}. OOB ≈ 37% on average.`;
+}
+
+// ── RF DEMO ──
+function updateRF(){
+  const n=+document.getElementById('rf-n').value;
+  const d=+document.getElementById('rf-d').value;
+  const f=+document.getElementById('rf-f').value;
+  document.getElementById('rf-n-val').textContent=n;
+  document.getElementById('rf-d-val').textContent=d;
+  document.getElementById('rf-f-val').textContent=`${f} (√${(f*f).toFixed(0)} features)`;
+  const trainAcc=Math.min(0.999,0.78+n*0.0003+d*0.008-(d>15?d*0.004:0));
+  const valAcc=Math.min(0.97,0.72+n*0.0002+Math.min(d,8)*0.006-Math.max(0,d-8)*0.007+f*0.003);
+  const speed=Math.max(1,Math.round(n*d*0.1));
+  const mem=Math.round(n*d*0.5);
+  const out=document.getElementById('rf-out');
+  if(out)out.innerHTML=`<span style="color:var(--p)">RandomForestClassifier(</span>
+    n_estimators=<span style="color:var(--warn)">${n}</span>,
+    max_depth=<span style="color:var(--warn)">${d}</span>,
+    max_features=<span style="color:var(--warn)">${f}</span>
+<span style="color:var(--p)">)</span>
+
+<span style="color:var(--txm)">Estimated Train Accuracy:  </span><span style="color:${trainAcc>0.95?'#ef4444':'#10b981'}">${(trainAcc*100).toFixed(1)}%${trainAcc>0.95?' ⚠️ possible overfit':''}</span>
+<span style="color:var(--txm)">Estimated Val Accuracy:    </span><span style="color:var(--p)">${(valAcc*100).toFixed(1)}%</span>
+<span style="color:var(--txm)">Approx. train time score:  </span><span style="color:var(--warn)">${speed}</span>
+<span style="color:var(--txm)">Approx. memory (units):    </span><span style="color:var(--warn)">${mem}</span>
+
+<span style="color:var(--txm)">${n<50?'💡 Consider more trees — performance still improving':n>300?'⚠️ Diminishing returns above ~200-300 trees':'✅ Good number of trees'}</span>
+<span style="color:var(--txm)">${d>15?'⚠️ Deep trees may overfit — consider max_depth=10-15':d<4?'💡 Trees may be too shallow for complex patterns':'✅ Reasonable tree depth'}</span>`;
+}
+
+// ── FEATURE IMPORTANCE ──
+const FI_DATA=[
+  {label:'Prior admissions',pct:28,color:'#10b981'},
+  {label:'Discharge destination',pct:18,color:'#06b6d4'},
+  {label:'Num medications',pct:14,color:'#8b5cf6'},
+  {label:'Patient age',pct:11,color:'#f59e0b'},
+  {label:'Length of stay',pct:9,color:'#ef4444'},
+  {label:'Diagnosis code',pct:7,color:'#10b981'},
+  {label:'Lab results',pct:6,color:'#06b6d4'},
+  {label:'Ward type',pct:4,color:'#8b5cf6'},
+  {label:'Other features',pct:3,color:'#4a7060'},
+];
+function renderFI(){
+  const wrap=document.getElementById('fi-bars');
+  if(!wrap)return;
+  wrap.innerHTML='<div style="font-size:0.82rem;color:var(--txm);margin-bottom:10px;">NHS Readmission model — Random Forest feature importances:</div>';
+  FI_DATA.forEach(f=>{
+    wrap.innerHTML+=`<div class="fi-row">
+      <div class="fi-label">${f.label}</div>
+      <div class="fi-bar-bg"><div class="fi-bar-fill" style="width:${f.pct*3}%;background:${f.color};">${f.pct>=10?f.pct+'%':''}</div></div>
+      <div class="fi-pct">${f.pct}%</div>
+    </div>`;
+  });
+}
+
+// ── BOOSTING ANIMATION ──
+const BOOST_SAMPLES=[
+  {id:1,true:1,col:'#06b6d4'},{id:2,true:0,col:'#ef4444'},{id:3,true:1,col:'#06b6d4'},
+  {id:4,true:0,col:'#ef4444'},{id:5,true:1,col:'#06b6d4'},{id:6,true:0,col:'#ef4444'},
+  {id:7,true:1,col:'#06b6d4'},{id:8,true:0,col:'#ef4444'},{id:9,true:1,col:'#06b6d4'},
+  {id:10,true:0,col:'#ef4444'}
+];
+let boostRound=0;
+const BOOST_ROUNDS=[
+  {title:'Round 1 — All samples equally weighted (size=equal)',preds:[1,0,1,0,1,0,1,0,0,1],wrong:[8,9],msg:'Round 1 classifier gets samples 9 and 10 wrong. Their weights increase!'},
+  {title:'Round 2 — Misclassified samples weighted higher (shown larger)',preds:[1,0,1,1,1,0,1,0,1,0],wrong:[4,10],msg:'Round 2 focuses on previously-wrong samples. Gets 4 and 10 wrong this time.'},
+  {title:'Round 3 — Previous errors get even higher weight',preds:[1,0,1,0,1,0,1,1,1,0],wrong:[8],msg:'Round 3: only sample 8 misclassified! The ensemble combines all 3 rounds — weighted by accuracy.'},
+  {title:'Final Ensemble — Weighted combination of all 3 rounds',preds:[1,0,1,0,1,0,1,0,1,0],wrong:[],msg:'✅ Combined ensemble: 100% accuracy! Each weak classifier contributed its strength. This is boosting!'}
+];
+function renderBoost(){
+  const content=document.getElementById('boost-content');
+  if(!content)return;
+  const r=BOOST_ROUNDS[Math.min(boostRound,BOOST_ROUNDS.length-1)];
+  const sizeMap=[1,1,1,1,1,1,1,1,1,1];
+  if(boostRound>0){BOOST_ROUNDS[boostRound-1].wrong.forEach(w=>{sizeMap[w-1]=1.6;});}
+  let html=`<div class="boost-step-title">${r.title}</div><div class="boost-pts">`;
+  BOOST_SAMPLES.forEach((s,i)=>{
+    const size=Math.round(28*sizeMap[i]);
+    const isWrong=r.wrong.includes(s.id);
+    const correct=r.preds[i]===s.true;
+    html+=`<div class="bpt" style="width:${size}px;height:${size}px;border-color:${s.col};background:${correct?s.col+'33':s.col+'11'};color:${s.col};font-size:${size<28?'0.6rem':'0.7rem'};">${s.id}${isWrong?'⚡':correct?'✓':'✗'}</div>`;
+  });
+  html+=`</div><div style="font-size:0.82rem;color:var(--txm);margin-top:10px;padding:10px;background:var(--cbg);border-radius:8px;">${r.msg}</div>`;
+  content.innerHTML=html;
+  const btn=document.getElementById('boost-btn');
+  if(btn)btn.textContent=boostRound>=BOOST_ROUNDS.length-1?'Reset ↺':'Next Round →';
+}
+function advanceBoost(){
+  if(boostRound>=BOOST_ROUNDS.length-1){resetBoost();return;}
+  boostRound++;renderBoost();
+}
+function resetBoost(){boostRound=0;renderBoost();}
+
+// ── LAB BANNER ──
+function initLabBanner(){
+  if(localStorage.getItem('lab-banner-dismissed')==='1')return;
+  const b=document.createElement('div');b.id='lab-banner';
+  b.style.cssText='margin-bottom:28px;transition:opacity 0.3s,transform 0.3s;';
+  b.innerHTML=`<div style="background:linear-gradient(135deg,#020d08,#071a10);border:1px solid rgba(16,185,129,0.35);border-left:4px solid #10b981;border-radius:14px;padding:20px 22px;"><div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;"><div style="font-size:1.6rem;flex-shrink:0;">🧪</div><div style="flex:1;min-width:200px;"><div style="font-weight:700;font-size:0.95rem;margin-bottom:6px;">Running the code</div><div style="font-size:0.85rem;line-height:1.6;color:rgba(224,250,240,0.85);">Code blocks are reference examples — copy them into Jupyter to run.<br><code style="background:rgba(0,0,0,0.4);padding:1px 6px;border-radius:4px;font-size:0.82rem;">conda activate ds_env &amp;&amp; jupyter notebook</code></div></div><button onclick="dismissLabBanner()" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);color:white;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:0.82rem;flex-shrink:0;">Got it ✓</button></div></div>`;
+  document.getElementById('main').prepend(b);
+}
+function dismissLabBanner(){const b=document.getElementById('lab-banner');if(b){b.style.opacity='0';b.style.transform='translateY(-8px)';setTimeout(()=>b.remove(),300);}localStorage.setItem('lab-banner-dismissed','1');}
+
+// ── INIT ──
+renderVote();
+renderOrig();
+renderFI();
+renderBoost();
+initLabBanner();
+toast('Welcome to Module 5: Ensemble Methods! 🌲','👋');
+</script>
+</body>
+</html>

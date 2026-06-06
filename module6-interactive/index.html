@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 6: Pragmatic Model Evaluation ⚙️</title>
+<style>
+:root{--p:#e11d48;--pd:#be123c;--s:#f97316;--a:#8b5cf6;--a2:#06b6d4;--a3:#10b981;--bg:#0f020a;--sur:#1f0412;--sur2:#2a0618;--sur3:#360820;--tx:#fce7f3;--txm:#9d6680;--bdr:#420e26;--cbg:#0a0106;--ok:#10b981;--warn:#f59e0b;--err:#ef4444;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden;}
+
+#tb{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(15,2,10,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--bdr);padding:0 24px;height:60px;display:flex;align-items:center;gap:16px;}
+.brand{font-size:1rem;font-weight:800;background:linear-gradient(135deg,var(--p),var(--s));-webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap;}
+.xps{display:flex;align-items:center;gap:10px;flex:1;}
+.lvb{background:linear-gradient(135deg,var(--p),var(--s));padding:4px 12px;border-radius:20px;font-weight:700;font-size:0.82rem;color:#fff;white-space:nowrap;}
+.xw{flex:1;max-width:280px;}
+.xl{font-size:0.72rem;color:var(--txm);margin-bottom:3px;}
+.xbg{background:var(--bdr);border-radius:10px;height:7px;overflow:hidden;}
+.xf{height:100%;background:linear-gradient(90deg,var(--p),var(--s));border-radius:10px;transition:width 0.5s;}
+.stk{font-size:0.82rem;color:var(--warn);display:flex;align-items:center;gap:4px;}
+.scd{font-weight:700;color:var(--a3);font-size:0.88rem;}
+.mnav{display:flex;gap:6px;margin-left:8px;}
+.mbtn{padding:4px 10px;border-radius:6px;font-size:0.75rem;font-weight:600;border:1px solid var(--bdr);background:transparent;color:var(--txm);cursor:pointer;transition:all 0.2s;text-decoration:none;}
+.mbtn:hover{border-color:var(--p);color:var(--p);}
+
+#app{display:flex;margin-top:60px;min-height:calc(100vh - 60px);}
+#sbar{width:260px;min-width:260px;background:var(--sur);border-right:1px solid var(--bdr);padding:16px 0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;}
+.sbt{padding:0 16px 10px;font-size:0.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--txm);}
+.ni{display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;border-left:3px solid transparent;transition:all 0.2s;font-size:0.87rem;}
+.ni:hover{background:var(--sur2);}
+.ni.active{border-left-color:var(--p);background:var(--sur2);color:var(--p);}
+.ni.done{color:var(--ok);}
+.ni.done::after{content:'✓';margin-left:auto;font-weight:700;}
+.nic{font-size:1.1rem;min-width:22px;text-align:center;flex-shrink:0;}
+.nl{flex:1;}
+.pm{margin-top:3px;height:3px;background:var(--bdr);border-radius:3px;overflow:hidden;}
+.pmf{height:100%;background:var(--p);border-radius:3px;transition:width 0.3s;}
+.sbs{padding:14px 16px 4px;border-top:1px solid var(--bdr);margin-top:8px;}
+
+#main{flex:1;padding:36px 44px;max-width:920px;overflow-y:auto;}
+.page{display:none;}.page.active{display:block;}
+
+.hero{background:linear-gradient(135deg,var(--sur2),var(--sur3));border:1px solid var(--bdr);border-radius:20px;padding:36px;margin-bottom:36px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-30%;right:-5%;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(225,29,72,0.12),transparent);}
+.htag{font-size:0.72rem;text-transform:uppercase;letter-spacing:2px;color:var(--p);margin-bottom:6px;}
+.htitle{font-size:2rem;font-weight:800;margin-bottom:10px;line-height:1.2;}
+.hsub{font-size:0.92rem;color:var(--txm);margin-bottom:20px;max-width:580px;line-height:1.6;}
+.hpills{display:flex;gap:10px;flex-wrap:wrap;}
+.pill{background:rgba(255,255,255,0.05);border:1px solid var(--bdr);border-radius:20px;padding:5px 12px;font-size:0.78rem;color:var(--txm);}
+
+.sec{margin-bottom:44px;}
+.sh{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--bdr);}
+.si{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+.st{font-size:1.4rem;font-weight:700;}
+.ss{font-size:0.82rem;color:var(--txm);margin-top:2px;}
+
+.card{background:var(--sur);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin-bottom:18px;transition:transform 0.2s,border-color 0.2s;}
+.card:hover{transform:translateY(-2px);border-color:var(--p);}
+.ct{font-size:1.05rem;font-weight:700;margin-bottom:9px;}
+.cb{color:var(--txm);line-height:1.7;font-size:0.9rem;}
+.cb strong{color:var(--tx);}
+.cb code{background:var(--cbg);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:0.83rem;color:var(--p);}
+
+.rw{background:linear-gradient(135deg,rgba(225,29,72,0.07),rgba(249,115,22,0.07));border:1px solid rgba(225,29,72,0.22);border-radius:14px;padding:18px 22px;margin:18px 0;}
+.rwl{font-size:0.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--ok);margin-bottom:6px;}
+.rwt{font-weight:700;margin-bottom:5px;}
+.rwb{color:var(--txm);font-size:0.88rem;line-height:1.6;}
+
+.quiz{background:var(--sur2);border:2px solid var(--bdr);border-radius:16px;padding:26px;margin:26px 0;position:relative;}
+.quiz::before{content:'QUIZ';position:absolute;top:-12px;left:18px;background:var(--p);color:#fff;padding:3px 11px;border-radius:20px;font-size:0.73rem;font-weight:700;letter-spacing:1px;}
+.qxp{position:absolute;top:-12px;right:18px;background:var(--s);color:#fff;padding:3px 11px;border-radius:20px;font-size:0.73rem;font-weight:700;}
+.qq{font-size:0.97rem;font-weight:600;margin-bottom:16px;line-height:1.5;}
+.opts{display:grid;gap:9px;}
+.opt{background:var(--sur);border:1px solid var(--bdr);border-radius:10px;padding:11px 14px;cursor:pointer;transition:all 0.2s;font-size:0.88rem;display:flex;align-items:flex-start;gap:9px;text-align:left;}
+.opt:hover:not(.locked){border-color:var(--p);background:rgba(225,29,72,0.08);}
+.opt.correct{border-color:var(--ok);background:rgba(16,185,129,0.12);color:var(--ok);}
+.opt.wrong{border-color:var(--err);background:rgba(239,68,68,0.12);color:var(--err);}
+.opt.locked{cursor:default;}
+.ol{width:24px;height:24px;border-radius:50%;background:var(--bdr);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;flex-shrink:0;}
+.fb{margin-top:12px;padding:11px 14px;border-radius:9px;font-size:0.88rem;line-height:1.5;display:none;}
+.fb.show{display:block;}
+.fb.cfb{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:var(--ok);}
+.fb.wfb{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:var(--err);}
+
+.info{border-radius:9px;padding:12px 16px;margin:14px 0;display:flex;gap:10px;align-items:flex-start;font-size:0.87rem;line-height:1.6;}
+.info.tip{background:rgba(225,29,72,0.08);border-left:3px solid var(--p);}
+.info.warn{background:rgba(245,158,11,0.08);border-left:3px solid var(--warn);}
+.info.ok{background:rgba(16,185,129,0.08);border-left:3px solid var(--ok);}
+.info.note{background:rgba(6,182,212,0.08);border-left:3px solid var(--a2);}
+.ii{font-size:1rem;flex-shrink:0;margin-top:2px;}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:18px 0;}
+@media(max-width:680px){.two-col,.three-col{grid-template-columns:1fr;}}
+
+.code-wrap{margin:18px 0;border-radius:12px;overflow:hidden;border:1px solid var(--bdr);}
+.ch{background:var(--sur2);padding:9px 14px;display:flex;align-items:center;justify-content:space-between;font-size:0.78rem;color:var(--txm);}
+.ld{width:9px;height:9px;border-radius:50%;margin-right:6px;}
+.cpb{background:none;border:1px solid var(--bdr);color:var(--txm);padding:3px 9px;border-radius:5px;cursor:pointer;font-size:0.73rem;transition:all 0.2s;}
+.cpb:hover{border-color:var(--p);color:var(--p);}
+pre{background:var(--cbg);padding:18px;margin:0;overflow-x:auto;font-family:'Consolas','Courier New',monospace;font-size:0.86rem;line-height:1.65;}
+.kw{color:#c792ea;}.fn{color:#82aaff;}.str{color:#c3e88d;}.num{color:#f78c6c;}.cm{color:#4a3040;font-style:italic;}.cls{color:#ffcb6b;}.vr{color:#89ddff;}
+
+table.nice{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.85rem;}
+table.nice th{background:var(--sur3);padding:9px 12px;text-align:left;color:var(--p);font-weight:600;}
+table.nice td{padding:8px 12px;border-bottom:1px solid var(--bdr);}
+table.nice tr:hover td{background:var(--sur);}
+.muted{color:var(--txm);}
+
+.badge{display:none;border-radius:16px;padding:20px;margin:20px 0;text-align:center;animation:sI 0.4s ease;}
+.badge.show{display:block;}
+@keyframes sI{from{transform:translateY(-16px);opacity:0}to{transform:translateY(0);opacity:1}}
+.bi{font-size:2.8rem;margin-bottom:6px;}
+.bt{font-size:1.1rem;font-weight:800;}
+.bs{font-size:0.82rem;opacity:0.8;}
+
+.nav-btns{display:flex;gap:10px;margin-top:36px;padding-top:20px;border-top:1px solid var(--bdr);}
+.btn{padding:11px 22px;border-radius:9px;border:none;cursor:pointer;font-weight:600;font-size:0.88rem;transition:all 0.2s;display:flex;align-items:center;gap:7px;}
+.btn-p{background:var(--p);color:#fff;}
+.btn-p:hover{background:var(--pd);transform:translateY(-1px);}
+.btn-o{background:transparent;border:1px solid var(--bdr);color:var(--tx);}
+.btn-o:hover{border-color:var(--p);color:var(--p);}
+
+/* Pipeline builder */
+.pipeline-builder{background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;}
+.pipeline-steps{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:14px 0;}
+.pipe-step{padding:10px 14px;border-radius:10px;border:2px solid;font-size:0.82rem;font-weight:700;cursor:grab;position:relative;}
+.pipe-arrow{color:var(--txm);font-size:1.1rem;flex-shrink:0;}
+.pipe-remove{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:var(--err);border:none;color:#fff;font-size:0.65rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.pipe-palette{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.pipe-chip{padding:6px 12px;border-radius:8px;border:1px solid var(--bdr);background:var(--sur3);font-size:0.78rem;cursor:pointer;transition:all 0.2s;}
+.pipe-chip:hover{border-color:var(--p);}
+.pipe-output{background:var(--cbg);border-radius:8px;padding:12px;margin-top:12px;font-family:monospace;font-size:0.82rem;color:var(--p);}
+
+/* Grid search heatmap */
+.heatmap-wrap{background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;overflow-x:auto;}
+.heatmap-grid{display:inline-grid;gap:3px;margin:10px 0;}
+.hm-cell{width:48px;height:48px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;cursor:pointer;transition:transform 0.15s;}
+.hm-cell:hover{transform:scale(1.1);}
+.hm-label{font-size:0.75rem;color:var(--txm);display:flex;align-items:center;justify-content:center;}
+
+/* Model selector */
+.model-selector{background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;}
+.ms-question{font-size:0.95rem;font-weight:600;margin-bottom:14px;color:var(--tx);}
+.ms-opts{display:grid;gap:8px;}
+.ms-opt{padding:10px 14px;border-radius:9px;border:1px solid var(--bdr);cursor:pointer;font-size:0.88rem;transition:all 0.2s;}
+.ms-opt:hover{border-color:var(--p);background:rgba(225,29,72,0.08);}
+.ms-result{background:var(--cbg);border:1px solid var(--p);border-radius:10px;padding:14px;margin-top:12px;display:none;}
+.ms-result.show{display:block;}
+
+/* Hierarchy data visual */
+.hier-visual{background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;}
+.split-compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;}
+.split-box{border-radius:10px;padding:14px;border:2px solid;}
+.house-group{display:flex;gap:4px;flex-wrap:wrap;margin:8px 0;}
+.house-item{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;}
+
+/* Search comparison */
+.search-canvas-wrap{background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;}
+
+/* Feature importance bars */
+.fi-wrap{margin:16px 0;}
+.fi-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.fi-lbl{font-size:0.82rem;color:var(--txm);min-width:150px;text-align:right;}
+.fi-bg{flex:1;background:var(--bdr);border-radius:4px;height:20px;overflow:hidden;}
+.fi-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:0.75rem;font-weight:700;color:#fff;transition:width 0.6s;}
+.fi-pct{font-size:0.8rem;color:var(--txm);min-width:36px;}
+
+/* Slider */
+.slider-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.sl-lbl{font-size:0.82rem;color:var(--txm);min-width:140px;}
+input[type=range]{flex:1;accent-color:var(--p);}
+.sl-val{font-weight:700;color:var(--p);min-width:50px;text-align:right;}
+.sl-out{background:var(--cbg);border-radius:8px;padding:14px;margin-top:10px;font-family:monospace;font-size:0.84rem;}
+
+#toast{position:fixed;bottom:28px;right:28px;z-index:9999;background:var(--sur);border:1px solid var(--p);border-radius:12px;padding:12px 18px;font-size:0.88rem;display:none;align-items:center;gap:9px;box-shadow:0 8px 32px rgba(0,0,0,0.4);animation:slideUp 0.3s ease;}
+#toast.show{display:flex;}
+@keyframes slideUp{from{transform:translateY(18px);opacity:0}to{transform:translateY(0);opacity:1}}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:var(--p);}
+</style>
+</head>
+<body>
+
+<div id="tb">
+  <div class="brand">⚙️ Model Evaluation</div>
+  <div class="xps">
+    <div id="lvl" class="lvb">Lv 1</div>
+    <div class="xw"><div id="xl" class="xl">0 / 200 XP</div><div class="xbg"><div id="xf" class="xf" style="width:0%"></div></div></div>
+    <div class="stk">🔥 <span id="stk">0</span></div>
+    <div class="scd">⭐ <span id="pts">0</span></div>
+  </div>
+  <div class="mnav">
+    <a class="mbtn" href="../module5-interactive/index.html">← M5</a>
+    <a class="mbtn" href="../module7-interactive/index.html">M7 →</a>
+  </div>
+</div>
+
+<div id="app">
+<nav id="sbar">
+  <div class="sbt">Module 6 Lessons</div>
+  <div id="n-ar" class="ni active" onclick="go('ar')"><div class="nic">🏗️</div><div class="nl">ML Architecture<div class="pm"><div class="pmf" id="p-ar" style="width:0%"></div></div></div></div>
+  <div id="n-pl" class="ni" onclick="go('pl')"><div class="nic">🔧</div><div class="nl">Sklearn Pipelines<div class="pm"><div class="pmf" id="p-pl" style="width:0%"></div></div></div></div>
+  <div id="n-hd" class="ni" onclick="go('hd')"><div class="nic">🏠</div><div class="nl">Hierarchical Validation<div class="pm"><div class="pmf" id="p-hd" style="width:0%"></div></div></div></div>
+  <div id="n-ms" class="ni" onclick="go('ms')"><div class="nic">🎯</div><div class="nl">Model Selection<div class="pm"><div class="pmf" id="p-ms" style="width:0%"></div></div></div></div>
+  <div id="n-ht" class="ni" onclick="go('ht')"><div class="nic">🔍</div><div class="nl">Hyperparameter Tuning<div class="pm"><div class="pmf" id="p-ht" style="width:0%"></div></div></div></div>
+  <div id="n-fs" class="ni" onclick="go('fs')"><div class="nic">✂️</div><div class="nl">Feature Selection<div class="pm"><div class="pmf" id="p-fs" style="width:0%"></div></div></div></div>
+  <div class="sbs">
+    <div class="sbt">Badges</div>
+    <div style="font-size:1.4rem;letter-spacing:3px;">
+      <span id="b0" style="color:var(--bdr)">🏗️</span>
+      <span id="b1" style="color:var(--bdr)">🔧</span>
+      <span id="b2" style="color:var(--bdr)">🔍</span>
+      <span id="b3" style="color:var(--bdr)">🏆</span>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- ══ ML ARCHITECTURE ══ -->
+<div id="page-ar" class="page active">
+  <div class="hero">
+    <div class="htag">Lesson 1 of 6 · Module 6</div>
+    <div class="htitle">🏗️ ML Architecture in Production</div>
+    <div class="hsub">Building a model that works in a notebook is step one. Building a model that works reliably in production — for months, on real data, maintained by a team — requires thinking about architecture from the start.</div>
+    <div class="hpills"><div class="pill">⏱ ~30 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 150 XP</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(225,29,72,0.12)">🗺️</div>
+      <div><div class="st">The ML System Lifecycle</div><div class="ss">From notebook to production and beyond</div></div>
+    </div>
+
+    <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:24px;margin:18px 0;">
+      <svg width="560" height="200" viewBox="0 0 560 200" style="display:block;margin:0 auto;max-width:100%;">
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#420e26"/>
+          </marker>
+        </defs>
+        <!-- Boxes -->
+        <rect x="10" y="75" width="80" height="50" rx="8" fill="rgba(225,29,72,0.15)" stroke="rgba(225,29,72,0.5)" stroke-width="1.5"/>
+        <text x="50" y="97" fill="#e11d48" text-anchor="middle" font-size="10" font-weight="700">Problem</text>
+        <text x="50" y="111" fill="#e11d48" text-anchor="middle" font-size="10" font-weight="700">Definition</text>
+        <line x1="90" y1="100" x2="108" y2="100" stroke="#420e26" stroke-width="1.5" marker-end="url(#arr)"/>
+        <rect x="110" y="75" width="80" height="50" rx="8" fill="rgba(249,115,22,0.15)" stroke="rgba(249,115,22,0.5)" stroke-width="1.5"/>
+        <text x="150" y="97" fill="#f97316" text-anchor="middle" font-size="10" font-weight="700">Data</text>
+        <text x="150" y="111" fill="#f97316" text-anchor="middle" font-size="10" font-weight="700">Collection</text>
+        <line x1="190" y1="100" x2="208" y2="100" stroke="#420e26" stroke-width="1.5" marker-end="url(#arr)"/>
+        <rect x="210" y="75" width="80" height="50" rx="8" fill="rgba(139,92,246,0.15)" stroke="rgba(139,92,246,0.5)" stroke-width="1.5"/>
+        <text x="250" y="97" fill="#8b5cf6" text-anchor="middle" font-size="10" font-weight="700">Feature</text>
+        <text x="250" y="111" fill="#8b5cf6" text-anchor="middle" font-size="10" font-weight="700">Engineering</text>
+        <line x1="290" y1="100" x2="308" y2="100" stroke="#420e26" stroke-width="1.5" marker-end="url(#arr)"/>
+        <rect x="310" y="75" width="80" height="50" rx="8" fill="rgba(6,182,212,0.15)" stroke="rgba(6,182,212,0.5)" stroke-width="1.5"/>
+        <text x="350" y="97" fill="#06b6d4" text-anchor="middle" font-size="10" font-weight="700">Model</text>
+        <text x="350" y="111" fill="#06b6d4" text-anchor="middle" font-size="10" font-weight="700">Training</text>
+        <line x1="390" y1="100" x2="408" y2="100" stroke="#420e26" stroke-width="1.5" marker-end="url(#arr)"/>
+        <rect x="410" y="75" width="80" height="50" rx="8" fill="rgba(16,185,129,0.15)" stroke="rgba(16,185,129,0.5)" stroke-width="1.5"/>
+        <text x="450" y="97" fill="#10b981" text-anchor="middle" font-size="10" font-weight="700">Deploy</text>
+        <text x="450" y="111" fill="#10b981" text-anchor="middle" font-size="10" font-weight="700">&amp; Monitor</text>
+        <!-- Feedback loop -->
+        <path d="M450,125 C450,170 50,170 50,125" stroke="#420e26" stroke-width="1.5" fill="none" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+        <text x="250" y="185" fill="#9d6680" text-anchor="middle" font-size="9">Continuous feedback loop — model drift triggers retraining</text>
+      </svg>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="ct">🏢 Enterprise Architecture</div>
+        <div class="cb"><strong>Data layer:</strong> data warehouses, feature stores, data quality checks<br><strong>Training layer:</strong> orchestration (Airflow), experiment tracking (MLflow)<br><strong>Serving layer:</strong> REST APIs, batch inference, A/B testing<br><strong>Monitoring layer:</strong> drift detection, performance dashboards</div>
+      </div>
+      <div class="card">
+        <div class="ct">⚠️ Production Failure Modes</div>
+        <div class="cb">• <strong>Data drift</strong> — input distribution changes over time<br>• <strong>Concept drift</strong> — relationship between X and y changes<br>• <strong>Upstream data changes</strong> — schema or pipeline breaks<br>• <strong>Silent failures</strong> — model works but outputs wrong answers</div>
+      </div>
+    </div>
+
+    <div class="rw">
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">Amazon's Recommendation System — 24/7 Production</div>
+      <div class="rwb">Amazon runs hundreds of ML models in production simultaneously. Each requires: a feature store computing user/product embeddings in real-time, an experiment platform running A/B tests across millions of users, model monitoring detecting when "customers who bought X also bought Y" patterns shift (e.g. after a viral TikTok trend), and automated retraining triggered by drift alerts. Their ML platform team is as large as the modelling team — production engineering is half the job.</div>
+    </div>
+
+    <div class="quiz" id="q1">
+      <div class="qxp">+30 XP</div>
+      <div class="qq">A fraud detection model trained in January starts flagging 40% of transactions as fraud in August (up from 2% in January). No code changes were made. What is the most likely cause?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q1',this,false,'❌ The model code hasn\'t changed — a software bug would have appeared immediately at deployment.')"><div class="ol">A</div>A software bug introduced in a recent code deployment</div>
+        <div class="opt" onclick="ans('q1',this,true,'✅ Correct! This is data drift or concept drift. Customer spending patterns in August (e.g. summer sales, holidays) differ from January — the model\'s learned boundaries no longer match reality. Solution: monitor for drift and retrain on recent data regularly.')"><div class="ol">B</div>Data/concept drift — real-world patterns have changed since January training</div>
+        <div class="opt" onclick="ans('q1',this,false,'❌ The model isn\'t improving — it\'s getting worse. More data doesn\'t automatically fix a model in production.')"><div class="ol">C</div>The model is improving — it\'s now detecting more fraud</div>
+        <div class="opt" onclick="ans('q1',this,false,'❌ 40% false positive rate would make the model unusable and useless commercially. This is a performance degradation issue.')"><div class="ol">D</div>The model threshold was accidentally set to 0.0</div>
+      </div>
+      <div class="fb" id="fb-q1"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-p" onclick="done('ar');go('pl')">Next: Sklearn Pipelines 🔧 →</button>
+  </div>
+</div>
+
+<!-- ══ PIPELINES ══ -->
+<div id="page-pl" class="page">
+  <div class="hero">
+    <div class="htag">Lesson 2 of 6</div>
+    <div class="htitle">🔧 Sklearn Pipelines</div>
+    <div class="hsub">A Pipeline chains preprocessing and modelling steps into a single object. This eliminates data leakage, makes code reproducible, and enables one-line cross-validation on the full workflow.</div>
+    <div class="hpills"><div class="pill">⏱ ~35 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 170 XP</div><div class="pill">🎮 Interactive</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(249,115,22,0.12)">🔗</div>
+      <div><div class="st">Why Pipelines?</div><div class="ss">The three problems they solve</div></div>
+    </div>
+
+    <div class="three-col">
+      <div class="card">
+        <div class="ct">🛡️ Prevent Leakage</div>
+        <div class="cb">Without a pipeline, you might fit your scaler on the full dataset (including test), causing data leakage. A Pipeline ensures <strong>fit_transform only on train</strong>, transform only on test — automatically.</div>
+      </div>
+      <div class="card">
+        <div class="ct">🔁 One-Line CV</div>
+        <div class="cb">With a Pipeline, <code>cross_val_score(pipeline, X, y)</code> correctly applies preprocessing separately inside each fold. Without it, you'd have to manually split and preprocess — error-prone.</div>
+      </div>
+      <div class="card">
+        <div class="ct">📦 Deployment</div>
+        <div class="cb">A fitted Pipeline is a single <code>pickle</code> file. Deploy it and call <code>pipeline.predict(raw_data)</code> — it handles all preprocessing automatically on new data.</div>
+      </div>
+    </div>
+
+    <!-- Interactive Pipeline Builder -->
+    <div class="pipeline-builder">
+      <div style="font-weight:700;margin-bottom:6px;color:var(--p);">🔧 Build Your Pipeline — click steps to add them</div>
+      <div style="font-size:0.82rem;color:var(--txm);margin-bottom:12px;">Add steps in order. The last step should be an estimator.</div>
+      <div style="font-size:0.78rem;color:var(--txm);margin-bottom:6px;">Available steps — click to add:</div>
+      <div class="pipe-palette" id="pipe-palette"></div>
+      <div style="font-size:0.78rem;color:var(--txm);margin:12px 0 6px;">Your pipeline:</div>
+      <div class="pipeline-steps" id="pipe-steps"></div>
+      <div class="pipe-output" id="pipe-output"></div>
+    </div>
+
+    <div class="rw">
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">Deployment at a UK Fintech</div>
+      <div class="rwb">A loan approval model at Funding Circle uses a sklearn Pipeline with: (1) ColumnTransformer — StandardScaler for numeric features, OneHotEncoder for categoricals, (2) FeatureUnion joining engineered features, (3) RandomForestClassifier. The entire pipeline is serialised to a single file at training time. When a loan application arrives, one call to <code>pipeline.predict_proba(application)</code> returns the approval probability — all preprocessing is embedded, no separate preprocessing code in production.</div>
+    </div>
+
+    <div class="code-wrap">
+      <div class="ch"><span style="display:flex;align-items:center;"><span class="ld" style="background:#f97316"></span>Python — Full Pipeline with ColumnTransformer</span><button class="cpb" onclick="cp(this)">Copy</button></div>
+      <pre><span class="kw">from</span> sklearn.pipeline <span class="kw">import</span> Pipeline
+<span class="kw">from</span> sklearn.compose <span class="kw">import</span> ColumnTransformer
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler, OneHotEncoder
+<span class="kw">from</span> sklearn.impute <span class="kw">import</span> SimpleImputer
+<span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> RandomForestClassifier
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> cross_val_score
+<span class="kw">import</span> pickle
+
+<span class="cm"># Define feature groups</span>
+<span class="vr">numeric_features</span>  = [<span class="str">'age'</span>, <span class="str">'income'</span>, <span class="str">'loan_amount'</span>]
+<span class="vr">categorical_features</span> = [<span class="str">'employment_type'</span>, <span class="str">'region'</span>]
+
+<span class="cm"># Preprocessing for each feature type</span>
+<span class="vr">numeric_transformer</span> = Pipeline([
+    (<span class="str">'imputer'</span>, SimpleImputer(strategy=<span class="str">'median'</span>)),
+    (<span class="str">'scaler'</span>,  StandardScaler()),
+])
+<span class="vr">categorical_transformer</span> = Pipeline([
+    (<span class="str">'imputer'</span>, SimpleImputer(strategy=<span class="str">'most_frequent'</span>)),
+    (<span class="str">'encoder'</span>, OneHotEncoder(handle_unknown=<span class="str">'ignore'</span>)),
+])
+
+<span class="cm"># Combine with ColumnTransformer</span>
+<span class="vr">preprocessor</span> = ColumnTransformer([
+    (<span class="str">'num'</span>, <span class="vr">numeric_transformer</span>,  <span class="vr">numeric_features</span>),
+    (<span class="str">'cat'</span>, <span class="vr">categorical_transformer</span>, <span class="vr">categorical_features</span>),
+])
+
+<span class="cm"># Full pipeline: preprocessing + model</span>
+<span class="vr">pipeline</span> = Pipeline([
+    (<span class="str">'preprocessor'</span>, <span class="vr">preprocessor</span>),
+    (<span class="str">'classifier'</span>,  RandomForestClassifier(n_estimators=<span class="num">200</span>, random_state=<span class="num">42</span>)),
+])
+
+<span class="cm"># Cross-validate the FULL pipeline (no leakage!)</span>
+<span class="vr">scores</span> = cross_val_score(<span class="vr">pipeline</span>, <span class="vr">X</span>, <span class="vr">y</span>, cv=<span class="num">5</span>, scoring=<span class="str">'roc_auc'</span>)
+<span class="fn">print</span>(<span class="str">f"CV AUC: </span>{<span class="vr">scores</span>.mean():.3f}<span class="str"> ± </span>{<span class="vr">scores</span>.std():.3f}<span class="str">"</span>)
+
+<span class="cm"># Train final pipeline and save</span>
+<span class="vr">pipeline</span>.fit(<span class="vr">X_train</span>, <span class="vr">y_train</span>)
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">'model.pkl'</span>, <span class="str">'wb'</span>) <span class="kw">as</span> <span class="vr">f</span>:
+    pickle.dump(<span class="vr">pipeline</span>, <span class="vr">f</span>)  <span class="cm"># entire preprocessing embedded!</span></pre>
+    </div>
+
+    <div class="quiz" id="q2">
+      <div class="qxp">+35 XP</div>
+      <div class="qq">You fit a StandardScaler on the entire dataset (before train/test split), then use it to scale both train and test sets. What problem does this create?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q2',this,false,'❌ The scaler parameters (mean, std) are wrong — but that\'s a symptom, not the root problem.')"><div class="ol">A</div>The scaler will have wrong mean and standard deviation values</div>
+        <div class="opt" onclick="ans('q2',this,true,'✅ Correct! This is data leakage. The scaler uses statistics (mean, std) computed on the test set, so the model implicitly "sees" the test data during training. Performance estimates will be optimistically biased. A Pipeline prevents this by fitting the scaler only inside each training fold.')"><div class="ol">B</div>Data leakage — test set statistics contaminate the training process</div>
+        <div class="opt" onclick="ans('q2',this,false,'❌ The scaling will work technically — the problem is that it uses information from the test set.')"><div class="ol">C</div>The model will crash because it can\'t handle scaled data</div>
+        <div class="opt" onclick="ans('q2',this,false,'❌ This actually causes inflated (optimistic) performance estimates, not deflated ones.')"><div class="ol">D</div>Performance estimates will be pessimistically low</div>
+      </div>
+      <div class="fb" id="fb-q2"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('ar')">← Back</button>
+    <button class="btn btn-p" onclick="done('pl');go('hd')">Next: Hierarchical Validation 🏠 →</button>
+  </div>
+</div>
+
+<!-- ══ HIERARCHICAL DATA ══ -->
+<div id="page-hd" class="page">
+  <div class="hero">
+    <div class="htag">Lesson 3 of 6</div>
+    <div class="htitle">🏠 Validating on Hierarchical Data</div>
+    <div class="hsub">Real data is rarely independent. When rows are grouped (patients in hospitals, trips in households, transactions per customer), random splitting leaks information between train and test — inflating your performance estimates.</div>
+    <div class="hpills"><div class="pill">⏱ ~30 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 160 XP</div><div class="pill">🎮 Interactive</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(6,182,212,0.12)">🏘️</div>
+      <div><div class="st">The Problem with Random Splits</div><div class="ss">The travel survey example</div></div>
+    </div>
+
+    <div class="card">
+      <div class="ct">🏘️ Nested Data Structure</div>
+      <div class="cb">A travel survey records multiple <strong>trips per household</strong>. Members of the same household:<br>
+        • Live in the same area (same commute distance)<br>
+        • Share the same car/bike ownership<br>
+        • Have similar travel preferences<br><br>
+        A random train/test split will place different trips from the <strong>same household</strong> in both sets. The model learns household-specific patterns (memorisation), then "predicts" them on the test set — artificially inflating accuracy.
+      </div>
+    </div>
+
+    <!-- Interactive hierarchy visual -->
+    <div class="hier-visual">
+      <div style="font-weight:700;margin-bottom:14px;color:var(--p);">🎮 Compare Split Strategies — click to toggle</div>
+      <div class="split-compare">
+        <div class="split-box" style="border-color:rgba(239,68,68,0.5);background:rgba(239,68,68,0.06);">
+          <div style="font-weight:700;color:#ef4444;margin-bottom:8px;">❌ Random Split (WRONG)</div>
+          <div style="font-size:0.78rem;color:var(--txm);margin-bottom:10px;">Trips from same household appear in both train and test:</div>
+          <div id="random-split"></div>
+          <div style="font-size:0.8rem;color:#ef4444;margin-top:10px;">⚠️ Estimated accuracy: <strong>94%</strong> (artificially high)</div>
+        </div>
+        <div class="split-box" style="border-color:rgba(16,185,129,0.5);background:rgba(16,185,129,0.06);">
+          <div style="font-weight:700;color:#10b981;margin-bottom:8px;">✅ Group (Household) Split</div>
+          <div style="font-size:0.78rem;color:var(--txm);margin-bottom:10px;">Entire households go to either train or test — never split:</div>
+          <div id="group-split"></div>
+          <div style="font-size:0.8rem;color:#10b981;margin-top:10px;">✅ Honest accuracy: <strong>81%</strong> (realistic)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rw">
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">Clinical Trial Analysis — Patient-Level Split</div>
+      <div class="rwb">A hospital built a model to predict patient readmission from lab tests. Using random row-level splits, the model achieved 92% AUC. The team then realised patients had multiple visits — the same patient was in both train and test. Switching to patient-level splits (GroupKFold on patient ID), the true AUC was 74%. The model had learned "which patient tends to be readmitted" rather than "what patterns predict readmission." Clinical deployment based on the 92% estimate would have been a costly failure.</div>
+    </div>
+
+    <div class="code-wrap">
+      <div class="ch"><span style="display:flex;align-items:center;"><span class="ld" style="background:#06b6d4"></span>Python — Group K-Fold</span><button class="cpb" onclick="cp(this)">Copy</button></div>
+      <pre><span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> GroupKFold, cross_val_score
+<span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> RandomForestClassifier
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="cm"># Groups: one ID per household (never split across folds)</span>
+<span class="vr">groups</span> = <span class="vr">df</span>[<span class="str">'household_id'</span>]   <span class="cm"># or patient_id, customer_id, etc.</span>
+
+<span class="vr">cv</span> = GroupKFold(n_splits=<span class="num">5</span>)
+<span class="vr">model</span> = RandomForestClassifier(random_state=<span class="num">42</span>)
+
+<span class="vr">scores</span> = cross_val_score(
+    <span class="vr">model</span>, <span class="vr">X</span>, <span class="vr">y</span>,
+    groups=<span class="vr">groups</span>,  <span class="cm"># KEY: ensures same group never in train AND test</span>
+    cv=<span class="vr">cv</span>,
+    scoring=<span class="str">'accuracy'</span>
+)
+<span class="fn">print</span>(<span class="str">f"Honest CV: </span>{<span class="vr">scores</span>.mean():.3f}<span class="str"> ± </span>{<span class="vr">scores</span>.std():.3f}<span class="str">"</span>)
+
+<span class="cm"># For train/test split with groups:</span>
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> GroupShuffleSplit
+<span class="vr">gss</span> = GroupShuffleSplit(n_splits=<span class="num">1</span>, test_size=<span class="num">0.2</span>, random_state=<span class="num">42</span>)
+<span class="vr">train_idx</span>, <span class="vr">test_idx</span> = <span class="fn">next</span>(<span class="vr">gss</span>.split(<span class="vr">X</span>, <span class="vr">y</span>, groups=<span class="vr">groups</span>))</pre>
+    </div>
+
+    <div class="quiz" id="q3">
+      <div class="qxp">+35 XP</div>
+      <div class="qq">You're building a model to predict student exam scores from study habits. Each student has 20 weekly records. Why should you use GroupKFold with student ID as the group?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q3',this,false,'❌ GroupKFold would actually reduce the effective amount of training data (since whole groups leave at once).')"><div class="ol">A</div>GroupKFold uses more data for training than standard KFold</div>
+        <div class="opt" onclick="ans('q3',this,true,'✅ Correct! Without GroupKFold, weeks 1-15 of a student go to train and weeks 16-20 go to test. The model memorises each student\'s personal baseline (some students always study a lot, some always score high). GroupKFold ensures entire students are held out — testing whether the model generalises to NEW students.')"><div class="ol">B</div>Without it, the model learns student-specific patterns, not generalisable ones</div>
+        <div class="opt" onclick="ans('q3',this,false,'❌ GroupKFold is slower because it maintains group integrity — not faster.')"><div class="ol">C</div>GroupKFold is faster than standard KFold for time series data</div>
+        <div class="opt" onclick="ans('q3',this,false,'❌ GroupKFold gives a lower (more honest) performance estimate, not higher.')"><div class="ol">D</div>GroupKFold gives higher accuracy scores than standard KFold</div>
+      </div>
+      <div class="fb" id="fb-q3"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('pl')">← Back</button>
+    <button class="btn btn-p" onclick="done('hd');go('ms')">Next: Model Selection 🎯 →</button>
+  </div>
+</div>
+
+<!-- ══ MODEL SELECTION ══ -->
+<div id="page-ms" class="page">
+  <div class="hero">
+    <div class="htag">Lesson 4 of 6</div>
+    <div class="htitle">🎯 Model Selection</div>
+    <div class="hsub">Which algorithm should you use? Linear model, tree ensemble, or neural network? There's no universal answer — but there are principled ways to decide based on your data, constraints, and goals.</div>
+    <div class="hpills"><div class="pill">⏱ ~30 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 150 XP</div><div class="pill">🎮 Interactive</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(139,92,246,0.12)">🗂️</div>
+      <div><div class="st">Model Selection Framework</div></div>
+    </div>
+
+    <!-- Interactive model selector -->
+    <div class="model-selector" id="ms-widget">
+      <div class="ms-question" id="ms-q">What is the nature of your target variable?</div>
+      <div class="ms-opts" id="ms-opts"></div>
+      <div class="ms-result" id="ms-result"></div>
+      <button class="btn btn-o" onclick="resetMS()" style="margin-top:12px;padding:7px 16px;font-size:0.8rem;">↺ Start Over</button>
+    </div>
+
+    <table class="nice" style="margin-top:20px;">
+      <thead><tr><th>Algorithm</th><th>Best for</th><th>Pros</th><th>Watch out for</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Linear / Logistic Reg</strong></td><td class="muted">Linear relationships, small data</td><td class="muted">Fast, interpretable, regularisable</td><td class="muted">Misses non-linear patterns</td></tr>
+        <tr><td><strong>Decision Trees</strong></td><td class="muted">Non-linear, interpretability needed</td><td class="muted">Visualisable, handles mixed types</td><td class="muted">Overfit easily alone</td></tr>
+        <tr><td><strong>Random Forest</strong></td><td class="muted">Tabular data, robust baseline</td><td class="muted">Handles missing vals, feature importance</td><td class="muted">Slow on very large datasets</td></tr>
+        <tr><td><strong>XGBoost / LightGBM</strong></td><td class="muted">Tabular data, competitions</td><td class="muted">State of the art on tabular</td><td class="muted">Many hyperparameters, needs tuning</td></tr>
+        <tr><td><strong>Neural Network</strong></td><td class="muted">Images, text, audio, large data</td><td class="muted">Learns complex representations</td><td class="muted">Needs lots of data, slow, black-box</td></tr>
+        <tr><td><strong>SVM</strong></td><td class="muted">Small-medium, high-dimensional</td><td class="muted">Works in high dimensions</td><td class="muted">Slow on large N, hard to interpret</td></tr>
+      </tbody>
+    </table>
+
+    <div class="rw">
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">Model Selection at DeepMind Health</div>
+      <div class="rwb">DeepMind's Streams project (NHS) chose logistic regression over deep learning for its initial AKI (kidney injury) alert model — not because it was the most accurate, but because: (1) it could be explained to clinicians ("if creatinine rises by X, the risk increases by Y%"), (2) it met regulatory requirements for explainability, and (3) the available labelled dataset was small. They later moved to more complex models after validation and regulatory approval. Model selection includes interpretability and regulatory constraints, not just accuracy.</div>
+    </div>
+
+    <div class="quiz" id="q4">
+      <div class="qxp">+35 XP</div>
+      <div class="qq">You have 500 labelled customer records, 15 features (mix of numeric and categorical), and need to predict churn (yes/no) with a model that can be explained to non-technical stakeholders. Which is the best starting point?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q4',this,false,'❌ Neural networks need large datasets and are black boxes — not ideal for 500 records or stakeholder explainability.')"><div class="ol">A</div>Deep neural network — highest potential accuracy</div>
+        <div class="opt" onclick="ans('q4',this,true,'✅ Correct! Random Forest (or a shallow Decision Tree for maximum interpretability) is ideal here: handles mixed feature types, gives feature importances, works well on 500 records, and produces interpretable explanations. Start simple — you can always add complexity later.')"><div class="ol">B</div>Random Forest with feature importance reporting</div>
+        <div class="opt" onclick="ans('q4',this,false,'❌ SVMs are hard to explain ("support vectors") and scale poorly with many hyperparameters. Not ideal for this requirement.')"><div class="ol">C</div>Support Vector Machine — works well in high dimensions</div>
+        <div class="opt" onclick="ans('q4',this,false,'❌ KNN has no built-in feature importance and explains predictions poorly ("your 5 nearest neighbours said churn" is not actionable).')"><div class="ol">D</div>KNN (k=3) — simple and fast</div>
+      </div>
+      <div class="fb" id="fb-q4"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('hd')">← Back</button>
+    <button class="btn btn-p" onclick="done('ms');go('ht')">Next: Hyperparameter Tuning 🔍 →</button>
+  </div>
+</div>
+
+<!-- ══ HYPERPARAMETER TUNING ══ -->
+<div id="page-ht" class="page">
+  <div class="hero">
+    <div class="htag">Lesson 5 of 6</div>
+    <div class="htitle">🔍 Hyperparameter Tuning</div>
+    <div class="hsub">Every algorithm has dials you can turn. Hyperparameter tuning is the systematic search for the best dial settings — using Grid Search, Random Search, or smarter methods like Bayesian Optimisation.</div>
+    <div class="hpills"><div class="pill">⏱ ~35 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 180 XP</div><div class="pill">🎮 Interactive</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(225,29,72,0.12)">🗺️</div>
+      <div><div class="st">Search Strategies</div></div>
+    </div>
+
+    <div class="three-col">
+      <div class="card">
+        <div class="ct">📐 Grid Search</div>
+        <div class="cb">Exhaustively try every combination in a predefined grid. <strong>Guaranteed to find the best</strong> in the grid — but scales exponentially. 5 values × 5 params = 5⁵ = 3,125 fits.</div>
+      </div>
+      <div class="card">
+        <div class="ct">🎲 Random Search</div>
+        <div class="cb">Sample random combinations from the space. <strong>Often finds near-optimal in fewer trials</strong>. Works better in high dimensions because it doesn't waste time on less-important hyperparameters.</div>
+      </div>
+      <div class="card">
+        <div class="ct">🧠 Bayesian Optimisation</div>
+        <div class="cb">Builds a probabilistic model of the objective function. <strong>Focuses on promising regions</strong>. Most efficient — typically finds near-optimal in 20-50 trials vs thousands for Grid Search.</div>
+      </div>
+    </div>
+
+    <!-- Grid search heatmap -->
+    <div class="heatmap-wrap">
+      <div style="font-weight:700;margin-bottom:10px;color:var(--p);">🗺️ Grid Search Heatmap — hover cells to see accuracy</div>
+      <div style="font-size:0.82rem;color:var(--txm);margin-bottom:12px;">RandomForest: n_estimators × max_depth cross-validation accuracy</div>
+      <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;">
+        <div>
+          <div style="font-size:0.75rem;color:var(--txm);margin-bottom:4px;text-align:center;">max_depth →</div>
+          <div id="heatmap-grid"></div>
+          <div style="font-size:0.75rem;color:var(--txm);text-align:right;margin-top:2px;">n_estimators ↓</div>
+        </div>
+        <div style="flex:1;min-width:160px;">
+          <div id="hm-info" style="background:var(--cbg);border-radius:8px;padding:12px;font-size:0.82rem;color:var(--txm);">Hover a cell to see details</div>
+          <div id="hm-best" style="margin-top:10px;font-size:0.82rem;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tuning demo -->
+    <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;">
+      <div style="font-weight:700;margin-bottom:14px;color:var(--p);">⚙️ Interactive Tuning — adjust and see estimated performance</div>
+      <div class="slider-row">
+        <span class="sl-lbl">n_estimators:</span>
+        <input type="range" id="t-n" min="10" max="500" step="10" value="100" oninput="updateTuning()">
+        <span class="sl-val" id="t-n-v">100</span>
+      </div>
+      <div class="slider-row">
+        <span class="sl-lbl">max_depth:</span>
+        <input type="range" id="t-d" min="1" max="30" step="1" value="5" oninput="updateTuning()">
+        <span class="sl-val" id="t-d-v">5</span>
+      </div>
+      <div class="slider-row">
+        <span class="sl-lbl">min_samples_leaf:</span>
+        <input type="range" id="t-l" min="1" max="50" step="1" value="5" oninput="updateTuning()">
+        <span class="sl-val" id="t-l-v">5</span>
+      </div>
+      <div class="sl-out" id="t-out"></div>
+    </div>
+
+    <div class="code-wrap">
+      <div class="ch"><span style="display:flex;align-items:center;"><span class="ld" style="background:#e11d48"></span>Python — Grid, Random &amp; Bayesian Search</span><button class="cpb" onclick="cp(this)">Copy</button></div>
+      <pre><span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> GridSearchCV, RandomizedSearchCV
+<span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> RandomForestClassifier
+<span class="kw">from</span> scipy.stats <span class="kw">import</span> randint, uniform
+
+<span class="vr">rf</span> = RandomForestClassifier(random_state=<span class="num">42</span>)
+
+<span class="cm">## 1. Grid Search — exhaustive but expensive</span>
+<span class="vr">param_grid</span> = {
+    <span class="str">'n_estimators'</span>:    [<span class="num">50</span>, <span class="num">100</span>, <span class="num">200</span>],
+    <span class="str">'max_depth'</span>:       [<span class="num">5</span>, <span class="num">10</span>, <span class="num">15</span>, <span class="kw">None</span>],
+    <span class="str">'min_samples_leaf'</span>:[<span class="num">1</span>, <span class="num">5</span>, <span class="num">10</span>],
+}  <span class="cm"># 3×4×3 = 36 fits × 5 folds = 180 model fits!</span>
+<span class="vr">grid</span> = GridSearchCV(<span class="vr">rf</span>, <span class="vr">param_grid</span>, cv=<span class="num">5</span>, scoring=<span class="str">'roc_auc'</span>, n_jobs=-<span class="num">1</span>)
+<span class="vr">grid</span>.fit(<span class="vr">X_train</span>, <span class="vr">y_train</span>)
+<span class="fn">print</span>(<span class="vr">grid</span>.best_params_)
+
+<span class="cm">## 2. Random Search — usually more efficient</span>
+<span class="vr">param_dist</span> = {
+    <span class="str">'n_estimators'</span>:    randint(<span class="num">50</span>, <span class="num">500</span>),
+    <span class="str">'max_depth'</span>:       randint(<span class="num">3</span>, <span class="num">20</span>),
+    <span class="str">'min_samples_leaf'</span>:randint(<span class="num">1</span>, <span class="num">20</span>),
+    <span class="str">'max_features'</span>:    uniform(<span class="num">0.1</span>, <span class="num">0.9</span>),
+}
+<span class="vr">rand</span> = RandomizedSearchCV(<span class="vr">rf</span>, <span class="vr">param_dist</span>, n_iter=<span class="num">50</span>, cv=<span class="num">5</span>,
+                           scoring=<span class="str">'roc_auc'</span>, random_state=<span class="num">42</span>)
+
+<span class="cm">## 3. Bayesian Optimisation (optuna)</span>
+<span class="kw">import</span> optuna
+
+<span class="kw">def</span> <span class="fn">objective</span>(<span class="vr">trial</span>):
+    <span class="vr">params</span> = {
+        <span class="str">'n_estimators'</span>: <span class="vr">trial</span>.suggest_int(<span class="str">'n_estimators'</span>, <span class="num">50</span>, <span class="num">500</span>),
+        <span class="str">'max_depth'</span>:    <span class="vr">trial</span>.suggest_int(<span class="str">'max_depth'</span>, <span class="num">3</span>, <span class="num">20</span>),
+    }
+    <span class="vr">model</span> = RandomForestClassifier(**<span class="vr">params</span>)
+    <span class="kw">return</span> cross_val_score(<span class="vr">model</span>, <span class="vr">X</span>, <span class="vr">y</span>, cv=<span class="num">3</span>).mean()
+
+<span class="vr">study</span> = optuna.create_study(direction=<span class="str">'maximize'</span>)
+<span class="vr">study</span>.optimize(<span class="fn">objective</span>, n_trials=<span class="num">50</span>)</pre>
+    </div>
+
+    <div class="quiz" id="q5">
+      <div class="qxp">+40 XP</div>
+      <div class="qq">You have 10 hyperparameters, each with 5 possible values. Grid Search would require how many model fits (with 5-fold CV), and why is Random Search with 100 iterations usually better?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q5',this,false,'❌ Grid Search with 10 params × 5 values each = 5^10 = ~10 million combinations, not 50.')"><div class="ol">A</div>50 fits — Grid Search is efficient and always finds the optimum</div>
+        <div class="opt" onclick="ans('q5',this,true,'✅ Correct! 5^10 = ~9.77 million combinations × 5 folds ≈ 49 million model fits. Random Search at 100 iterations = just 500 fits, yet research (Bergstra &amp; Bengio 2012) shows it finds near-optimal results because most hyperparameters have little effect — Random Search can "ignore" unimportant ones by sampling across their full range.')"><div class="ol">B</div>~49 million fits — Random Search covers the space more efficiently in high dimensions</div>
+        <div class="opt" onclick="ans('q5',this,false,'❌ Bayesian optimisation is smarter than random search — but Grid Search scales exponentially, not linearly.')"><div class="ol">C</div>250 fits — both methods scale the same way</div>
+        <div class="opt" onclick="ans('q5',this,false,'❌ Grid Search is the least efficient approach for high-dimensional spaces — it wastes computation on unimportant combinations.')"><div class="ol">D</div>Grid Search is more efficient than Random Search</div>
+      </div>
+      <div class="fb" id="fb-q5"></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('ms')">← Back</button>
+    <button class="btn btn-p" onclick="done('ht');go('fs')">Next: Feature Selection ✂️ →</button>
+  </div>
+</div>
+
+<!-- ══ FEATURE SELECTION ══ -->
+<div id="page-fs" class="page">
+  <div class="hero">
+    <div class="htag">Lesson 6 of 6 ⭐</div>
+    <div class="htitle">✂️ Feature Selection &amp; Optimisation</div>
+    <div class="hsub">More features isn't always better. Irrelevant features add noise, slow training, and hurt generalisation. Feature selection identifies which features to keep — using statistics, model-based ranking, or iterative search.</div>
+    <div class="hpills"><div class="pill">⏱ ~35 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 170 XP</div><div class="pill">🎮 Interactive</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(16,185,129,0.12)">📊</div>
+      <div><div class="st">Three Categories of Feature Selection</div></div>
+    </div>
+
+    <div class="three-col">
+      <div class="card">
+        <div class="ct">🔬 Filter Methods</div>
+        <div class="cb">Select features <strong>before</strong> fitting any model, using statistical tests.<br><br>
+        • Correlation with target<br>
+        • Chi-squared test<br>
+        • Mutual information<br><br>
+        Fast but ignores interactions between features.</div>
+      </div>
+      <div class="card">
+        <div class="ct">🔁 Wrapper Methods</div>
+        <div class="cb">Try different feature subsets by <strong>training and evaluating</strong> a model on each.<br><br>
+        • Recursive Feature Elimination (RFE)<br>
+        • Forward/backward selection<br><br>
+        Slower but model-aware. Can overfit to training data.</div>
+      </div>
+      <div class="card">
+        <div class="ct">🌲 Embedded Methods</div>
+        <div class="cb">Feature selection happens <strong>during model training</strong>.<br><br>
+        • Lasso (L1 regularisation)<br>
+        • Random Forest importances<br>
+        • XGBoost feature scores<br><br>
+        Best of both: fast and model-aware.</div>
+      </div>
+    </div>
+
+    <!-- Feature importance interactive -->
+    <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;">
+      <div style="font-weight:700;margin-bottom:6px;color:var(--p);">📊 Feature Importance Explorer — drag the threshold</div>
+      <div style="font-size:0.82rem;color:var(--txm);margin-bottom:14px;">Click "Remove Low Importance" to see how many features get dropped:</div>
+      <div class="slider-row">
+        <span class="sl-lbl">Importance threshold:</span>
+        <input type="range" id="fi-thresh" min="0" max="20" step="1" value="5" oninput="updateFI()">
+        <span class="sl-val" id="fi-thresh-v">5%</span>
+      </div>
+      <div class="fi-wrap" id="fi-bars"></div>
+      <div id="fi-summary" style="background:var(--cbg);border-radius:8px;padding:10px;font-size:0.82rem;margin-top:8px;"></div>
+    </div>
+
+    <div class="rw">
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">Credit Scoring — From 200 to 15 Features</div>
+      <div class="rwb">Experian's credit models start with 200+ raw features. After feature selection: (1) Filter — remove features with near-zero correlation to default; (2) Lasso regression — L1 penalty automatically zeros out irrelevant features; (3) RFE — iteratively remove the weakest remaining feature until performance drops. The final model uses 15-20 features. Benefits: 10× faster inference, easier regulatory audit, less data collected per applicant, and — crucially — <em>higher generalisation accuracy</em> because noise features are removed.</div>
+    </div>
+
+    <div class="code-wrap">
+      <div class="ch"><span style="display:flex;align-items:center;"><span class="ld" style="background:#10b981"></span>Python — Feature Selection</span><button class="cpb" onclick="cp(this)">Copy</button></div>
+      <pre><span class="kw">from</span> sklearn.feature_selection <span class="kw">import</span> (
+    SelectKBest, f_classif, mutual_info_classif,  <span class="cm"># filter</span>
+    RFE, RFECV,                                   <span class="cm"># wrapper</span>
+    SelectFromModel                                <span class="cm"># embedded</span>
+)
+<span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> LassoCV
+<span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> RandomForestClassifier
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="cm">## 1. Filter — top K features by statistical test</span>
+<span class="vr">selector</span> = SelectKBest(score_func=mutual_info_classif, k=<span class="num">15</span>)
+<span class="vr">X_filtered</span> = <span class="vr">selector</span>.fit_transform(<span class="vr">X_train</span>, <span class="vr">y_train</span>)
+<span class="vr">selected_features</span> = <span class="vr">feature_names</span>[<span class="vr">selector</span>.get_support()]
+
+<span class="cm">## 2. Wrapper — Recursive Feature Elimination with CV</span>
+<span class="vr">rfecv</span> = RFECV(
+    estimator=RandomForestClassifier(n_estimators=<span class="num">50</span>),
+    step=<span class="num">1</span>,           <span class="cm"># remove 1 feature at a time</span>
+    cv=<span class="num">5</span>,
+    scoring=<span class="str">'roc_auc'</span>
+)
+<span class="vr">rfecv</span>.fit(<span class="vr">X_train</span>, <span class="vr">y_train</span>)
+<span class="fn">print</span>(<span class="str">f"Optimal features: </span>{<span class="vr">rfecv</span>.n_features_}<span class="str">"</span>)
+
+<span class="cm">## 3. Embedded — Lasso (L1) automatically zeros unimportant features</span>
+<span class="vr">lasso</span> = LassoCV(cv=<span class="num">5</span>).fit(<span class="vr">X_train</span>, <span class="vr">y_train</span>)
+<span class="vr">important</span> = pd.Series(<span class="vr">lasso</span>.coef_, index=<span class="vr">feature_names</span>)
+<span class="vr">selected</span> = <span class="vr">important</span>[<span class="vr">important</span> != <span class="num">0</span>].index.tolist()
+
+<span class="cm">## In a Pipeline (recommended!)</span>
+<span class="vr">pipeline</span> = Pipeline([
+    (<span class="str">'selector'</span>,    SelectFromModel(RandomForestClassifier(n_estimators=<span class="num">50</span>))),
+    (<span class="str">'classifier'</span>, RandomForestClassifier(n_estimators=<span class="num">200</span>)),
+])</pre>
+    </div>
+
+    <div class="quiz" id="q6">
+      <div class="qxp">+40 XP</div>
+      <div class="qq">You have 150 features. Your Random Forest achieves 88% AUC. After removing the 120 features with the lowest Random Forest importance scores (keeping just 30), the model achieves 90% AUC. Why did performance improve?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q6',this,false,'❌ More features generally leads to more noise, not better performance. The improvement came from removing features.')"><div class="ol">A</div>Fewer features means the model trains faster and assumes it\'s better</div>
+        <div class="opt" onclick="ans('q6',this,true,'✅ Correct! The 120 low-importance features were noise — they added variance without adding predictive signal. Removing them forced the model to focus on the truly informative features, reducing overfitting. This is the "curse of dimensionality" in reverse: fewer relevant features = better generalisation.')"><div class="ol">B</div>The 120 removed features were adding noise — removing them reduced overfitting</div>
+        <div class="opt" onclick="ans('q6',this,false,'❌ Logistic regression wasn\'t used here — this is about feature selection for Random Forest.')"><div class="ol">C</div>Logistic regression always outperforms Random Forest on fewer features</div>
+        <div class="opt" onclick="ans('q6',this,false,'❌ Feature selection doesn\'t inherently double the training data size.')"><div class="ol">D</div>The model now effectively has twice as much training data</div>
+      </div>
+      <div class="fb" id="fb-q6"></div>
+    </div>
+
+    <div class="badge" id="bdg-ev" style="background:linear-gradient(135deg,#e11d48,#f97316);">
+      <div class="bi">⚙️</div>
+      <div class="bt" style="color:#fff;">Evaluation Expert</div>
+      <div class="bs" style="color:rgba(255,255,255,0.8);">Mastered Pipelines, Hierarchical Validation, Tuning &amp; Feature Selection!</div>
+    </div>
+    <div class="badge" id="bdg-m6" style="background:linear-gradient(135deg,#8b5cf6,#e11d48);">
+      <div class="bi">🏆</div>
+      <div class="bt" style="color:#fff;">Module 6 Complete!</div>
+      <div class="bs" style="color:rgba(255,255,255,0.8);">Ready for Unsupervised Learning! 🚀</div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('ht')">← Back</button>
+    <button class="btn btn-p" onclick="done('fs')">🎉 Complete Module 6!</button>
+  </div>
+</div>
+
+</main>
+</div>
+<div id="toast"><span id="ti">⭐</span><span id="tm"></span></div>
+
+<script>
+// ── STATE ──
+const S={xp:0,lv:1,pts:0,stk:0,done:new Set(),ans:new Set()};
+const XP_LV=200;
+const LVN=['Novice','Learner','Analyst','Data Scientist','ML Expert'];
+const LXP={ar:30,pl:35,hd:35,ms:30,ht:40,fs:35};
+
+function addXP(a,l){S.xp+=a;S.pts+=a;S.stk++;const lv=Math.floor(S.xp/XP_LV)+1;if(lv>S.lv){S.lv=lv;toast(`🎉 Level Up! Lv ${S.lv}!`,'🎊');}updateUI();if(l)toast(`+${a} XP — ${l}`,'⭐');}
+function updateUI(){const x=S.xp%XP_LV;document.getElementById('xf').style.width=(x/XP_LV*100)+'%';document.getElementById('xl').textContent=`${S.xp} XP · Lv ${S.lv} — ${x}/${XP_LV}`;document.getElementById('lvl').textContent=`Lv ${S.lv} ${LVN[Math.min(S.lv-1,LVN.length-1)]}`;document.getElementById('stk').textContent=S.stk;document.getElementById('pts').textContent=S.pts;}
+
+function ans(qid,el,ok,fb){
+  if(S.ans.has(qid))return;S.ans.add(qid);
+  el.closest('.quiz').querySelectorAll('.opt').forEach(o=>o.classList.add('locked'));
+  const fbEl=document.getElementById('fb-'+qid);
+  const xp=parseInt(el.closest('.quiz').querySelector('.qxp').textContent)||35;
+  if(ok){el.classList.add('correct');fbEl.className='fb cfb show';fbEl.innerHTML=fb;addXP(xp,'Correct!');confetti(el);}
+  else{el.classList.add('wrong');fbEl.className='fb wfb show';fbEl.innerHTML=fb;S.stk=0;updateUI();toast('Keep going! 💡','💡');}
+}
+function done(l){
+  if(S.done.has(l))return;S.done.add(l);addXP(LXP[l]||30,`${l.toUpperCase()} complete!`);
+  document.getElementById('p-'+l).style.width='100%';document.getElementById('n-'+l).classList.add('done');
+  if(l==='ar')document.getElementById('b0').style.color='inherit';
+  if(l==='pl')document.getElementById('b1').style.color='inherit';
+  if(l==='ht')document.getElementById('b2').style.color='inherit';
+  if(l==='fs'){document.getElementById('b3').style.color='inherit';document.getElementById('bdg-ev').classList.add('show');document.getElementById('bdg-m6').classList.add('show');}
+}
+function go(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.getElementById('n-'+p).classList.add('active');
+  const pm=document.getElementById('p-'+p);
+  if(!S.done.has(p)&&pm.style.width==='0%')pm.style.width='15%';
+  document.getElementById('main').scrollTop=0;
+  if(p==='ht')setTimeout(()=>{buildHeatmap();updateTuning();},100);
+  if(p==='fs')setTimeout(()=>{renderFI();},100);
+}
+let toastT;
+function toast(msg,icon='⭐'){document.getElementById('ti').textContent=icon;document.getElementById('tm').textContent=msg;const t=document.getElementById('toast');t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3500);}
+function cp(btn){const text=btn.closest('.code-wrap').querySelector('pre').innerText;navigator.clipboard.writeText(text).then(()=>{btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy',2000);});}
+function confetti(el){const r=el.getBoundingClientRect();const cols=['#e11d48','#f97316','#8b5cf6','#06b6d4','#fff'];for(let i=0;i<16;i++){const d=document.createElement('div');d.style.cssText=`position:fixed;width:7px;height:7px;border-radius:50%;background:${cols[i%cols.length]};left:${r.left+r.width/2}px;top:${r.top}px;pointer-events:none;z-index:9999;transition:all 0.9s cubic-bezier(0,.9,.57,1);`;document.body.appendChild(d);requestAnimationFrame(()=>{d.style.left=(r.left+r.width/2+(Math.random()-.5)*180)+'px';d.style.top=(r.top-90-Math.random()*80)+'px';d.style.opacity='0';});setTimeout(()=>d.remove(),1000);}}
+
+// ── PIPELINE BUILDER ──
+const PIPE_STEPS=[
+  {name:'SimpleImputer',color:'#f97316',type:'transformer'},
+  {name:'StandardScaler',color:'#8b5cf6',type:'transformer'},
+  {name:'OneHotEncoder',color:'#06b6d4',type:'transformer'},
+  {name:'SelectKBest',color:'#10b981',type:'transformer'},
+  {name:'PCA',color:'#e11d48',type:'transformer'},
+  {name:'RandomForest',color:'#10b981',type:'estimator'},
+  {name:'LogisticReg',color:'#06b6d4',type:'estimator'},
+  {name:'XGBoost',color:'#f97316',type:'estimator'},
+];
+let userPipe=[];
+function renderPipeline(){
+  const pal=document.getElementById('pipe-palette');
+  const steps=document.getElementById('pipe-steps');
+  const out=document.getElementById('pipe-output');
+  if(!pal)return;
+  pal.innerHTML='';
+  PIPE_STEPS.forEach((s,i)=>{
+    const chip=document.createElement('div');
+    chip.className='pipe-chip';
+    chip.style.color=s.color;
+    chip.style.borderColor=s.color+'66';
+    chip.textContent=(s.type==='estimator'?'🤖 ':'🔧 ')+s.name;
+    chip.onclick=()=>{userPipe.push({...s});renderPipeline();};
+    pal.appendChild(chip);
+  });
+  steps.innerHTML='';
+  userPipe.forEach((s,i)=>{
+    if(i>0){const arr=document.createElement('div');arr.className='pipe-arrow';arr.textContent='→';steps.appendChild(arr);}
+    const el=document.createElement('div');
+    el.className='pipe-step';
+    el.style.cssText=`border-color:${s.color};background:${s.color}18;color:${s.color};`;
+    el.innerHTML=`${s.name}<button class="pipe-remove" onclick="removePipeStep(${i})">×</button>`;
+    steps.appendChild(el);
+  });
+  if(userPipe.length===0){steps.innerHTML='<span style="color:var(--txm);font-size:0.82rem;">Click steps above to build your pipeline →</span>';}
+  // Generate code
+  const hasEst=userPipe.some(s=>s.type==='estimator');
+  const transforms=userPipe.filter(s=>s.type==='transformer');
+  const est=userPipe.filter(s=>s.type==='estimator');
+  let code='';
+  if(userPipe.length>0){
+    code='Pipeline([\n';
+    transforms.forEach(s=>{code+=`    ("${s.name.toLowerCase().replace(/\s/g,'_')}", ${s.name}()),\n`;});
+    if(est.length>0){code+=`    ("model", ${est[est.length-1].name}()),\n`;}
+    code+='])';
+    if(!hasEst)code+='\n⚠️ Add an estimator (RandomForest/LogisticReg/XGBoost) as the final step!';
+  } else {code='Pipeline([])\n# Add steps by clicking above';}
+  if(out)out.textContent=code;
+}
+function removePipeStep(i){userPipe.splice(i,1);renderPipeline();}
+
+// ── HIERARCHICAL SPLIT VISUAL ──
+const HOUSEHOLDS=[
+  {id:'H1',color:'#e11d48',trips:['🚗','🚶','🚗']},
+  {id:'H2',color:'#f97316',trips:['🚲','🚲','🚌']},
+  {id:'H3',color:'#8b5cf6',trips:['🚗','🚗','🚗','🚗']},
+  {id:'H4',color:'#06b6d4',trips:['🚶','🚌','🚶']},
+  {id:'H5',color:'#10b981',trips:['🚗','🚲','🚗']},
+  {id:'H6',color:'#e11d48',trips:['🚌','🚌']},
+];
+function renderSplits(){
+  const rand=document.getElementById('random-split');
+  const grp=document.getElementById('group-split');
+  if(!rand||!grp)return;
+  // Random: mix trips across households
+  let rHtml='<div style="display:flex;gap:6px;flex-wrap:wrap;"><div style="text-align:center;"><div style="font-size:0.72rem;color:var(--ok);margin-bottom:4px;">TRAIN</div><div style="display:flex;flex-wrap:wrap;gap:3px;">';
+  HOUSEHOLDS.forEach(h=>{
+    h.trips.slice(0,Math.ceil(h.trips.length*0.7)).forEach(t=>{
+      rHtml+=`<div style="width:26px;height:26px;border-radius:4px;background:${h.color}33;border:1px solid ${h.color};display:flex;align-items:center;justify-content:center;font-size:0.7rem;">${t}</div>`;
+    });
+  });
+  rHtml+='</div></div><div style="text-align:center;"><div style="font-size:0.72rem;color:var(--err);margin-bottom:4px;">TEST</div><div style="display:flex;flex-wrap:wrap;gap:3px;">';
+  HOUSEHOLDS.forEach(h=>{
+    h.trips.slice(Math.ceil(h.trips.length*0.7)).forEach(t=>{
+      rHtml+=`<div style="width:26px;height:26px;border-radius:4px;background:${h.color}33;border:1px solid ${h.color};display:flex;align-items:center;justify-content:center;font-size:0.7rem;">${t}</div>`;
+    });
+  });
+  rHtml+='</div></div></div>';
+  rHtml+='<div style="font-size:0.72rem;color:var(--txm);margin-top:8px;">Same colors = same household. Household data leaks across split! ⚠️</div>';
+  rand.innerHTML=rHtml;
+
+  // Group: whole households
+  let gHtml='<div style="display:flex;gap:8px;flex-wrap:wrap;">';
+  const trainH=HOUSEHOLDS.slice(0,4), testH=HOUSEHOLDS.slice(4);
+  gHtml+='<div style="text-align:center;"><div style="font-size:0.72rem;color:var(--ok);margin-bottom:4px;">TRAIN (whole households)</div><div style="display:flex;flex-wrap:wrap;gap:3px;">';
+  trainH.forEach(h=>h.trips.forEach(t=>{gHtml+=`<div style="width:26px;height:26px;border-radius:4px;background:${h.color}33;border:1px solid ${h.color};display:flex;align-items:center;justify-content:center;font-size:0.7rem;">${t}</div>`;}));
+  gHtml+='</div></div><div style="text-align:center;"><div style="font-size:0.72rem;color:var(--err);margin-bottom:4px;">TEST (held-out households)</div><div style="display:flex;flex-wrap:wrap;gap:3px;">';
+  testH.forEach(h=>h.trips.forEach(t=>{gHtml+=`<div style="width:26px;height:26px;border-radius:4px;background:${h.color}33;border:1px solid ${h.color};display:flex;align-items:center;justify-content:center;font-size:0.7rem;">${t}</div>`;}));
+  gHtml+='</div></div></div>';
+  gHtml+='<div style="font-size:0.72rem;color:var(--txm);margin-top:8px;">Entire households held out — no household data leaks. ✅</div>';
+  grp.innerHTML=gHtml;
+}
+
+// ── MODEL SELECTOR ──
+const MS_TREE={
+  q:'What is the nature of your target variable?',
+  opts:[
+    {label:'Continuous number (regression)',next:{q:'How much data do you have?',opts:[
+      {label:'< 10k rows',result:'🏆 Linear Regression / Ridge / Lasso — interpretable, fast, handles small data well. Check for non-linearity first.'},
+      {label:'10k–500k rows',result:'🌲 Random Forest / XGBoost — excellent defaults for tabular regression. Start with RF, then tune XGBoost.'},
+      {label:'> 500k rows or complex patterns',result:'🚀 XGBoost / LightGBM — scale to large tabular data. Neural networks if strong feature engineering isn\'t feasible.'},
+    ]}},
+    {label:'Category / class (classification)',next:{q:'Do you need the model to be explainable to non-technical people?',opts:[
+      {label:'Yes — must explain every prediction',result:'🌳 Decision Tree (shallow) or Logistic Regression — visualisable, coefficients interpretable. Sacrifice some accuracy for transparency.'},
+      {label:'Partially — feature importance is enough',result:'🌲 Random Forest — gives feature importances, robust, handles mixed types. SHAP values can explain individual predictions.'},
+      {label:'No — maximise accuracy only',result:'🚀 XGBoost / LightGBM with hyperparameter tuning — state of the art for tabular classification. Add stacking for extra performance.'},
+    ]}},
+    {label:'Images / audio / text',result:'🤖 Neural Network (CNN for images, Transformer for text/audio) — these data types have spatial/sequential structure that trees can\'t exploit.'},
+  ]
+};
+let msState=MS_TREE;
+function renderMS(){
+  const qEl=document.getElementById('ms-q');
+  const oEl=document.getElementById('ms-opts');
+  const rEl=document.getElementById('ms-result');
+  if(!qEl)return;
+  if(msState.result){
+    qEl.textContent='Recommendation:';
+    oEl.innerHTML='';
+    rEl.className='ms-result show';
+    rEl.innerHTML=`<div style="font-size:1rem;color:var(--p);font-weight:700;margin-bottom:6px;">Suggested approach:</div><div style="font-size:0.9rem;line-height:1.6;">${msState.result}</div>`;
+    return;
+  }
+  qEl.textContent=msState.q;
+  oEl.innerHTML='';
+  rEl.className='ms-result';
+  msState.opts.forEach(o=>{
+    const el=document.createElement('div');
+    el.className='ms-opt';
+    el.textContent=o.label;
+    el.onclick=()=>{msState=o.next||{result:o.result};renderMS();};
+    oEl.appendChild(el);
+  });
+}
+function resetMS(){msState=MS_TREE;renderMS();}
+
+// ── HEATMAP ──
+const HM_DATA=[
+  [0.72,0.78,0.82,0.84,0.83],[0.75,0.81,0.86,0.88,0.87],[0.77,0.83,0.88,0.91,0.90],
+  [0.76,0.83,0.87,0.90,0.92],[0.75,0.82,0.86,0.89,0.91],[0.74,0.80,0.84,0.87,0.88]
+];
+const HM_DEPTHS=[3,5,8,12,20];
+const HM_N=[50,100,150,200,300,500];
+function buildHeatmap(){
+  const wrap=document.getElementById('heatmap-grid');
+  if(!wrap)return;
+  const cols=HM_DEPTHS.length, rows=HM_N.length;
+  wrap.style.gridTemplateColumns=`50px repeat(${cols},48px)`;
+  wrap.className='heatmap-grid';
+  // header row
+  wrap.innerHTML=`<div class="hm-label" style="font-size:0.68rem;"></div>`;
+  HM_DEPTHS.forEach(d=>{wrap.innerHTML+=`<div class="hm-label">d=${d}</div>`;});
+  let best={v:0,d:0,n:0};
+  HM_DATA.forEach((row,ri)=>{
+    wrap.innerHTML+=`<div class="hm-label" style="justify-content:flex-end;padding-right:6px;font-size:0.75rem;">n=${HM_N[ri]}</div>`;
+    row.forEach((v,ci)=>{
+      if(v>best.v){best={v,d:HM_DEPTHS[ci],n:HM_N[ri]};}
+      const pct=(v-0.7)/0.25;
+      const r=Math.round(225*pct);
+      const g=Math.round(29+156*pct);
+      const cell=document.createElement('div');
+      cell.className='hm-cell';
+      cell.style.background=`rgba(${r},${g},72,${0.2+pct*0.7})`;
+      cell.style.border=`1px solid rgba(${r},${g},72,0.3)`;
+      cell.style.color=pct>0.6?'#fff':'#9d6680';
+      cell.textContent=(v*100).toFixed(0)+'%';
+      cell.title=`n_estimators=${HM_N[ri]}, max_depth=${HM_DEPTHS[ci]}: ${(v*100).toFixed(1)}% AUC`;
+      cell.onmouseenter=()=>{
+        document.getElementById('hm-info').innerHTML=`<strong>n_estimators</strong> = ${HM_N[ri]}<br><strong>max_depth</strong> = ${HM_DEPTHS[ci]}<br><strong>CV AUC</strong> = <span style="color:var(--p);font-size:1.1rem;font-weight:800;">${(v*100).toFixed(1)}%</span>`;
+      };
+      wrap.appendChild(cell);
+    });
+  });
+  const bestEl=document.getElementById('hm-best');
+  if(bestEl)bestEl.innerHTML=`<span style="color:var(--p);font-weight:700;">Best found:</span> n_estimators=${best.n}, max_depth=${best.d}, AUC=${(best.v*100).toFixed(1)}%`;
+}
+
+// ── TUNING SLIDER ──
+function updateTuning(){
+  const n=+document.getElementById('t-n').value;
+  const d=+document.getElementById('t-d').value;
+  const l=+document.getElementById('t-l').value;
+  document.getElementById('t-n-v').textContent=n;
+  document.getElementById('t-d-v').textContent=d;
+  document.getElementById('t-l-v').textContent=l;
+  const trainAcc=Math.min(0.999,0.75+n*0.0003+d*0.01-l*0.004);
+  const valAcc=Math.min(0.97,0.70+n*0.0002+Math.min(d,8)*0.008-Math.max(0,d-8)*0.006+l*0.002);
+  const gap=trainAcc-valAcc;
+  const out=document.getElementById('t-out');
+  if(out)out.innerHTML=`Train accuracy: <span style="color:${trainAcc>0.96?'#ef4444':'#10b981'}">${(trainAcc*100).toFixed(1)}%</span>
+Val accuracy:   <span style="color:var(--p)">${(valAcc*100).toFixed(1)}%</span>
+Train-Val gap:  <span style="color:${gap>0.1?'#ef4444':gap>0.05?'#f59e0b':'#10b981'}">${(gap*100).toFixed(1)}%${gap>0.1?' ⚠️ Overfitting!':gap>0.05?' ⚠️ Mild overfit':' ✅'}</span>
+
+Hint: ${d>15?'Reduce max_depth to prevent overfitting. ':d<3?'Increase max_depth — trees may be too shallow. ':''}${l<3?'Increase min_samples_leaf to regularise. ':l>20?'min_samples_leaf is high — may underfit. ':''}${n<50?'Add more trees for stability. ':''}`;
+}
+
+// ── FEATURE IMPORTANCE ──
+const FI_ITEMS=[
+  {name:'credit_score',pct:24,color:'#e11d48'},
+  {name:'income',pct:18,color:'#f97316'},
+  {name:'loan_amount',pct:15,color:'#8b5cf6'},
+  {name:'employment_years',pct:12,color:'#06b6d4'},
+  {name:'age',pct:8,color:'#10b981'},
+  {name:'region',pct:7,color:'#e11d48'},
+  {name:'previous_defaults',pct:6,color:'#f97316'},
+  {name:'num_dependents',pct:4,color:'#8b5cf6'},
+  {name:'marital_status',pct:3,color:'#06b6d4'},
+  {name:'property_type',pct:2,color:'#10b981'},
+  {name:'email_domain',pct:1,color:'#9d6680'},
+];
+function renderFI(){
+  const thresh=+document.getElementById('fi-thresh').value;
+  document.getElementById('fi-thresh-v').textContent=thresh+'%';
+  const wrap=document.getElementById('fi-bars');
+  if(!wrap)return;
+  wrap.innerHTML='';
+  let kept=0,dropped=0;
+  FI_ITEMS.forEach(f=>{
+    const keep=f.pct>=thresh;
+    if(keep)kept++;else dropped++;
+    wrap.innerHTML+=`<div class="fi-row">
+      <div class="fi-lbl" style="color:${keep?'var(--txm)':'#420e26'};text-decoration:${keep?'none':'line-through'}">${f.name}</div>
+      <div class="fi-bg"><div class="fi-fill" style="width:${f.pct*4}%;background:${keep?f.color:'#420e26'};opacity:${keep?1:0.3};">${f.pct>=8?f.pct+'%':''}</div></div>
+      <div class="fi-pct" style="color:${keep?'var(--txm)':'#420e26'}">${f.pct}%${keep?'':' ✂️'}</div>
+    </div>`;
+  });
+  const retained=FI_ITEMS.filter(f=>f.pct>=thresh).reduce((a,f)=>a+f.pct,0);
+  document.getElementById('fi-summary').innerHTML=`Keeping <strong style="color:var(--p)">${kept}</strong> features (${retained}% of importance), removing <strong style="color:var(--err)">${dropped}</strong> noisy features.`;
+}
+
+// ── LAB BANNER ──
+function initLabBanner(){
+  if(localStorage.getItem('lab-banner-dismissed')==='1')return;
+  const b=document.createElement('div');b.id='lab-banner';
+  b.style.cssText='margin-bottom:28px;transition:opacity 0.3s,transform 0.3s;';
+  b.innerHTML=`<div style="background:linear-gradient(135deg,#0f020a,#1f0412);border:1px solid rgba(225,29,72,0.35);border-left:4px solid #e11d48;border-radius:14px;padding:20px 22px;"><div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;"><div style="font-size:1.6rem;flex-shrink:0;">🧪</div><div style="flex:1;min-width:200px;"><div style="font-weight:700;font-size:0.95rem;margin-bottom:6px;">Running the code</div><div style="font-size:0.85rem;line-height:1.6;color:rgba(252,231,243,0.85);">Copy code blocks into Jupyter to run them.<br><code style="background:rgba(0,0,0,0.4);padding:1px 6px;border-radius:4px;font-size:0.82rem;">conda activate ds_env &amp;&amp; jupyter notebook</code></div></div><button onclick="dismissLabBanner()" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);color:white;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:0.82rem;flex-shrink:0;">Got it ✓</button></div></div>`;
+  document.getElementById('main').prepend(b);
+}
+function dismissLabBanner(){const b=document.getElementById('lab-banner');if(b){b.style.opacity='0';b.style.transform='translateY(-8px)';setTimeout(()=>b.remove(),300);}localStorage.setItem('lab-banner-dismissed','1');}
+
+// ── INIT ──
+renderPipeline();
+renderSplits();
+renderMS();
+initLabBanner();
+toast('Welcome to Module 6: Pragmatic Model Evaluation! ⚙️','👋');
+</script>
+</body>
+</html>

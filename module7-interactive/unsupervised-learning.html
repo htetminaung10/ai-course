@@ -1230,8 +1230,1886 @@ function go(id){
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
   document.getElementById('n-'+id).classList.add('active');
+   
+      "var m=document.getElementById('main'); if(m) m.scrollTo(0,0);`n" + <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 7: Unsupervised Learning 🔍</title>
+<style>
+:root{--p:#0891b2;--pd:#0e7490;--s:#06d6a0;--a:#f59e0b;--a2:#8b5cf6;--a3:#ef4444;--bg:#020c10;--sur:#041820;--sur2:#062030;--sur3:#082840;--tx:#e0f7fa;--txm:#5b9aaa;--bdr:#0e3a4a;--cbg:#010a0e;--ok:#06d6a0;--warn:#f59e0b;--err:#ef4444;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden;}
+
+#tb{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(2,12,16,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--bdr);padding:0 24px;height:60px;display:flex;align-items:center;gap:16px;}
+.brand{font-size:1rem;font-weight:800;background:linear-gradient(135deg,var(--p),var(--s));-webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap;}
+.xps{display:flex;align-items:center;gap:10px;flex:1;}
+.lvb{background:linear-gradient(135deg,var(--p),var(--s));padding:4px 12px;border-radius:20px;font-weight:700;font-size:0.82rem;color:#fff;white-space:nowrap;}
+.xw{flex:1;max-width:280px;}
+.xl{font-size:0.72rem;color:var(--txm);margin-bottom:3px;}
+.xbg{background:var(--bdr);border-radius:10px;height:7px;overflow:hidden;}
+.xf{height:100%;background:linear-gradient(90deg,var(--p),var(--s));border-radius:10px;transition:width 0.5s;}
+.stk{font-size:0.82rem;color:var(--warn);display:flex;align-items:center;gap:4px;}
+.scd{font-weight:700;color:var(--s);font-size:0.88rem;}
+.mnav{display:flex;gap:6px;margin-left:8px;}
+.mbtn{padding:4px 10px;border-radius:6px;font-size:0.75rem;font-weight:600;border:1px solid var(--bdr);background:transparent;color:var(--txm);cursor:pointer;transition:all 0.2s;text-decoration:none;}
+.mbtn:hover{border-color:var(--p);color:var(--p);}
+
+#app{display:flex;margin-top:60px;min-height:calc(100vh - 60px);}
+#sbar{width:260px;min-width:260px;background:var(--sur);border-right:1px solid var(--bdr);padding:16px 0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;}
+.sbt{padding:0 16px 10px;font-size:0.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--txm);}
+.ni{display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;border-left:3px solid transparent;transition:all 0.2s;font-size:0.87rem;}
+.ni:hover{background:var(--sur2);}
+.ni.active{border-left-color:var(--p);background:var(--sur2);color:var(--p);}
+.ni.done{color:var(--ok);}
+.ni.done::after{content:'✓';margin-left:auto;font-weight:700;}
+.nic{font-size:1.1rem;min-width:22px;text-align:center;flex-shrink:0;}
+.nl{flex:1;}
+.pm{margin-top:3px;height:3px;background:var(--bdr);border-radius:3px;overflow:hidden;}
+.pmf{height:100%;background:var(--p);border-radius:3px;transition:width 0.3s;}
+.sbs{padding:14px 16px 4px;border-top:1px solid var(--bdr);margin-top:8px;}
+
+#main{flex:1;padding:36px 44px;max-width:920px;overflow-y:auto;}
+.page{display:none;}.page.active{display:block;}
+
+.hero{background:linear-gradient(135deg,var(--sur2),var(--sur3));border:1px solid var(--bdr);border-radius:20px;padding:36px;margin-bottom:36px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-30%;right:-5%;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(8,145,178,0.15),transparent);}
+.htag{font-size:0.72rem;text-transform:uppercase;letter-spacing:2px;color:var(--p);margin-bottom:6px;}
+.htitle{font-size:2rem;font-weight:800;margin-bottom:10px;line-height:1.2;}
+.hsub{font-size:0.92rem;color:var(--txm);margin-bottom:20px;max-width:580px;line-height:1.6;}
+.hpills{display:flex;gap:10px;flex-wrap:wrap;}
+.pill{background:rgba(255,255,255,0.05);border:1px solid var(--bdr);border-radius:20px;padding:5px 12px;font-size:0.78rem;color:var(--txm);}
+
+.sec{margin-bottom:44px;}
+.sh{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--bdr);}
+.si{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+.st{font-size:1.4rem;font-weight:700;}
+.ss{font-size:0.82rem;color:var(--txm);margin-top:2px;}
+
+.card{background:var(--sur);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin-bottom:18px;transition:transform 0.2s,border-color 0.2s;}
+.card:hover{transform:translateY(-2px);border-color:var(--p);}
+.ct{font-size:1.05rem;font-weight:700;margin-bottom:9px;}
+.cb{color:var(--txm);line-height:1.7;font-size:0.9rem;}
+.cb strong{color:var(--tx);}
+.cb code{background:var(--cbg);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:0.83rem;color:var(--p);}
+
+.rw{background:linear-gradient(135deg,rgba(8,145,178,0.07),rgba(6,214,160,0.07));border:1px solid rgba(8,145,178,0.22);border-radius:14px;padding:18px 22px;margin:18px 0;}
+.rwl{font-size:0.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--ok);margin-bottom:6px;}
+.rwt{font-weight:700;margin-bottom:5px;}
+.rwb{color:var(--txm);font-size:0.88rem;line-height:1.6;}
+
+.quiz{background:var(--sur2);border:2px solid var(--bdr);border-radius:16px;padding:26px;margin:26px 0;position:relative;}
+.quiz::before{content:'QUIZ';position:absolute;top:-12px;left:18px;background:var(--p);color:#fff;padding:3px 11px;border-radius:20px;font-size:0.73rem;font-weight:700;letter-spacing:1px;}
+.qxp{position:absolute;top:-12px;right:18px;background:var(--a);color:#fff;padding:3px 11px;border-radius:20px;font-size:0.73rem;font-weight:700;}
+.qq{font-size:0.97rem;font-weight:600;margin-bottom:16px;line-height:1.5;}
+.opts{display:grid;gap:9px;}
+.opt{background:var(--sur);border:1px solid var(--bdr);border-radius:10px;padding:11px 14px;cursor:pointer;transition:all 0.2s;font-size:0.88rem;display:flex;align-items:flex-start;gap:9px;text-align:left;}
+.opt:hover:not(.locked){border-color:var(--p);background:rgba(8,145,178,0.08);}
+.opt.correct{border-color:var(--ok);background:rgba(6,214,160,0.12);color:var(--ok);}
+.opt.wrong{border-color:var(--err);background:rgba(239,68,68,0.12);color:var(--err);}
+.opt.locked{cursor:default;}
+.ol{width:24px;height:24px;border-radius:50%;background:var(--bdr);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;flex-shrink:0;}
+.fb{margin-top:12px;padding:11px 14px;border-radius:9px;font-size:0.88rem;line-height:1.5;display:none;}
+.fb.show{display:block;}
+.fb.cfb{background:rgba(6,214,160,0.1);border:1px solid rgba(6,214,160,0.3);color:var(--ok);}
+.fb.wfb{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:var(--err);}
+
+.info{border-radius:9px;padding:12px 16px;margin:14px 0;display:flex;gap:10px;align-items:flex-start;font-size:0.87rem;line-height:1.6;}
+.info.tip{background:rgba(8,145,178,0.08);border-left:3px solid var(--p);}
+.info.warn{background:rgba(245,158,11,0.08);border-left:3px solid var(--warn);}
+.info.ok{background:rgba(6,214,160,0.08);border-left:3px solid var(--ok);}
+.info.note{background:rgba(139,92,246,0.08);border-left:3px solid var(--a2);}
+.ii{font-size:1rem;flex-shrink:0;margin-top:2px;}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:18px 0;}
+@media(max-width:680px){.two-col,.three-col{grid-template-columns:1fr;}}
+
+.code-wrap{margin:18px 0;border-radius:12px;overflow:hidden;border:1px solid var(--bdr);}
+.ch{background:var(--sur2);padding:9px 14px;display:flex;align-items:center;justify-content:space-between;font-size:0.78rem;color:var(--txm);}
+.ld{width:9px;height:9px;border-radius:50%;margin-right:6px;}
+.cpb{background:none;border:1px solid var(--bdr);color:var(--txm);padding:3px 9px;border-radius:5px;cursor:pointer;font-size:0.73rem;transition:all 0.2s;}
+.cpb:hover{border-color:var(--p);color:var(--p);}
+pre{background:var(--cbg);padding:18px;margin:0;overflow-x:auto;font-family:'Consolas','Courier New',monospace;font-size:0.86rem;line-height:1.65;}
+.kw{color:#c792ea;}.fn{color:#82aaff;}.str{color:#c3e88d;}.num{color:#f78c6c;}.cm{color:#2a4a55;font-style:italic;}.cls{color:#ffcb6b;}.vr{color:#89ddff;}
+
+table.nice{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.85rem;}
+table.nice th{background:var(--sur3);padding:9px 12px;text-align:left;color:var(--p);font-weight:600;}
+table.nice td{padding:8px 12px;border-bottom:1px solid var(--bdr);}
+table.nice tr:hover td{background:var(--sur);}
+
+.badge{display:none;border-radius:16px;padding:20px;margin:20px 0;text-align:center;animation:sI 0.4s ease;}
+.badge.show{display:block;}
+@keyframes sI{from{transform:translateY(-16px);opacity:0}to{transform:translateY(0);opacity:1}}
+.bi{font-size:2.8rem;margin-bottom:6px;}
+.bt{font-size:1.1rem;font-weight:800;}
+.bs{font-size:0.82rem;opacity:0.8;}
+
+.nav-btns{display:flex;gap:10px;margin-top:36px;padding-top:20px;border-top:1px solid var(--bdr);}
+.btn{padding:11px 22px;border-radius:9px;border:none;cursor:pointer;font-weight:600;font-size:0.88rem;transition:all 0.2s;display:flex;align-items:center;gap:7px;}
+.btn-p{background:var(--p);color:#fff;}
+.btn-p:hover{background:var(--pd);transform:translateY(-1px);}
+.btn-o{background:transparent;border:1px solid var(--bdr);color:var(--tx);}
+.btn-o:hover{border-color:var(--p);color:var(--p);}
+
+/* Compare toggle */
+.compare-toggle{display:flex;gap:0;border-radius:10px;overflow:hidden;border:1px solid var(--bdr);margin:16px 0;width:fit-content;}
+.ct-btn{padding:8px 18px;background:var(--sur2);border:none;color:var(--txm);cursor:pointer;font-size:0.82rem;font-weight:600;transition:all 0.2s;}
+.ct-btn.active{background:var(--p);color:#fff;}
+
+/* Scatter viz */
+.scatter-wrap{background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;}
+
+/* Slider */
+.slider-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.sl-lbl{font-size:0.82rem;color:var(--txm);min-width:140px;}
+input[type=range]{flex:1;accent-color:var(--p);}
+.sl-val{font-weight:700;color:var(--p);min-width:50px;text-align:right;}
+
+#toast{position:fixed;bottom:28px;right:28px;z-index:9999;background:var(--sur);border:1px solid var(--p);border-radius:12px;padding:12px 18px;font-size:0.88rem;display:none;align-items:center;gap:9px;box-shadow:0 8px 32px rgba(0,0,0,0.4);animation:slideUp 0.3s ease;}
+#toast.show{display:flex;}
+@keyframes slideUp{from{transform:translateY(18px);opacity:0}to{transform:translateY(0);opacity:1}}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:var(--p);}
+
+#menu-toggle{display:none;background:none;border:1px solid var(--bdr);color:var(--tx);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:1.1rem;line-height:1;flex-shrink:0;}
+#sidebar-overlay{display:none;position:fixed;inset:0;z-index:90;background:rgba(0,0,0,0.6);backdrop-filter:blur(2px);}
+#sidebar-overlay.open{display:block;}
+@media(max-width:768px){
+  #menu-toggle{display:block;}
+  #tb{padding:0 12px;gap:8px;}
+  .brand{font-size:0.9rem;}
+  .xw{display:none;}
+  .stk{display:none;}
+  .scd{font-size:0.78rem;}
+  .lvb{font-size:0.72rem;padding:3px 8px;}
+  .mnav{gap:4px;margin-left:4px;}
+  .mbtn{font-size:0.7rem;padding:3px 7px;}
+  #sbar{position:fixed;left:0;top:60px;bottom:0;transform:translateX(-100%);transition:transform 0.3s ease;z-index:95;width:250px;min-width:0;box-shadow:4px 0 24px rgba(0,0,0,0.5);}
+  #sbar.open{transform:translateX(0);}
+  #app{flex-direction:column;}
+  #main{padding:20px 16px;max-width:100%;width:100%;}
+  .hero{padding:22px 18px;}
+  .htitle{font-size:1.6rem;}
+  canvas{max-width:100%;height:auto!important;}
+}</style>
+</head>
+<body>
+
+<div id="sidebar-overlay" onclick="closeSidebar()"></div>
+<div id="tb">
+  <button id="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle menu">☰</button>
+  <div class="brand">🔍 Unsupervised Learning</div>
+  <div class="xps">
+    <div id="lvl" class="lvb">Lv 1</div>
+    <div class="xw"><div id="xl" class="xl">0 / 200 XP</div><div class="xbg"><div id="xf" class="xf" style="width:0%"></div></div></div>
+    <div class="stk">🔥 <span id="stk">0</span></div>
+    <div class="scd">⭐ <span id="pts">0</span></div>
+  </div>
+  <div class="mnav">
+    <a class="mbtn" href="../index.html">🏠 Home</a>
+    <a class="mbtn" href="../module6-interactive/pragmatic-model-evaluation.html">← M6</a>
+    <a class="mbtn" href="../module8-interactive/ai-landscape.html">M8 →</a>
+  </div>
+</div>
+
+<div id="app">
+<nav id="sbar">
+  <div class="sbt">Module 7 Lessons</div>
+  <div id="n-in" class="ni active" onclick="go('in')"><div class="nic">🌐</div><div class="nl">Intro to Unsupervised<div class="pm"><div class="pmf" id="p-in" style="width:0%"></div></div></div></div>
+  <div id="n-km" class="ni" onclick="go('km')"><div class="nic">⚙️</div><div class="nl">K-Means Clustering<div class="pm"><div class="pmf" id="p-km" style="width:0%"></div></div></div></div>
+  <div id="n-hc" class="ni" onclick="go('hc')"><div class="nic">🌲</div><div class="nl">Hierarchical Clustering<div class="pm"><div class="pmf" id="p-hc" style="width:0%"></div></div></div></div>
+  <div id="n-db" class="ni" onclick="go('db')"><div class="nic">🔵</div><div class="nl">DBSCAN<div class="pm"><div class="pmf" id="p-db" style="width:0%"></div></div></div></div>
+  <div id="n-ts" class="ni" onclick="go('ts')"><div class="nic">🗺️</div><div class="nl">t-SNE<div class="pm"><div class="pmf" id="p-ts" style="width:0%"></div></div></div></div>
+  <div class="sbs">
+    <div class="sbt">Badges</div>
+    <div style="font-size:1.4rem;letter-spacing:3px;">
+      <span id="b0" style="color:var(--bdr)">🌐</span>
+      <span id="b1" style="color:var(--bdr)">⚙️</span>
+      <span id="b2" style="color:var(--bdr)">🌲</span>
+      <span id="b3" style="color:var(--bdr)">🏆</span>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- ══ LESSON 1: INTRO ══ -->
+<div id="page-in" class="page active">
+  <div class="hero">
+    <div class="htag">Lesson 1 of 5 · Module 7</div>
+    <div class="htitle">🌐 Intro to Unsupervised Learning</div>
+    <div class="hsub">What happens when you have data but no labels? Unsupervised learning discovers hidden structure — clusters, patterns, and representations — entirely from the data itself.</div>
+    <div class="hpills"><div class="pill">⏱ ~25 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 120 XP</div></div>
+  </div>
+
+  <!-- SECTION 1: Supervised vs Unsupervised -->
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(8,145,178,0.12)">🆚</div>
+      <div><div class="st">Supervised vs Unsupervised</div><div class="ss">The fundamental difference</div></div>
+    </div>
+
+    <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:24px;margin:18px 0;">
+      <svg width="620" height="220" viewBox="0 0 620 220" style="display:block;margin:0 auto;max-width:100%;">
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0,8 3,0 6" fill="#0e3a4a"/>
+          </marker>
+        </defs>
+        <!-- Supervised side -->
+        <rect x="10" y="10" width="270" height="200" rx="12" fill="rgba(8,145,178,0.05)" stroke="rgba(8,145,178,0.3)" stroke-width="1.5"/>
+        <text x="145" y="35" fill="#0891b2" text-anchor="middle" font-size="13" font-weight="700">SUPERVISED</text>
+        <!-- Data with labels -->
+        <circle cx="60" cy="75" r="10" fill="rgba(8,145,178,0.5)"/>
+        <text x="75" y="79" fill="#5b9aaa" font-size="10">label: Cat 🐱</text>
+        <circle cx="60" cy="105" r="10" fill="rgba(6,214,160,0.5)"/>
+        <text x="75" y="109" fill="#5b9aaa" font-size="10">label: Dog 🐶</text>
+        <circle cx="60" cy="135" r="10" fill="rgba(8,145,178,0.5)"/>
+        <text x="75" y="139" fill="#5b9aaa" font-size="10">label: Cat 🐱</text>
+        <!-- Arrow to model -->
+        <line x1="175" y1="105" x2="210" y2="105" stroke="#0e3a4a" stroke-width="1.5" marker-end="url(#arr)"/>
+        <rect x="212" y="88" width="52" height="34" rx="6" fill="rgba(8,145,178,0.15)" stroke="rgba(8,145,178,0.4)" stroke-width="1"/>
+        <text x="238" y="108" fill="#0891b2" text-anchor="middle" font-size="10" font-weight="700">MODEL</text>
+        <text x="145" y="185" fill="#5b9aaa" text-anchor="middle" font-size="10">Learns mapping: X → y</text>
+
+        <!-- Unsupervised side -->
+        <rect x="340" y="10" width="270" height="200" rx="12" fill="rgba(6,214,160,0.05)" stroke="rgba(6,214,160,0.3)" stroke-width="1.5"/>
+        <text x="475" y="35" fill="#06d6a0" text-anchor="middle" font-size="13" font-weight="700">UNSUPERVISED</text>
+        <!-- Data without labels - scattered dots -->
+        <circle cx="390" cy="75" r="7" fill="rgba(8,145,178,0.6)"/>
+        <circle cx="415" cy="90" r="7" fill="rgba(8,145,178,0.6)"/>
+        <circle cx="400" cy="105" r="7" fill="rgba(8,145,178,0.6)"/>
+        <circle cx="460" cy="70" r="7" fill="rgba(6,214,160,0.6)"/>
+        <circle cx="480" cy="90" r="7" fill="rgba(6,214,160,0.6)"/>
+        <circle cx="465" cy="110" r="7" fill="rgba(6,214,160,0.6)"/>
+        <circle cx="540" cy="80" r="7" fill="rgba(245,158,11,0.6)"/>
+        <circle cx="560" cy="100" r="7" fill="rgba(245,158,11,0.6)"/>
+        <text x="400" y="68" fill="#5b9aaa" font-size="9">?</text>
+        <text x="465" y="63" fill="#5b9aaa" font-size="9">?</text>
+        <text x="544" y="73" fill="#5b9aaa" font-size="9">?</text>
+        <!-- Dashed circles showing discovered clusters -->
+        <ellipse cx="402" cy="90" rx="28" ry="22" fill="none" stroke="rgba(8,145,178,0.5)" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <ellipse cx="468" cy="90" rx="24" ry="24" fill="none" stroke="rgba(6,214,160,0.5)" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <ellipse cx="548" cy="90" rx="20" ry="18" fill="none" stroke="rgba(245,158,11,0.5)" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="475" y="155" fill="#5b9aaa" text-anchor="middle" font-size="10">Discovers structure: no labels needed</text>
+        <text x="475" y="185" fill="#06d6a0" text-anchor="middle" font-size="10">Groups emerge from the data itself ✨</text>
+      </svg>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="ct">✅ Supervised Learning</div>
+        <div class="cb">You provide <strong>labelled examples</strong> — input X paired with the correct output y. The model learns to predict y from X.<br><br>Examples: spam detection (spam/not spam), house price prediction (£ value), image classification (cat/dog).</div>
+      </div>
+      <div class="card">
+        <div class="ct">🔍 Unsupervised Learning</div>
+        <div class="cb">You provide <strong>data only</strong> — no labels. The model finds hidden patterns, groupings, or a compressed representation.<br><br>Examples: customer segmentation, anomaly detection, topic modelling, dimensionality reduction.</div>
+      </div>
+    </div>
+
+    <div class="info tip"><div class="ii">💡</div><div>The vast majority of real-world data is <strong>unlabelled</strong>. Labelling is expensive and time-consuming. Unsupervised methods let you extract value from raw data without paying for annotation.</div></div>
+  </div>
+
+  <!-- SECTION 2: Types of unsupervised learning -->
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(6,214,160,0.12)">🗂️</div>
+      <div><div class="st">The Three Families</div><div class="ss">What unsupervised learning can do</div></div>
+    </div>
+
+    <div class="three-col">
+      <div class="card" style="border-top:3px solid var(--p);">
+        <div style="font-size:2rem;margin-bottom:8px;">⚙️</div>
+        <div class="ct">Clustering</div>
+        <div class="cb">Group similar data points together. Each point belongs to a cluster.<br><br><strong>Algorithms:</strong> K-Means, Hierarchical, DBSCAN, GMM<br><strong>Use:</strong> Customer segments, document groups, image regions</div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--s);">
+        <div style="font-size:2rem;margin-bottom:8px;">📉</div>
+        <div class="ct">Dimensionality Reduction</div>
+        <div class="cb">Compress high-dimensional data into fewer dimensions while keeping structure.<br><br><strong>Algorithms:</strong> PCA, t-SNE, UMAP, Autoencoders<br><strong>Use:</strong> Visualisation, feature extraction, compression</div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--a);">
+        <div style="font-size:2rem;margin-bottom:8px;">🚨</div>
+        <div class="ct">Anomaly Detection</div>
+        <div class="cb">Find data points that don't fit the normal pattern — outliers.<br><br><strong>Algorithms:</strong> Isolation Forest, DBSCAN noise points, Autoencoders<br><strong>Use:</strong> Fraud, network intrusion, manufacturing defects</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: When to use -->
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(245,158,11,0.12)">🤔</div>
+      <div><div class="st">When Do You Use It?</div><div class="ss">Recognising unsupervised learning problems</div></div>
+    </div>
+
+    <!-- Interactive toggle: pick the right approach -->
+    <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;">
+      <div style="font-weight:700;color:var(--p);margin-bottom:14px;">🎮 Which approach fits? Click to reveal:</div>
+      <div id="scenario-list">
+        <div class="scenario-item" style="background:var(--sur3);border-radius:10px;padding:14px;margin-bottom:10px;cursor:pointer;border:1px solid var(--bdr);transition:all 0.2s;" onclick="revealScenario(this,'supervised','🏠 House price prediction needs historical sales data with known prices — that\'s your label y. Supervised regression.')">
+          <div style="font-weight:600;font-size:0.9rem;">🏠 Predict house prices from features like bedrooms, location, size</div>
+          <div class="scenario-answer" style="display:none;margin-top:10px;padding:10px;border-radius:8px;background:rgba(8,145,178,0.1);border:1px solid rgba(8,145,178,0.3);font-size:0.85rem;color:var(--p);"></div>
+        </div>
+        <div class="scenario-item" style="background:var(--sur3);border-radius:10px;padding:14px;margin-bottom:10px;cursor:pointer;border:1px solid var(--bdr);transition:all 0.2s;" onclick="revealScenario(this,'unsupervised','🛒 You have purchase history but no predefined groups. Cluster customers to discover natural segments — high-value, bargain hunters, seasonal buyers.')">
+          <div style="font-weight:600;font-size:0.9rem;">🛒 Group customers by purchase behaviour — no predefined segments exist</div>
+          <div class="scenario-answer" style="display:none;margin-top:10px;padding:10px;border-radius:8px;background:rgba(6,214,160,0.1);border:1px solid rgba(6,214,160,0.3);font-size:0.85rem;color:var(--s);"></div>
+        </div>
+        <div class="scenario-item" style="background:var(--sur3);border-radius:10px;padding:14px;margin-bottom:10px;cursor:pointer;border:1px solid var(--bdr);transition:all 0.2s;" onclick="revealScenario(this,'supervised','📧 You have emails already labelled spam/not spam. Train a classifier. This is supervised classification.')">
+          <div style="font-weight:600;font-size:0.9rem;">📧 Classify incoming emails as spam or not spam (you have labelled examples)</div>
+          <div class="scenario-answer" style="display:none;margin-top:10px;padding:10px;border-radius:8px;background:rgba(8,145,178,0.1);border:1px solid rgba(8,145,178,0.3);font-size:0.85rem;color:var(--p);"></div>
+        </div>
+        <div class="scenario-item" style="background:var(--sur3);border-radius:10px;padding:14px;margin-bottom:10px;cursor:pointer;border:1px solid var(--bdr);transition:all 0.2s;" onclick="revealScenario(this,'unsupervised','🔬 Gene expression data has thousands of dimensions. Use PCA or t-SNE to reduce to 2-3 dimensions for visualisation — no labels needed.')">
+          <div style="font-weight:600;font-size:0.9rem;">🔬 Visualise 5,000-gene expression data from cancer samples in 2D</div>
+          <div class="scenario-answer" style="display:none;margin-top:10px;padding:10px;border-radius:8px;background:rgba(6,214,160,0.1);border:1px solid rgba(6,214,160,0.3);font-size:0.85rem;color:var(--s);"></div>
+        </div>
+        <div class="scenario-item" style="background:var(--sur3);border-radius:10px;padding:14px;margin-bottom:10px;cursor:pointer;border:1px solid var(--bdr);transition:all 0.2s;" onclick="revealScenario(this,'unsupervised','💳 You don\'t have labelled fraud cases. But fraudulent transactions cluster differently from normal ones — use anomaly detection / DBSCAN noise points.')">
+          <div style="font-weight:600;font-size:0.9rem;">💳 Detect unusual credit card transactions — no labelled fraud history available</div>
+          <div class="scenario-answer" style="display:none;margin-top:10px;padding:10px;border-radius:8px;background:rgba(6,214,160,0.1);border:1px solid rgba(6,214,160,0.3);font-size:0.85rem;color:var(--s);"></div>
+        </div>
+      </div>
+      <div style="font-size:0.78rem;color:var(--txm);margin-top:4px;">👆 Click each scenario to reveal the answer</div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: Challenges -->
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(239,68,68,0.12)">⚠️</div>
+      <div><div class="st">The Challenges</div><div class="ss">Why unsupervised learning is hard</div></div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="ct">📏 No Ground Truth</div>
+        <div class="cb">Without labels, how do you know if your clusters are <strong>meaningful</strong>? You can't just compute accuracy. You need domain knowledge and internal metrics like <strong>silhouette score</strong> or <strong>inertia</strong>.</div>
+      </div>
+      <div class="card">
+        <div class="ct">🔢 Choosing K</div>
+        <div class="cb">Most clustering algorithms need you to specify the number of clusters upfront. But in real problems you often don't know — and the <strong>elbow method</strong> and <strong>silhouette analysis</strong> are heuristics, not guarantees.</div>
+      </div>
+      <div class="card">
+        <div class="ct">📐 Scale Sensitivity</div>
+        <div class="cb">Many algorithms (K-Means, hierarchical) use distance metrics. A feature measured in £millions will dominate one measured in years. <strong>Always scale your features</strong> before clustering (StandardScaler).</div>
+      </div>
+      <div class="card">
+        <div class="ct">🎲 Local Minima</div>
+        <div class="cb">K-Means converges to local optima — run it multiple times with different random seeds (<code>n_init=10</code>) and take the best result. The result depends on initialisation.</div>
+      </div>
+    </div>
+
+    <div class="rw">
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">Netflix Content Strategy — Clustering Without Labels</div>
+      <div class="rwb">Netflix uses unsupervised clustering on viewing behaviour to discover "taste communities" — groups of users who watch similar genres in similar patterns. These clusters didn't exist before the analysis; Netflix discovered them from raw watch data. The clusters power recommendations, marketing campaigns, and inform which original content to commission. They don't label users as "cluster A" — the clusters are internal representations that help the business, not ground truth categories.</div>
+    </div>
+
+    <!-- QUIZ 1 -->
+    <div class="quiz" id="q1">
+      <div class="qxp">+30 XP</div>
+      <div class="qq">A data scientist has a dataset of 50,000 customer transactions with no labels. They want to find natural groupings. Which approach is most appropriate?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q1',this,false,'❌ Logistic regression is supervised — it requires labelled classes (e.g. "churn/no-churn"). There are no labels here.')"><div class="ol">A</div>Train a logistic regression classifier on the transaction data</div>
+        <div class="opt" onclick="ans('q1',this,true,'✅ Correct! With no labels, unsupervised clustering (e.g. K-Means) finds natural groupings in the data. The clusters become the segments to analyse and act on.')"><div class="ol">B</div>Apply K-Means clustering to discover natural customer segments</div>
+        <div class="opt" onclick="ans('q1',this,false,'❌ A decision tree needs labelled training data — what would the target variable be? There are no labels in this dataset.')"><div class="ol">C</div>Build a decision tree to separate high-value from low-value customers</div>
+        <div class="opt" onclick="ans('q1',this,false,'❌ Cross-validation measures generalisation of a predictive model. Without labels and a model, there\'s nothing to cross-validate.')"><div class="ol">D</div>Use cross-validation to evaluate model performance</div>
+      </div>
+      <div class="fb" id="fb-q1"></div>
+    </div>
+
+    <!-- QUIZ 2 -->
+    <div class="quiz" id="q2">
+      <div class="qxp">+30 XP</div>
+      <div class="qq">Before running K-Means on a dataset with features "age (years)", "annual_income (£)", and "tenure (months)", what preprocessing step is critical?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q2',this,false,'❌ One-hot encoding is for categorical variables. Age, income, and tenure are already numeric — encoding isn\'t needed here.')"><div class="ol">A</div>One-hot encode all features</div>
+        <div class="opt" onclick="ans('q2',this,false,'❌ PCA reduces dimensions, but with only 3 features you don\'t need to reduce further. The key problem here is scale disparity between features.')"><div class="ol">B</div>Apply PCA to reduce to 1 dimension</div>
+        <div class="opt" onclick="ans('q2',this,true,'✅ Correct! annual_income is in the tens of thousands while age is ~18–80 and tenure ~0–120. Without scaling, K-Means will be dominated entirely by income. StandardScaler brings all features to the same scale.')"><div class="ol">C</div>Standardise features with StandardScaler (mean 0, std 1)</div>
+        <div class="opt" onclick="ans('q2',this,false,'❌ Label encoding assigns integer codes to categories. These are already numeric continuous features — label encoding doesn\'t apply.')"><div class="ol">D</div>Label encode the target variable</div>
+      </div>
+      <div class="fb" id="fb-q2"></div>
+    </div>
+
+    <!-- Badge -->
+    <div class="badge" id="badge-in" style="background:linear-gradient(135deg,rgba(8,145,178,0.15),rgba(6,214,160,0.15));border:1px solid rgba(8,145,178,0.3);">
+      <div class="bi">🌐</div>
+      <div class="bt">Foundations Unlocked!</div>
+      <div class="bs">You understand what unsupervised learning is, when to use it, and its challenges.</div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-p" onclick="done('in');go('km')">Next: K-Means Clustering ⚙️ →</button>
+  </div>
+</div>
+
+<!-- ══ LESSON 2: K-MEANS ══ -->
+<div id="page-km" class="page">
+  <div class="hero">
+    <div class="htag">Lesson 2 of 5 · Module 7</div>
+    <div class="htitle">⚙️ K-Means Clustering</div>
+    <div class="hsub">K-Means is the most widely used clustering algorithm. It partitions data into K groups by iteratively assigning points to the nearest centroid and recomputing centroids — simple, fast, and powerful.</div>
+    <div class="hpills"><div class="pill">⏱ ~35 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 160 XP</div><div class="pill">🎮 Interactive</div></div>
+  </div>
+
+  <!-- SECTION 1: The Algorithm -->
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(8,145,178,0.12)">🔄</div>
+      <div><div class="st">The Algorithm — Step by Step</div><div class="ss">How K-Means converges to a solution</div></div>
+    </div>
+
+    <!-- Animated step-through -->
+    <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;">
+      <div style="font-weight:700;color:var(--p);margin-bottom:6px;">🎮 Interactive K-Means — Watch the algorithm converge</div>
+      <div style="font-size:0.82rem;color:var(--txm);margin-bottom:14px;">Click <strong>Step</strong> to advance one iteration, or <strong>Run All</strong> to animate.</div>
+      <canvas id="km-canvas" width="560" height="300" style="display:block;background:var(--cbg);border-radius:10px;border:1px solid var(--bdr);max-width:100%;cursor:pointer;"></canvas>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap;">
+        <button class="btn btn-p" onclick="kmStep()" id="km-step-btn" style="padding:8px 16px;font-size:0.82rem;">▶ Step</button>
+        <button class="btn btn-o" onclick="kmRun()" id="km-run-btn" style="padding:8px 16px;font-size:0.82rem;">⚡ Run All</button>
+        <button class="btn btn-o" onclick="kmReset()" style="padding:8px 16px;font-size:0.82rem;">↺ Reset</button>
+        <div id="km-status" style="font-size:0.85rem;color:var(--txm);flex:1;">Step 0 — Initial data. Centroids placed randomly.</div>
+      </div>
+      <div style="display:flex;gap:16px;margin-top:10px;font-size:0.8rem;color:var(--txm);">
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#0891b2;margin-right:4px;"></span>Cluster 1</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#06d6a0;margin-right:4px;"></span>Cluster 2</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#f59e0b;margin-right:4px;"></span>Cluster 3</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.5);border:2px solid #fff;margin-right:4px;"></span>Centroid ✕</span>
+      </div>
+    </div>
+
+    <div class="three-col">
+      <div class="card" style="border-top:3px solid var(--p);">
+        <div style="font-size:1.5rem;margin-bottom:6px;">1️⃣</div>
+        <div class="ct">Initialise</div>
+        <div class="cb">Randomly place <strong>K centroids</strong> in the feature space. K is chosen by you before training.</div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--s);">
+        <div style="font-size:1.5rem;margin-bottom:6px;">2️⃣</div>
+        <div class="ct">Assign</div>
+        <div class="cb">Assign each data point to the <strong>nearest centroid</strong> using Euclidean distance. This forms K clusters.</div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--a);">
+        <div style="font-size:1.5rem;margin-bottom:6px;">3️⃣</div>
+        <div class="ct">Update → Repeat</div>
+        <div class="cb">Move each centroid to the <strong>mean of its cluster</strong>. Repeat assign + update until centroids stop moving.</div>
+      </div>
+    </div>
+
+    <div class="info tip"><div class="ii">💡</div><div><strong>Convergence is guaranteed</strong> — inertia (sum of squared distances to centroids) strictly decreases each iteration. But it may converge to a local minimum, not the global optimum. This is why <code>n_init=10</code> runs the algorithm 10 times and picks the best.</div></div>
+  </div>
+
+  <!-- SECTION 2: Choosing K — Elbow Method -->
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(6,214,160,0.12)">📐</div>
+      <div><div class="st">Choosing K — The Elbow Method</div><div class="ss">How many clusters should you use?</div></div>
+    </div>
+
+    <div class="cb" style="margin-bottom:16px;line-height:1.7;">The biggest challenge in K-Means is choosing <strong>K</strong> before you start. The <strong>elbow method</strong> plots inertia (within-cluster sum of squares) against K. As K increases, inertia always decreases — but you're looking for the "elbow" where improvement sharply diminishes.</div>
+
+    <!-- Interactive Elbow chart -->
+    <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;">
+      <div style="font-weight:700;color:var(--p);margin-bottom:6px;">🎮 Elbow Method Explorer — Hover over the curve</div>
+      <canvas id="elbow-canvas" width="540" height="260" style="display:block;background:var(--cbg);border-radius:10px;border:1px solid var(--bdr);max-width:100%;"></canvas>
+      <div id="elbow-info" style="margin-top:10px;font-size:0.84rem;color:var(--txm);min-height:22px;">Hover over a point to see what K=N means for your data.</div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="ct">📉 Inertia (WCSS)</div>
+        <div class="cb"><strong>Within-Cluster Sum of Squares</strong> — the sum of squared distances from each point to its cluster centroid. Lower = tighter clusters.<br><br>K=1 → one big cluster, very high inertia.<br>K=N → every point is its own cluster, inertia=0.</div>
+      </div>
+      <div class="card">
+        <div class="ct">📊 Silhouette Score</div>
+        <div class="cb">An alternative metric ranging from <strong>-1 to +1</strong>. Measures how similar a point is to its own cluster vs neighbouring clusters.<br><br>Score near <strong>+1</strong> = well separated.<br>Score near <strong>0</strong> = on cluster boundary.<br>Score near <strong>-1</strong> = wrong cluster.</div>
+      </div>
+    </div>
+
+    <div class="code-wrap">
+      <div class="ch"><span style="display:flex;align-items:center;"><span class="ld" style="background:#0891b2"></span>Python — Elbow Method + Silhouette Score</span><button class="cpb" onclick="cp(this)">Copy</button></div>
+      <pre><span class="kw">from</span> sklearn.cluster <span class="kw">import</span> KMeans
+<span class="kw">from</span> sklearn.metrics <span class="kw">import</span> silhouette_score
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+<span class="cm"># Scale features first — critical for K-Means</span>
+<span class="vr">scaler</span> = StandardScaler()
+<span class="vr">X_scaled</span> = scaler.fit_transform(X)
+
+<span class="vr">inertias</span> = []
+<span class="vr">silhouettes</span> = []
+<span class="vr">K_range</span> = <span class="fn">range</span>(<span class="num">2</span>, <span class="num">11</span>)
+
+<span class="kw">for</span> k <span class="kw">in</span> K_range:
+    <span class="vr">km</span> = KMeans(n_clusters=k, n_init=<span class="num">10</span>, random_state=<span class="num">42</span>)
+    <span class="vr">labels</span> = km.fit_predict(X_scaled)
+    inertias.append(km.inertia_)
+    silhouettes.append(silhouette_score(X_scaled, labels))
+
+<span class="cm"># Plot elbow curve</span>
+fig, (ax1, ax2) = plt.subplots(<span class="num">1</span>, <span class="num">2</span>, figsize=(<span class="num">12</span>, <span class="num">4</span>))
+ax1.plot(K_range, inertias, <span class="str">'bo-'</span>)
+ax1.set_xlabel(<span class="str">'K'</span>); ax1.set_ylabel(<span class="str">'Inertia'</span>); ax1.set_title(<span class="str">'Elbow Method'</span>)
+ax2.plot(K_range, silhouettes, <span class="str">'gs-'</span>)
+ax2.set_xlabel(<span class="str">'K'</span>); ax2.set_ylabel(<span class="str">'Silhouette'</span>); ax2.set_title(<span class="str">'Silhouette Score'</span>)
+plt.tight_layout(); plt.show()</pre>
+    </div>
+  </div>
+
+  <!-- SECTION 3: K-Means++ -->
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(245,158,11,0.12)">🎯</div>
+      <div><div class="st">K-Means++ Initialisation</div><div class="ss">Smarter starting centroids</div></div>
+    </div>
+
+    <div class="cb" style="margin-bottom:16px;line-height:1.7;">Standard K-Means picks centroids <strong>randomly</strong> — this can lead to slow convergence or poor local minima. <strong>K-Means++</strong> (the sklearn default) picks initial centroids that are spread out, dramatically improving results.</div>
+
+    <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;">
+      <div style="font-weight:700;margin-bottom:12px;color:var(--p);">K-Means++ Initialisation Logic</div>
+      <svg width="520" height="140" viewBox="0 0 520 140" style="display:block;max-width:100%;">
+        <!-- Step boxes -->
+        <rect x="10" y="50" width="100" height="40" rx="6" fill="rgba(8,145,178,0.15)" stroke="rgba(8,145,178,0.4)" stroke-width="1"/>
+        <text x="60" y="67" fill="#0891b2" text-anchor="middle" font-size="9" font-weight="700">1. Pick random</text>
+        <text x="60" y="80" fill="#0891b2" text-anchor="middle" font-size="9" font-weight="700">first centroid</text>
+        <line x1="110" y1="70" x2="128" y2="70" stroke="#0e3a4a" stroke-width="1.5" marker-end="url(#arr)"/>
+        <rect x="130" y="50" width="110" height="40" rx="6" fill="rgba(6,214,160,0.15)" stroke="rgba(6,214,160,0.4)" stroke-width="1"/>
+        <text x="185" y="67" fill="#06d6a0" text-anchor="middle" font-size="9" font-weight="700">2. For each point,</text>
+        <text x="185" y="80" fill="#06d6a0" text-anchor="middle" font-size="9" font-weight="700">compute D² to nearest</text>
+        <line x1="240" y1="70" x2="258" y2="70" stroke="#0e3a4a" stroke-width="1.5" marker-end="url(#arr)"/>
+        <rect x="260" y="50" width="110" height="40" rx="6" fill="rgba(245,158,11,0.15)" stroke="rgba(245,158,11,0.4)" stroke-width="1"/>
+        <text x="315" y="67" fill="#f59e0b" text-anchor="middle" font-size="9" font-weight="700">3. Sample next centroid</text>
+        <text x="315" y="80" fill="#f59e0b" text-anchor="middle" font-size="9" font-weight="700">∝ D² (far = likely)</text>
+        <line x1="370" y1="70" x2="388" y2="70" stroke="#0e3a4a" stroke-width="1.5" marker-end="url(#arr)"/>
+        <rect x="390" y="50" width="120" height="40" rx="6" fill="rgba(139,92,246,0.15)" stroke="rgba(139,92,246,0.4)" stroke-width="1"/>
+        <text x="450" y="67" fill="#8b5cf6" text-anchor="middle" font-size="9" font-weight="700">4. Repeat until K</text>
+        <text x="450" y="80" fill="#8b5cf6" text-anchor="middle" font-size="9" font-weight="700">centroids chosen</text>
+        <text x="260" y="120" fill="#5b9aaa" text-anchor="middle" font-size="10">Result: well-spread initial centroids → faster convergence, better clusters</text>
+      </svg>
+    </div>
+
+    <div class="info ok"><div class="ii">✅</div><div>In sklearn, <code>KMeans(init='k-means++')</code> is the <strong>default</strong>. You get K-Means++ automatically. It's almost always better than random initialisation — no reason to switch it off.</div></div>
+  </div>
+
+  <!-- SECTION 4: Real World + Limitations -->
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(239,68,68,0.12)">⚠️</div>
+      <div><div class="st">Strengths &amp; Limitations</div><div class="ss">When K-Means works and when it fails</div></div>
+    </div>
+
+    <div class="two-col">
+      <div class="card" style="border-left:3px solid var(--ok);">
+        <div class="ct">✅ K-Means Works Well When…</div>
+        <div class="cb">• Clusters are roughly <strong>spherical and equally sized</strong><br>• Features have been <strong>scaled</strong><br>• You have a rough idea of K<br>• Dataset is large (it scales as O(n·K·I) — fast)<br>• Clusters don't heavily overlap</div>
+      </div>
+      <div class="card" style="border-left:3px solid var(--err);">
+        <div class="ct">❌ K-Means Struggles When…</div>
+        <div class="cb">• Clusters have <strong>irregular shapes</strong> (crescents, rings)<br>• Clusters have <strong>very different sizes or densities</strong><br>• There are <strong>outliers</strong> (they pull centroids)<br>• K is unknown and hard to estimate<br>• Data has <strong>high dimensionality</strong> (curse of dimensionality)</div>
+      </div>
+    </div>
+
+    <div class="rw">
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">Tesco Clubcard — Customer Segmentation with K-Means</div>
+      <div class="rwb">Tesco uses clustering on Clubcard data (purchase frequency, basket size, category spend, recency) to segment millions of customers. K-Means with K≈8–12 segments identifies groups like "young families buying baby products", "health-conscious shoppers", "bulk buyers". Each segment receives tailored promotions, which are tracked by uplift in spend. The clustering runs monthly on updated data — segments shift as customer behaviour evolves. Features are scaled and outliers (extreme bulk buyers) are handled separately before clustering.</div>
+    </div>
+
+    <!-- QUIZ 3 -->
+    <div class="quiz" id="q3">
+      <div class="qxp">+40 XP</div>
+      <div class="qq">You run K-Means with K=3 on customer data. After 10 random initialisations (n_init=10), your best inertia is 4,820. You try K=4 and get inertia 3,100. K=5 gives 2,950. K=6 gives 2,900. Which K would the elbow method suggest?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q3',this,false,'❌ K=3 has high inertia and the drop from K=3→4 is very large (1,720 units), suggesting K=3 under-segments the data.')"><div class="ol">A</div>K = 3 (lowest computation cost)</div>
+        <div class="opt" onclick="ans('q3',this,true,'✅ Correct! The elbow is at K=4. The drop from K=3→4 is 1,720 — by far the largest improvement. After K=4 the curve flattens dramatically: K=4→5 saves only 150, and K=5→6 only 50. The elbow at K=4 is clear.')"><div class="ol">B</div>K = 4 (biggest drop in inertia before curve flattens)</div>
+        <div class="opt" onclick="ans('q3',this,false,'❌ K=5 gives marginal improvement over K=4 (150 vs 1,720). The extra complexity of a 5th cluster is not justified by the small gain.')"><div class="ol">C</div>K = 5 (lowest inertia while still reasonable)</div>
+        <div class="opt" onclick="ans('q3',this,false,'❌ K=6 has near-identical inertia to K=5. Adding a 6th cluster saves almost nothing — it\'s past the elbow and just overfits the structure.')"><div class="ol">D</div>K = 6 (minimum inertia)</div>
+      </div>
+      <div class="fb" id="fb-q3"></div>
+    </div>
+
+    <!-- QUIZ 4 -->
+    <div class="quiz" id="q4">
+      <div class="qxp">+40 XP</div>
+      <div class="qq">A K-Means model on geographic crime data produces clusters shaped like crescents and rings around city centres. The cluster assignments look wrong. What is the most likely problem and fix?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q4',this,false,'❌ Scaling affects the relative importance of features but doesn\'t fix K-Means\'s fundamental inability to capture non-spherical shapes.')"><div class="ol">A</div>Features were not scaled — apply StandardScaler</div>
+        <div class="opt" onclick="ans('q4',this,false,'❌ More initialisations help avoid bad local minima but won\'t fix the geometry problem. K-Means with any number of restarts still fits spherical clusters.')"><div class="ol">B</div>n_init is too low — increase to 50 restarts</div>
+        <div class="opt" onclick="ans('q4',this,true,'✅ Correct! K-Means assumes spherical clusters. Ring/crescent shapes violate this assumption completely — K-Means will always struggle. DBSCAN finds arbitrarily-shaped clusters based on density, making it perfect for geographic crime patterns.')"><div class="ol">C</div>K-Means assumes spherical clusters — switch to DBSCAN for arbitrary shapes</div>
+        <div class="opt" onclick="ans('q4',this,false,'❌ Reducing K makes clusters larger and even less likely to capture crescent or ring shapes. The problem is the algorithm\'s geometric assumption, not the number of clusters.')"><div class="ol">D</div>Reduce K — fewer, larger clusters will capture the ring shapes</div>
+      </div>
+      <div class="fb" id="fb-q4"></div>
+    </div>
+
+    <!-- Badge -->
+    <div class="badge" id="badge-km" style="background:linear-gradient(135deg,rgba(8,145,178,0.15),rgba(6,214,160,0.15));border:1px solid rgba(8,145,178,0.3);">
+      <div class="bi">⚙️</div>
+      <div class="bt">K-Means Master!</div>
+      <div class="bs">You can apply K-Means, choose K with the elbow method, and know when to use a different algorithm.</div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('in')">← Intro</button>
+    <button class="btn btn-p" onclick="done('km');go('hc')">Next: Hierarchical Clustering 🌲 →</button>
+  </div>
+</div>
+
+<!-- ══ LESSON 3: HIERARCHICAL CLUSTERING ══ -->
+<div id="page-hc" class="page">
+  <div class="hero">
+    <div class="htag">Lesson 3 of 5 · Module 7</div>
+    <div class="htitle">🌲 Hierarchical Clustering</div>
+    <div class="hsub">Hierarchical clustering builds a tree of clusters — a dendrogram — that lets you see relationships at every level of granularity. No need to choose K upfront; cut the tree wherever makes sense.</div>
+    <div class="hpills"><div class="pill">⏱ ~30 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 140 XP</div><div class="pill">🎮 Interactive</div></div>
+  </div>
+
+  <!-- SECTION 1: What is it? -->
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(8,145,178,0.12)">🌳</div>
+      <div><div class="st">Agglomerative vs Divisive</div><div class="ss">Two directions to build the tree</div></div>
+    </div>
+
+    <div class="two-col">
+      <div class="card" style="border-top:3px solid var(--p);">
+        <div style="font-size:2rem;margin-bottom:8px;">⬆️</div>
+        <div class="ct">Agglomerative (Bottom-Up)</div>
+        <div class="cb">Start with <strong>every point as its own cluster</strong>. Repeatedly merge the two closest clusters until one cluster remains.<br><br>This is the sklearn default (<code>AgglomerativeClustering</code>) and by far the most common approach.</div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--s);">
+        <div style="font-size:2rem;margin-bottom:8px;">⬇️</div>
+        <div class="ct">Divisive (Top-Down)</div>
+        <div class="cb">Start with <strong>all points in one cluster</strong>. Repeatedly split the largest cluster until every point is its own cluster.<br><br>Less common in practice — computationally expensive and rarely implemented in standard libraries.</div>
+      </div>
+    </div>
+
+    <!-- Dendrogram SVG -->
+    <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;">
+      <div style="font-weight:700;color:var(--p);margin-bottom:4px;">🎮 Interactive Dendrogram — click a cut level to see clusters</div>
+      <div style="font-size:0.82rem;color:var(--txm);margin-bottom:14px;">The horizontal dashed line shows where you "cut" the tree. Higher cut = fewer clusters.</div>
+      <canvas id="dend-canvas" width="560" height="300" style="display:block;background:var(--cbg);border-radius:10px;border:1px solid var(--bdr);max-width:100%;cursor:crosshair;"></canvas>
+      <div id="dend-info" style="margin-top:10px;font-size:0.84rem;color:var(--txm);">Click on the dendrogram to set the cut height and see how many clusters result.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: Linkage Methods -->
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(6,214,160,0.12)">🔗</div>
+      <div><div class="st">Linkage Methods</div><div class="ss">How to measure distance between clusters</div></div>
+    </div>
+
+    <div class="cb" style="margin-bottom:16px;line-height:1.7;">When merging clusters, we need to define "distance between two clusters" — not just two points. The <strong>linkage method</strong> determines this. Your choice dramatically affects the shape of clusters found.</div>
+
+    <!-- Linkage selector -->
+    <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;">
+      <div style="font-weight:700;color:var(--p);margin-bottom:12px;">🎮 Explore Linkage Methods — click to compare</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+        <button class="btn btn-p" onclick="setLinkage('single')" id="lnk-single" style="padding:7px 14px;font-size:0.8rem;">Single</button>
+        <button class="btn btn-o" onclick="setLinkage('complete')" id="lnk-complete" style="padding:7px 14px;font-size:0.8rem;">Complete</button>
+        <button class="btn btn-o" onclick="setLinkage('average')" id="lnk-average" style="padding:7px 14px;font-size:0.8rem;">Average</button>
+        <button class="btn btn-o" onclick="setLinkage('ward')" id="lnk-ward" style="padding:7px 14px;font-size:0.8rem;">Ward ⭐</button>
+      </div>
+      <div id="linkage-display" style="padding:16px;background:var(--sur3);border-radius:10px;border:1px solid var(--bdr);"></div>
+    </div>
+
+    <table class="nice">
+      <thead><tr><th>Linkage</th><th>Distance = ?</th><th>Cluster Shape</th><th>Sensitivity to Outliers</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Single</strong></td><td>Minimum distance between any two points</td><td>Elongated, chaining</td><td>Very high ⚠️</td></tr>
+        <tr><td><strong>Complete</strong></td><td>Maximum distance between any two points</td><td>Compact, spherical</td><td>High</td></tr>
+        <tr><td><strong>Average</strong></td><td>Mean distance between all point pairs</td><td>Balanced</td><td>Moderate</td></tr>
+        <tr><td><strong>Ward ⭐</strong></td><td>Minimises total within-cluster variance</td><td>Compact, equal-sized</td><td>Low ✅</td></tr>
+      </tbody>
+    </table>
+
+    <div class="info ok"><div class="ii">⭐</div><div><strong>Ward linkage</strong> is almost always the best default. It minimises the increase in total within-cluster variance at each merge step — producing compact, well-separated clusters. Use <code>linkage='ward'</code> in sklearn.</div></div>
+  </div>
+
+  <!-- SECTION 3: Code + Real World -->
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(245,158,11,0.12)">💻</div>
+      <div><div class="st">Implementation</div><div class="ss">Hierarchical clustering in sklearn + scipy</div></div>
+    </div>
+
+    <div class="code-wrap">
+      <div class="ch"><span style="display:flex;align-items:center;"><span class="ld" style="background:#0891b2"></span>Python — Agglomerative Clustering + Dendrogram</span><button class="cpb" onclick="cp(this)">Copy</button></div>
+      <pre><span class="kw">from</span> sklearn.cluster <span class="kw">import</span> AgglomerativeClustering
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler
+<span class="kw">from</span> scipy.cluster.hierarchy <span class="kw">import</span> dendrogram, linkage
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+<span class="cm"># Scale features first</span>
+<span class="vr">scaler</span> = StandardScaler()
+<span class="vr">X_scaled</span> = scaler.fit_transform(X)
+
+<span class="cm"># Fit agglomerative clustering (choose K after viewing dendrogram)</span>
+<span class="vr">model</span> = AgglomerativeClustering(
+    n_clusters=<span class="num">4</span>,         <span class="cm"># set after inspecting dendrogram</span>
+    linkage=<span class="str">'ward'</span>         <span class="cm"># recommended default</span>
+)
+<span class="vr">labels</span> = model.fit_predict(X_scaled)
+
+<span class="cm"># Plot dendrogram using scipy (to help choose n_clusters)</span>
+<span class="vr">Z</span> = linkage(X_scaled, method=<span class="str">'ward'</span>)
+plt.figure(figsize=(<span class="num">12</span>, <span class="num">5</span>))
+dendrogram(Z,
+    truncate_mode=<span class="str">'level'</span>,
+    p=<span class="num">5</span>,                 <span class="cm"># show last 5 merges</span>
+    color_threshold=<span class="num">8.0</span>  <span class="cm"># cut height — adjust based on your data</span>
+)
+plt.title(<span class="str">'Dendrogram (Ward Linkage)'</span>)
+plt.xlabel(<span class="str">'Sample Index'</span>)
+plt.ylabel(<span class="str">'Distance'</span>)
+plt.axhline(y=<span class="num">8.0</span>, color=<span class="str">'red'</span>, linestyle=<span class="str">'--'</span>, label=<span class="str">'Cut height'</span>)
+plt.legend(); plt.show()</pre>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="ct">✅ Advantages</div>
+        <div class="cb">• <strong>No K required upfront</strong> — choose after viewing dendrogram<br>• Produces a full hierarchy — view at any granularity<br>• Deterministic — no random initialisation<br>• Works well with Ward linkage on many real datasets</div>
+      </div>
+      <div class="card">
+        <div class="ct">❌ Disadvantages</div>
+        <div class="cb">• <strong>Slow on large datasets</strong> — O(n² log n) with Ward<br>• Can't "undo" a bad merge — greedy algorithm<br>• Memory intensive for very large n<br>• Struggles with clusters of very different densities</div>
+      </div>
+    </div>
+
+    <div class="rw">
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">Genomics — Gene Expression Clustering</div>
+      <div class="rwb">Hierarchical clustering is the standard tool in genomics for discovering gene co-expression patterns. Researchers cluster thousands of genes by expression profile across conditions (e.g. cancer vs healthy tissue). The dendrogram reveals which genes "behave similarly" — a cluster of co-expressed genes often indicates shared biological function or regulatory pathway. Ward linkage is used because it keeps clusters compact. The dendrogram is cut at a height chosen by the researcher to yield biologically meaningful groups, often confirmed against known gene ontology databases.</div>
+    </div>
+
+    <!-- QUIZ 5 -->
+    <div class="quiz" id="q5">
+      <div class="qxp">+35 XP</div>
+      <div class="qq">You run AgglomerativeClustering with Ward linkage on a retail dataset. The dendrogram shows a very long vertical branch between the merge at height 12 and the next merge at height 3. Where should you cut the dendrogram?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q5',this,false,'❌ At height 1, you are cutting very low — this produces many small clusters, more than the data warrants. The gap at height 3–12 is the signal to look for.')"><div class="ol">A</div>Cut at height 1 — as many clusters as possible</div>
+        <div class="opt" onclick="ans('q5',this,true,'✅ Correct! A long vertical branch means a large gap before the next merge — the data resists being merged at this level, indicating a natural boundary. Cut just below the long branch (between 3 and 12) to preserve the distinct clusters below it.')"><div class="ol">B</div>Cut between heights 3 and 12 — just below the long branch</div>
+        <div class="opt" onclick="ans('q5',this,false,'❌ Cutting above height 12 merges across the natural boundary — you lose the distinction that the long branch was protecting. Over-merging.')"><div class="ol">C</div>Cut above height 12 — to get the fewest clusters</div>
+        <div class="opt" onclick="ans('q5',this,false,'❌ The number of leaves tells you the sample size, not where to cut. The cut point is determined by the gap structure in the dendrogram.')"><div class="ol">D</div>Cut at the number of leaves in the dendrogram</div>
+      </div>
+      <div class="fb" id="fb-q5"></div>
+    </div>
+
+    <!-- QUIZ 6 -->
+    <div class="quiz" id="q6">
+      <div class="qxp">+35 XP</div>
+      <div class="qq">Which linkage method is most susceptible to the "chaining effect" — where a long, thin chain of points forms one enormous cluster?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q6',this,true,'✅ Correct! Single linkage uses the minimum distance between clusters. A single close pair of points can "bridge" two groups, causing them to merge — creating long chains. This is the classic single linkage failure mode.')"><div class="ol">A</div>Single linkage</div>
+        <div class="opt" onclick="ans('q6',this,false,'❌ Complete linkage uses the maximum distance, making it harder for distant points to trigger a merge. It tends to produce compact, roughly spherical clusters — the opposite of chaining.')"><div class="ol">B</div>Complete linkage</div>
+        <div class="opt" onclick="ans('q6',this,false,'❌ Ward linkage minimises within-cluster variance at each step — it actively resists merging dissimilar clusters and is the least prone to chaining.')"><div class="ol">C</div>Ward linkage</div>
+        <div class="opt" onclick="ans('q6',this,false,'❌ Average linkage uses the mean distance between all point pairs — it\'s more robust than single linkage and much less prone to chaining.')"><div class="ol">D</div>Average linkage</div>
+      </div>
+      <div class="fb" id="fb-q6"></div>
+    </div>
+
+    <!-- Badge -->
+    <div class="badge" id="badge-hc" style="background:linear-gradient(135deg,rgba(6,214,160,0.15),rgba(8,145,178,0.15));border:1px solid rgba(6,214,160,0.3);">
+      <div class="bi">🌲</div>
+      <div class="bt">Dendrogram Expert!</div>
+      <div class="bs">You can read dendrograms, choose linkage methods, and know when hierarchical beats K-Means.</div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('km')">← K-Means</button>
+    <button class="btn btn-p" onclick="done('hc');go('db')">Next: DBSCAN 🔵 →</button>
+  </div>
+</div>
+
+<!-- ══ LESSON 4: DBSCAN ══ -->
+<div id="page-db" class="page">
+  <div class="hero">
+    <div class="htag">Lesson 4 of 5 · Module 7</div>
+    <div class="htitle">🔵 DBSCAN</div>
+    <div class="hsub">Density-Based Spatial Clustering of Applications with Noise. DBSCAN finds clusters of arbitrary shape, handles outliers naturally, and requires no upfront K — it discovers the number of clusters from the data.</div>
+    <div class="hpills"><div class="pill">⏱ ~30 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 150 XP</div><div class="pill">🎮 Interactive</div></div>
+  </div>
+
+  <!-- SECTION 1: Core concepts -->
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(8,145,178,0.12)">📍</div>
+      <div><div class="st">Core Concepts: ε and MinPts</div><div class="ss">The two parameters that define everything</div></div>
+    </div>
+
+    <div class="cb" style="margin-bottom:16px;line-height:1.7;">DBSCAN only has two hyperparameters, but they control everything. Understanding them is the key to using DBSCAN effectively.</div>
+
+    <div class="two-col">
+      <div class="card" style="border-top:3px solid var(--p);">
+        <div style="font-size:2rem;margin-bottom:8px;">🔵 ε (epsilon)</div>
+        <div class="ct">Neighbourhood Radius</div>
+        <div class="cb">The maximum distance between two points for them to be considered <strong>neighbours</strong>. A point's "ε-neighbourhood" is the circle of radius ε around it.<br><br>Too small → everything is noise. Too large → everything merges into one cluster.</div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--s);">
+        <div style="font-size:2rem;margin-bottom:8px;">🔢 MinPts</div>
+        <div class="ct">Minimum Points</div>
+        <div class="cb">The minimum number of points required within ε-distance for a point to be a <strong>core point</strong>. This controls minimum cluster density.<br><br>Rule of thumb: <strong>MinPts ≥ 2 × features</strong>. For 2D data: MinPts = 4 is common.</div>
+      </div>
+    </div>
+
+    <!-- Point classification visual -->
+    <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;">
+      <div style="font-weight:700;color:var(--p);margin-bottom:4px;">🎮 DBSCAN Point Types — hover over each point</div>
+      <div style="font-size:0.82rem;color:var(--txm);margin-bottom:14px;">DBSCAN classifies every point as Core, Border, or Noise.</div>
+      <canvas id="dbscan-canvas" width="560" height="280" style="display:block;background:var(--cbg);border-radius:10px;border:1px solid var(--bdr);max-width:100%;"></canvas>
+      <div id="dbscan-info" style="margin-top:10px;font-size:0.84rem;color:var(--txm);min-height:22px;">Hover over a point to learn its classification.</div>
+    </div>
+
+    <div class="three-col">
+      <div class="card" style="border-left:4px solid #0891b2;">
+        <div style="font-size:1.5rem;margin-bottom:6px;">🔵 Core Point</div>
+        <div class="cb">Has <strong>≥ MinPts neighbours</strong> within ε-distance (including itself). These are the "dense" regions that form the heart of clusters.</div>
+      </div>
+      <div class="card" style="border-left:4px solid #06d6a0;">
+        <div style="font-size:1.5rem;margin-bottom:6px;">🟢 Border Point</div>
+        <div class="cb">Has <strong>&lt; MinPts neighbours</strong> within ε but is within ε of a core point. On the edge of a cluster — included but not a cluster seed.</div>
+      </div>
+      <div class="card" style="border-left:4px solid #ef4444;">
+        <div style="font-size:1.5rem;margin-bottom:6px;">🔴 Noise Point</div>
+        <div class="cb">Not a core point and not within ε of any core point. <strong>Labelled -1</strong> by sklearn. These are your outliers — DBSCAN finds them automatically!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: Parameter Explorer -->
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(6,214,160,0.12)">🎛️</div>
+      <div><div class="st">Parameter Explorer</div><div class="ss">See how ε and MinPts change the clustering</div></div>
+    </div>
+
+    <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;">
+      <div style="font-weight:700;color:var(--p);margin-bottom:14px;">🎮 Tune DBSCAN Parameters — adjust sliders and click Run</div>
+      <div class="slider-row"><div class="sl-lbl">ε (epsilon):</div><input type="range" min="15" max="70" value="35" id="eps-slider" oninput="document.getElementById('eps-val').textContent=this.value"><div class="sl-val" id="eps-val">35</div></div>
+      <div class="slider-row"><div class="sl-lbl">MinPts:</div><input type="range" min="2" max="10" value="4" id="mpts-slider" oninput="document.getElementById('mpts-val').textContent=this.value"><div class="sl-val" id="mpts-val">4</div></div>
+      <button class="btn btn-p" onclick="runDBSCAN()" style="margin-top:8px;padding:8px 18px;font-size:0.82rem;">▶ Run DBSCAN</button>
+      <canvas id="dbscan-param-canvas" width="560" height="280" style="display:block;background:var(--cbg);border-radius:10px;border:1px solid var(--bdr);max-width:100%;margin-top:14px;"></canvas>
+      <div id="dbscan-param-info" style="margin-top:10px;font-size:0.84rem;color:var(--txm);">Adjust parameters above and click Run to see results.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: The Algorithm -->
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(245,158,11,0.12)">⚙️</div>
+      <div><div class="st">How DBSCAN Works</div><div class="ss">The algorithm step by step</div></div>
+    </div>
+
+    <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:24px;margin:18px 0;">
+      <svg width="560" height="180" viewBox="0 0 560 180" style="display:block;max-width:100%;">
+        <defs><marker id="arr2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#0e3a4a"/></marker></defs>
+        <rect x="5" y="60" width="90" height="50" rx="7" fill="rgba(8,145,178,0.15)" stroke="rgba(8,145,178,0.4)" stroke-width="1.5"/>
+        <text x="50" y="83" fill="#0891b2" text-anchor="middle" font-size="9" font-weight="700">Pick unvisited</text>
+        <text x="50" y="96" fill="#0891b2" text-anchor="middle" font-size="9" font-weight="700">point P</text>
+        <line x1="95" y1="85" x2="113" y2="85" stroke="#0e3a4a" stroke-width="1.5" marker-end="url(#arr2)"/>
+        <rect x="115" y="60" width="100" height="50" rx="7" fill="rgba(6,214,160,0.15)" stroke="rgba(6,214,160,0.4)" stroke-width="1.5"/>
+        <text x="165" y="80" fill="#06d6a0" text-anchor="middle" font-size="9" font-weight="700">Count neighbours</text>
+        <text x="165" y="93" fill="#06d6a0" text-anchor="middle" font-size="9" font-weight="700">within ε</text>
+        <text x="165" y="106" fill="#06d6a0" text-anchor="middle" font-size="9" font-weight="700">of P</text>
+        <line x1="215" y1="85" x2="233" y2="85" stroke="#0e3a4a" stroke-width="1.5" marker-end="url(#arr2)"/>
+        <!-- Decision diamond -->
+        <polygon points="275,60 320,85 275,110 230,85" fill="rgba(245,158,11,0.15)" stroke="rgba(245,158,11,0.4)" stroke-width="1.5"/>
+        <text x="275" y="82" fill="#f59e0b" text-anchor="middle" font-size="8" font-weight="700">≥ MinPts</text>
+        <text x="275" y="94" fill="#f59e0b" text-anchor="middle" font-size="8" font-weight="700">neighbours?</text>
+        <!-- Yes path -->
+        <line x1="320" y1="85" x2="338" y2="85" stroke="#0e3a4a" stroke-width="1.5" marker-end="url(#arr2)"/>
+        <text x="329" y="78" fill="#06d6a0" font-size="9">Yes</text>
+        <rect x="340" y="60" width="95" height="50" rx="7" fill="rgba(8,145,178,0.15)" stroke="rgba(8,145,178,0.4)" stroke-width="1.5"/>
+        <text x="388" y="80" fill="#0891b2" text-anchor="middle" font-size="9" font-weight="700">P = Core Point</text>
+        <text x="388" y="93" fill="#0891b2" text-anchor="middle" font-size="9" font-weight="700">Expand cluster</text>
+        <text x="388" y="106" fill="#0891b2" text-anchor="middle" font-size="9" font-weight="700">to neighbours</text>
+        <line x1="435" y1="85" x2="453" y2="85" stroke="#0e3a4a" stroke-width="1.5" marker-end="url(#arr2)"/>
+        <rect x="455" y="60" width="95" height="50" rx="7" fill="rgba(16,185,129,0.15)" stroke="rgba(16,185,129,0.4)" stroke-width="1.5"/>
+        <text x="503" y="83" fill="#06d6a0" text-anchor="middle" font-size="9" font-weight="700">More unvisited?</text>
+        <text x="503" y="96" fill="#06d6a0" text-anchor="middle" font-size="9" font-weight="700">→ Repeat</text>
+        <!-- No path -->
+        <line x1="275" y1="110" x2="275" y2="148" stroke="#0e3a4a" stroke-width="1.5" marker-end="url(#arr2)"/>
+        <text x="263" y="135" fill="#ef4444" font-size="9">No</text>
+        <rect x="195" y="150" width="160" height="26" rx="6" fill="rgba(239,68,68,0.15)" stroke="rgba(239,68,68,0.4)" stroke-width="1.5"/>
+        <text x="275" y="167" fill="#ef4444" text-anchor="middle" font-size="9" font-weight="700">P = Noise (label -1)</text>
+      </svg>
+    </div>
+
+    <div class="code-wrap">
+      <div class="ch"><span style="display:flex;align-items:center;"><span class="ld" style="background:#0891b2"></span>Python — DBSCAN</span><button class="cpb" onclick="cp(this)">Copy</button></div>
+      <pre><span class="kw">from</span> sklearn.cluster <span class="kw">import</span> DBSCAN
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># Scale features — DBSCAN is distance-based</span>
+<span class="vr">scaler</span> = StandardScaler()
+<span class="vr">X_scaled</span> = scaler.fit_transform(X)
+
+<span class="vr">db</span> = DBSCAN(
+    eps=<span class="num">0.5</span>,          <span class="cm"># ε — neighbourhood radius</span>
+    min_samples=<span class="num">5</span>    <span class="cm"># MinPts — min neighbours to be core point</span>
+)
+<span class="vr">labels</span> = db.fit_predict(X_scaled)
+
+<span class="cm"># labels == -1 means noise/outlier</span>
+<span class="vr">n_clusters</span> = <span class="fn">len</span>(<span class="fn">set</span>(labels)) - (<span class="num">1</span> <span class="kw">if</span> -<span class="num">1</span> <span class="kw">in</span> labels <span class="kw">else</span> <span class="num">0</span>)
+<span class="vr">n_noise</span>    = <span class="fn">list</span>(labels).count(-<span class="num">1</span>)
+<span class="fn">print</span>(<span class="str">f'Clusters: {n_clusters}, Noise points: {n_noise}'</span>)
+
+<span class="cm"># Choosing ε: use k-distance graph (k = MinPts)</span>
+<span class="kw">from</span> sklearn.neighbors <span class="kw">import</span> NearestNeighbors
+<span class="vr">nbrs</span> = NearestNeighbors(n_neighbors=<span class="num">5</span>).fit(X_scaled)
+<span class="vr">distances</span>, _ = nbrs.kneighbors(X_scaled)
+<span class="vr">distances</span> = np.sort(distances[:, -<span class="num">1</span>])  <span class="cm"># 5th nearest neighbour distance</span>
+<span class="cm"># Plot distances — look for the "elbow" to choose ε</span></pre>
+    </div>
+
+    <div class="rw">
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">Uber — Geographic Hotspot Detection</div>
+      <div class="rwb">Uber uses DBSCAN (and variants) to find geographic pickup hotspots — dense clusters of ride requests in city space. DBSCAN is ideal here: pickup locations form irregular-shaped clusters (around stadiums, train stations, entertainment districts), and lone requests in quiet areas are naturally treated as noise rather than forced into a cluster. The algorithm is run on GPS coordinates (scaled to account for latitude/longitude) with ε chosen based on walking distance (~50–100m) and MinPts set to identify areas with sustained demand. Hotspot clusters trigger surge pricing and driver repositioning.</div>
+    </div>
+
+    <!-- QUIZ 7 -->
+    <div class="quiz" id="q7">
+      <div class="qxp">+40 XP</div>
+      <div class="qq">You run DBSCAN on fraud detection data. With ε=0.3, MinPts=5, you get 1 cluster and 847 noise points (out of 1000 total). What adjustment should you try?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q7',this,false,'❌ Reducing ε makes the neighbourhood smaller — even fewer points will qualify as core points, creating even more noise. This makes the problem worse.')"><div class="ol">A</div>Reduce ε to 0.1 to tighten clusters</div>
+        <div class="opt" onclick="ans('q7',this,true,'✅ Correct! 847/1000 noise points means ε is too small — the neighbourhood radius isn\'t capturing enough neighbours for points to qualify as core. Increasing ε expands the neighbourhood so more points connect, forming proper clusters. You can also reduce MinPts, but increasing ε is the primary lever.')"><div class="ol">B</div>Increase ε — too many noise points means the neighbourhood is too small</div>
+        <div class="opt" onclick="ans('q7',this,false,'❌ Increasing MinPts makes it harder to be a core point — requiring more neighbours. This would create even more noise points, not fewer.')"><div class="ol">C</div>Increase MinPts to 20 to find denser clusters</div>
+        <div class="opt" onclick="ans('q7',this,false,'❌ Switching to K-Means would force every point into a cluster, hiding the outliers. The whole point of DBSCAN for fraud detection is that noise points = anomalies to investigate.')"><div class="ol">D</div>Switch to K-Means — DBSCAN clearly isn\'t working</div>
+      </div>
+      <div class="fb" id="fb-q7"></div>
+    </div>
+
+    <!-- QUIZ 8 -->
+    <div class="quiz" id="q8">
+      <div class="qxp">+40 XP</div>
+      <div class="qq">Which statement about DBSCAN's noise points (label = -1) is correct?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q8',this,false,'❌ DBSCAN noise points are not assigned to any cluster — they are excluded. There is no "noise cluster" to analyse as a group.')"><div class="ol">A</div>Noise points form a special "noise cluster" that should be analysed separately</div>
+        <div class="opt" onclick="ans('q8',this,false,'❌ Noise points are not a bug — they are a feature. They represent points that don\'t fit any dense region, which in many applications (fraud, anomaly detection) is exactly what you want to find.')"><div class="ol">B</div>Noise points indicate a bug — tune parameters until there are none</div>
+        <div class="opt" onclick="ans('q8',this,true,'✅ Correct! DBSCAN noise points are points with fewer than MinPts neighbours within ε — they don\'t belong to any dense region. In anomaly/fraud detection, these are your key outputs: unusual transactions, suspicious logins, geographic outliers. The noise label is a signal, not a failure.')"><div class="ol">C</div>Noise points are outliers not belonging to any dense region — valuable in anomaly detection</div>
+        <div class="opt" onclick="ans('q8',this,false,'❌ You can\'t force noise points into clusters post-hoc without changing the algorithm\'s logic. Doing so would defeat the purpose of density-based clustering.')"><div class="ol">D</div>Noise points should always be reassigned to the nearest cluster after fitting</div>
+      </div>
+      <div class="fb" id="fb-q8"></div>
+    </div>
+
+    <!-- Badge -->
+    <div class="badge" id="badge-db" style="background:linear-gradient(135deg,rgba(8,145,178,0.15),rgba(239,68,68,0.1));border:1px solid rgba(8,145,178,0.3);">
+      <div class="bi">🔵</div>
+      <div class="bt">Density Detective!</div>
+      <div class="bs">You can apply DBSCAN, tune ε and MinPts, and identify noise points as outliers.</div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('hc')">← Hierarchical</button>
+    <button class="btn btn-p" onclick="done('db');go('ts')">Next: t-SNE 🗺️ →</button>
+  </div>
+</div>
+
+<!-- ══ LESSON 5: t-SNE ══ -->
+<div id="page-ts" class="page">
+  <div class="hero">
+    <div class="htag">Lesson 5 of 5 · Module 7</div>
+    <div class="htitle">🗺️ t-SNE</div>
+    <div class="hsub">t-Distributed Stochastic Neighbour Embedding. t-SNE takes high-dimensional data — hundreds or thousands of features — and maps it into 2D or 3D for visualisation. It preserves local structure: nearby points in high-D stay nearby in 2D.</div>
+    <div class="hpills"><div class="pill">⏱ ~30 min</div><div class="pill">🎯 2 Quizzes</div><div class="pill">⭐ 140 XP</div><div class="pill">🎮 Interactive</div></div>
+  </div>
+
+  <!-- SECTION 1: What is t-SNE? -->
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(8,145,178,0.12)">🌐</div>
+      <div><div class="st">What t-SNE Does</div><div class="ss">From high dimensions to 2D — preserving neighbourhoods</div></div>
+    </div>
+
+    <div class="cb" style="margin-bottom:16px;line-height:1.7;">Imagine you have 500 gene expression measurements per patient — a 500-dimensional dataset. You can't visualise that. t-SNE <strong>compresses</strong> it into 2D while trying to keep the neighbourhood relationships intact: patients that were similar in 500D should still cluster together in 2D.</div>
+
+    <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:24px;margin:18px 0;">
+      <svg width="560" height="200" viewBox="0 0 560 200" style="display:block;max-width:100%;">
+        <!-- High-D side -->
+        <rect x="10" y="20" width="200" height="160" rx="10" fill="rgba(8,145,178,0.05)" stroke="rgba(8,145,178,0.25)" stroke-width="1.5"/>
+        <text x="110" y="42" fill="#0891b2" text-anchor="middle" font-size="11" font-weight="700">HIGH DIMENSIONS (500D)</text>
+        <!-- Data points as small squares in a grid suggesting many dimensions -->
+        <text x="110" y="90" fill="#5b9aaa" text-anchor="middle" font-size="10">[0.2, 1.4, -0.8, 3.1, 0.6 ...]</text>
+        <text x="110" y="108" fill="#5b9aaa" text-anchor="middle" font-size="10">[1.1, -0.3, 2.7, 0.0, 1.9 ...]</text>
+        <text x="110" y="126" fill="#5b9aaa" text-anchor="middle" font-size="10">[0.9,  2.1, -1.2, 0.4, 0.8 ...]</text>
+        <text x="110" y="148" fill="#0e3a4a" text-anchor="middle" font-size="9">500 features per point</text>
+        <text x="110" y="165" fill="#0e3a4a" text-anchor="middle" font-size="9">Cannot visualise directly</text>
+        <!-- Arrow -->
+        <line x1="215" y1="100" x2="270" y2="100" stroke="#0e3a4a" stroke-width="2" marker-end="url(#arr)"/>
+        <text x="242" y="90" fill="#06d6a0" text-anchor="middle" font-size="9" font-weight="700">t-SNE</text>
+        <text x="242" y="115" fill="#5b9aaa" text-anchor="middle" font-size="8">preserves</text>
+        <text x="242" y="126" fill="#5b9aaa" text-anchor="middle" font-size="8">local structure</text>
+        <!-- 2D side -->
+        <rect x="275" y="20" width="275" height="160" rx="10" fill="rgba(6,214,160,0.05)" stroke="rgba(6,214,160,0.25)" stroke-width="1.5"/>
+        <text x="412" y="42" fill="#06d6a0" text-anchor="middle" font-size="11" font-weight="700">2D EMBEDDING</text>
+        <!-- Scatter plot of clusters -->
+        <circle cx="330" cy="100" r="6" fill="#0891b299"/><circle cx="345" cy="115" r="6" fill="#0891b299"/><circle cx="320" cy="120" r="6" fill="#0891b299"/><circle cx="355" cy="95" r="6" fill="#0891b299"/>
+        <ellipse cx="338" cy="108" rx="28" ry="20" fill="none" stroke="rgba(8,145,178,0.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <circle cx="420" cy="80" r="6" fill="#06d6a099"/><circle cx="435" cy="95" r="6" fill="#06d6a099"/><circle cx="415" cy="100" r="6" fill="#06d6a099"/><circle cx="445" cy="78" r="6" fill="#06d6a099"/>
+        <ellipse cx="429" cy="88" rx="24" ry="18" fill="none" stroke="rgba(6,214,160,0.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <circle cx="480" cy="140" r="6" fill="#f59e0b99"/><circle cx="500" cy="130" r="6" fill="#f59e0b99"/><circle cx="490" cy="155" r="6" fill="#f59e0b99"/>
+        <ellipse cx="490" cy="142" rx="20" ry="16" fill="none" stroke="rgba(245,158,11,0.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="412" y="185" fill="#5b9aaa" text-anchor="middle" font-size="9">Clusters visible — structure revealed ✨</text>
+      </svg>
+    </div>
+
+    <div class="info tip"><div class="ii">⚠️</div><div><strong>t-SNE is for visualisation only</strong> — not for creating features for downstream models. The 2D coordinates are not meaningful on their own; only the relative positions (neighbourhood) matter. Do not use t-SNE output as model input.</div></div>
+  </div>
+
+  <!-- SECTION 2: How it works -->
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(6,214,160,0.12)">⚙️</div>
+      <div><div class="st">How t-SNE Works (Intuitively)</div><div class="ss">Probabilities, not distances</div></div>
+    </div>
+
+    <div class="three-col">
+      <div class="card" style="border-top:3px solid var(--p);">
+        <div style="font-size:1.5rem;margin-bottom:6px;">1️⃣</div>
+        <div class="ct">High-D Similarities</div>
+        <div class="cb">For every pair of points in high-D, compute a <strong>probability</strong> that they are neighbours (using a Gaussian centred at each point). Close pairs → high probability.</div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--s);">
+        <div style="font-size:1.5rem;margin-bottom:6px;">2️⃣</div>
+        <div class="ct">2D Similarities</div>
+        <div class="cb">Randomly initialise 2D positions. Compute <strong>2D neighbourhood probabilities</strong> using a <strong>t-distribution</strong> (heavier tails than Gaussian — stops crowding).</div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--a);">
+        <div style="font-size:1.5rem;margin-bottom:6px;">3️⃣</div>
+        <div class="ct">Minimise KL Divergence</div>
+        <div class="cb">Use gradient descent to move 2D points so the 2D probabilities <strong>match</strong> the high-D probabilities. The result: local neighbourhoods are preserved.</div>
+      </div>
+    </div>
+
+    <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;">
+      <div style="font-weight:700;color:var(--p);margin-bottom:4px;">🎮 t-SNE Perplexity Explorer — adjust and observe</div>
+      <div style="font-size:0.82rem;color:var(--txm);margin-bottom:14px;">Perplexity controls how many neighbours each point considers. Low = local, High = global structure.</div>
+      <div class="slider-row">
+        <div class="sl-lbl">Perplexity:</div>
+        <input type="range" min="2" max="50" value="10" id="perp-slider" oninput="updatePerplexity(this.value)">
+        <div class="sl-val" id="perp-val">10</div>
+      </div>
+      <canvas id="tsne-canvas" width="560" height="260" style="display:block;background:var(--cbg);border-radius:10px;border:1px solid var(--bdr);max-width:100%;"></canvas>
+      <div id="tsne-info" style="margin-top:10px;font-size:0.84rem;color:var(--txm);min-height:36px;"></div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: Key rules + code -->
+  <div class="sec">
+    <div class="sh"><div class="si" style="background:rgba(245,158,11,0.12)">📋</div>
+      <div><div class="st">Rules for Interpreting t-SNE</div><div class="ss">Common mistakes to avoid</div></div>
+    </div>
+
+    <!-- Flip cards -->
+    <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:22px;margin:18px 0;">
+      <div style="font-weight:700;color:var(--p);margin-bottom:14px;">🎮 t-SNE Myths — click each card to reveal the truth</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;" id="tsne-myths">
+        <div class="myth-card" style="background:var(--sur3);border-radius:10px;padding:16px;cursor:pointer;border:1px solid var(--bdr);min-height:100px;" onclick="revealMyth(this,'myth1')">
+          <div id="myth1-front"><div style="font-size:0.9rem;font-weight:600;color:var(--warn);">❓ MYTH</div><div style="margin-top:8px;font-size:0.88rem;">Cluster sizes in t-SNE reflect the real sizes of groups in the data.</div></div>
+          <div id="myth1-back" style="display:none;"><div style="font-size:0.9rem;font-weight:600;color:var(--ok);">✅ TRUTH</div><div style="margin-top:8px;font-size:0.85rem;color:var(--txm);">FALSE. Cluster sizes and distances between clusters in t-SNE are not meaningful. Only whether points are in the same neighbourhood matters.</div></div>
+        </div>
+        <div class="myth-card" style="background:var(--sur3);border-radius:10px;padding:16px;cursor:pointer;border:1px solid var(--bdr);min-height:100px;" onclick="revealMyth(this,'myth2')">
+          <div id="myth2-front"><div style="font-size:0.9rem;font-weight:600;color:var(--warn);">❓ MYTH</div><div style="margin-top:8px;font-size:0.88rem;">The distance between two clusters in t-SNE tells you how different they are.</div></div>
+          <div id="myth2-back" style="display:none;"><div style="font-size:0.9rem;font-weight:600;color:var(--ok);">✅ TRUTH</div><div style="margin-top:8px;font-size:0.85rem;color:var(--txm);">FALSE. Global distances in t-SNE are not preserved. Two clusters far apart in 2D might be similar in high-D. Only local structure is reliable.</div></div>
+        </div>
+        <div class="myth-card" style="background:var(--sur3);border-radius:10px;padding:16px;cursor:pointer;border:1px solid var(--bdr);min-height:100px;" onclick="revealMyth(this,'myth3')">
+          <div id="myth3-front"><div style="font-size:0.9rem;font-weight:600;color:var(--warn);">❓ MYTH</div><div style="margin-top:8px;font-size:0.88rem;">You can use t-SNE output coordinates as features to train a classifier.</div></div>
+          <div id="myth3-back" style="display:none;"><div style="font-size:0.9rem;font-weight:600;color:var(--ok);">✅ TRUTH</div><div style="margin-top:8px;font-size:0.85rem;color:var(--txm);">FALSE. t-SNE output is stochastic and non-deterministic. New points cannot be embedded into existing t-SNE space. Use PCA for feature extraction instead.</div></div>
+        </div>
+        <div class="myth-card" style="background:var(--sur3);border-radius:10px;padding:16px;cursor:pointer;border:1px solid var(--bdr);min-height:100px;" onclick="revealMyth(this,'myth4')">
+          <div id="myth4-front"><div style="font-size:0.9rem;font-weight:600;color:var(--warn);">❓ MYTH</div><div style="margin-top:8px;font-size:0.88rem;">t-SNE with perplexity=5 and perplexity=50 will show the same structure.</div></div>
+          <div id="myth4-back" style="display:none;"><div style="font-size:0.9rem;font-weight:600;color:var(--ok);">✅ TRUTH</div><div style="margin-top:8px;font-size:0.85rem;color:var(--txm);">FALSE. Perplexity dramatically changes the result. Always try multiple values (5, 30, 50) and look for consistent patterns across runs. Never trust a single t-SNE plot.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="code-wrap">
+      <div class="ch"><span style="display:flex;align-items:center;"><span class="ld" style="background:#0891b2"></span>Python — t-SNE Best Practices</span><button class="cpb" onclick="cp(this)">Copy</button></div>
+      <pre><span class="kw">from</span> sklearn.manifold <span class="kw">import</span> TSNE
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+<span class="cm"># Step 1: Scale first</span>
+<span class="vr">X_scaled</span> = StandardScaler().fit_transform(X)
+
+<span class="cm"># Step 2 (optional but recommended): PCA first if &gt;50 features</span>
+<span class="cm"># Reduces noise and speeds up t-SNE significantly</span>
+<span class="kw">from</span> sklearn.decomposition <span class="kw">import</span> PCA
+<span class="vr">X_pca</span> = PCA(n_components=<span class="num">50</span>).fit_transform(X_scaled)
+
+<span class="cm"># Step 3: Run t-SNE — try multiple perplexity values</span>
+<span class="kw">for</span> perp <span class="kw">in</span> [<span class="num">5</span>, <span class="num">20</span>, <span class="num">50</span>]:
+    <span class="vr">tsne</span> = TSNE(
+        n_components=<span class="num">2</span>,
+        perplexity=perp,
+        n_iter=<span class="num">1000</span>,
+        random_state=<span class="num">42</span>  <span class="cm"># set for reproducibility</span>
+    )
+    <span class="vr">X_2d</span> = tsne.fit_transform(X_pca)
+
+    plt.figure(figsize=(<span class="num">8</span>, <span class="num">6</span>))
+    plt.scatter(X_2d[:,<span class="num">0</span>], X_2d[:,<span class="num">1</span>], c=labels, cmap=<span class="str">'tab10'</span>, alpha=<span class="num">0.6</span>, s=<span class="num">15</span>)
+    plt.title(<span class="str">f't-SNE (perplexity={perp})'</span>)
+    plt.colorbar(); plt.show()</pre>
+    </div>
+
+    <!-- t-SNE vs PCA comparison -->
+    <div class="two-col">
+      <div class="card" style="border-left:4px solid var(--p);">
+        <div class="ct">🗺️ t-SNE</div>
+        <div class="cb">• Preserves <strong>local structure</strong> (neighbourhoods)<br>• Non-linear — captures complex manifolds<br>• Slow: O(n² log n) — use on ≤ 50k points<br>• <strong>Stochastic</strong> — different each run<br>• Global distances not meaningful<br>• <strong>Only for visualisation</strong></div>
+      </div>
+      <div class="card" style="border-left:4px solid var(--s);">
+        <div class="ct">📊 PCA (for comparison)</div>
+        <div class="cb">• Preserves <strong>global variance</strong><br>• Linear — may miss non-linear structure<br>• Fast: O(n·d²) — scales well<br>• <strong>Deterministic</strong> — same result every time<br>• Can be used as model input<br>• Good for feature extraction + preprocessing</div>
+      </div>
+    </div>
+
+    <div class="rw">
+      <div class="rwl">🌍 Real World Example</div>
+      <div class="rwt">Single-Cell RNA Sequencing — Discovering Cell Types</div>
+      <div class="rwb">t-SNE revolutionised single-cell genomics. Researchers measure the expression of ~20,000 genes in each of thousands of individual cells — impossibly high-dimensional. t-SNE compresses this to 2D, revealing islands of cells with similar gene expression. Each island corresponds to a cell type (T-cells, B-cells, stem cells). Before t-SNE, identifying these populations required expert manual gating. Now, the clusters appear visually, and researchers label them by the known marker genes of each island. This technique has been applied to map the entire human immune system.</div>
+    </div>
+
+    <!-- QUIZ 9 -->
+    <div class="quiz" id="q9">
+      <div class="qxp">+35 XP</div>
+      <div class="qq">A data scientist runs t-SNE on 10,000 customer records and finds 5 well-separated clusters. They then train a KNN classifier on the 2D t-SNE coordinates to predict customer churn. What is wrong with this approach?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q9',this,false,'❌ t-SNE does preserve local structure — that\'s literally its purpose. The problem isn\'t what t-SNE preserves; it\'s how the coordinates are being used.')"><div class="ol">A</div>t-SNE doesn't preserve local structure, so the clusters are meaningless</div>
+        <div class="opt" onclick="ans('q9',this,false,'❌ KNN can certainly be trained on 2D data. The issue isn\'t the classifier choice — it\'s the input features being t-SNE coordinates.')"><div class="ol">B</div>KNN cannot be trained on 2D data</div>
+        <div class="opt" onclick="ans('q9',this,true,'✅ Correct! t-SNE is stochastic — new customer records cannot be transformed into the same 2D space. The embedding only exists for the training set. Additionally, t-SNE coordinates are not semantically meaningful features. Use PCA or other stable transformations for feature extraction.')"><div class="ol">C</div>t-SNE coordinates can't be used as model features — new data can't be embedded into existing t-SNE space</div>
+        <div class="opt" onclick="ans('q9',this,false,'❌ 5 clusters is a plausible result, not inherently suspicious. The number of clusters visible in t-SNE doesn\'t invalidate the embedding — the issue is using the coordinates as model input.')"><div class="ol">D</div>5 clusters is too many for t-SNE to handle</div>
+      </div>
+      <div class="fb" id="fb-q9"></div>
+    </div>
+
+    <!-- QUIZ 10 -->
+    <div class="quiz" id="q10">
+      <div class="qxp">+35 XP</div>
+      <div class="qq">You run t-SNE with perplexity=5 and see 30 tiny isolated clusters. With perplexity=50, you see 3 large, well-separated blobs. What is the most reliable conclusion?</div>
+      <div class="opts">
+        <div class="opt" onclick="ans('q10',this,false,'❌ You cannot simply "trust" the perplexity=5 result. Very low perplexity only considers immediate local neighbours — it often creates artificial fragmentation that doesn\'t reflect the true data structure.')"><div class="ol">A</div>There are 30 true clusters — trust the lower perplexity (more detail)</div>
+        <div class="opt" onclick="ans('q10',this,false,'❌ Very high perplexity can over-smooth and merge distinct groups. Trusting only perplexity=50 may miss real sub-structure.')"><div class="ol">B</div>There are 3 true clusters — trust the higher perplexity (more global)</div>
+        <div class="opt" onclick="ans('q10',this,true,'✅ Correct! Neither extreme is reliable on its own. The correct approach is to run multiple perplexity values and look for structures that are consistent across settings. Patterns that appear at perplexity 10, 20, and 30 are more likely to be real than those only appearing at one extreme.')"><div class="ol">C</div>Try intermediate perplexity values — reliable structure appears consistently across settings</div>
+        <div class="opt" onclick="ans('q10',this,false,'❌ t-SNE results do depend on perplexity — that\'s well established. Different perplexities really do show different structure because they change how many neighbours are considered.')"><div class="ol">D</div>t-SNE results should be identical regardless of perplexity</div>
+      </div>
+      <div class="fb" id="fb-q10"></div>
+    </div>
+
+    <!-- Final badge -->
+    <div class="badge" id="badge-ts" style="background:linear-gradient(135deg,rgba(6,214,160,0.15),rgba(139,92,246,0.1));border:1px solid rgba(6,214,160,0.3);">
+      <div class="bi">🏆</div>
+      <div class="bt">Module 7 Complete!</div>
+      <div class="bs">You've mastered K-Means, Hierarchical Clustering, DBSCAN, and t-SNE. You are now an unsupervised learning practitioner.</div>
+    </div>
+
+    <!-- Summary comparison table -->
+    <div class="sec" style="margin-top:32px;">
+      <div class="sh"><div class="si" style="background:rgba(139,92,246,0.12)">📊</div>
+        <div><div class="st">Algorithm Cheat Sheet</div><div class="ss">When to reach for each algorithm</div></div>
+      </div>
+      <table class="nice">
+        <thead><tr><th>Algorithm</th><th>Cluster Shape</th><th>Need K?</th><th>Handles Outliers?</th><th>Speed</th><th>Best For</th></tr></thead>
+        <tbody>
+          <tr><td><strong>K-Means</strong></td><td>Spherical only</td><td>Yes</td><td>No — pulled by outliers</td><td>⚡ Fast</td><td>Large datasets, known K, spherical clusters</td></tr>
+          <tr><td><strong>Hierarchical</strong></td><td>Any (depends on linkage)</td><td>No (choose after)</td><td>Moderate</td><td>🐢 Slow for large n</td><td>Small datasets, dendrogram analysis, biology</td></tr>
+          <tr><td><strong>DBSCAN</strong></td><td>Arbitrary</td><td>No</td><td>✅ Yes — labels as noise</td><td>⚡ Fast</td><td>Geographic data, anomaly detection, irregular shapes</td></tr>
+          <tr><td><strong>t-SNE</strong></td><td>N/A (visualisation)</td><td>N/A</td><td>N/A</td><td>🐢 Slow</td><td>Visualising high-D data, EDA, presenting clusters</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-o" onclick="go('db')">← DBSCAN</button>
+    <button class="btn btn-p" onclick="done('ts');toast('🎉 Module 7 complete! Well done!')">✅ Complete Module 7</button>
+  </div>
+</div>
+
+</main>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ── State ──
+const S = {xp:0,streak:0,pts:0,done:{},progress:{}};
+const XP_LEVELS = [0,200,450,750,1100,1500];
+
+function lvlFor(xp){let l=1;for(let i=1;i<XP_LEVELS.length;i++){if(xp>=XP_LEVELS[i])l=i+1;}return l;}
+
+function addXP(n){
+  S.xp+=n; S.pts+=n; S.streak++;
+  document.getElementById('pts').textContent=S.pts;
+  document.getElementById('stk').textContent=S.streak;
+  const lv=lvlFor(S.xp);
+  const cur=XP_LEVELS[lv-1]||0, nxt=XP_LEVELS[lv]||XP_LEVELS[XP_LEVELS.length-1];
+  const pct=Math.min(100,Math.round((S.xp-cur)/(nxt-cur)*100));
+  document.getElementById('lvl').textContent='Lv '+lv;
+  document.getElementById('xl').textContent=S.xp+' / '+nxt+' XP';
+  document.getElementById('xf').style.width=pct+'%';
+  toast('⭐ +'+n+' XP earned!');
+}
+
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+// ── Navigation ──
+function toggleSidebar(){document.getElementById('sbar').classList.toggle('open');document.getElementById('sidebar-overlay').classList.toggle('open');}
+function closeSidebar(){document.getElementById('sbar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');}
+function go(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.getElementById('n-'+id).classList.add('active');
   window.scrollTo(0,0);
 }
+
+function done(id){
+  if(S.done[id]) return;
+  S.done[id]=true;
+  const ni=document.getElementById('n-'+id);
+  ni.classList.add('done');
+  document.getElementById('p-'+id).style.width='100%';
+  // unlock badge
+  const badges={'in':'b0','km':'b1','hc':'b2'};
+  if(badges[id]){
+    const b=document.getElementById(badges[id]);
+    if(b) b.style.color='';
+  }
+  const bd=document.getElementById('badge-'+id);
+  if(bd) bd.classList.add('show');
+}
+
+// ── Quiz ──
+function ans(qid,el,correct,feedback){
+  const q=document.getElementById(qid);
+  if(q.dataset.answered) return;
+  q.dataset.answered='1';
+  q.querySelectorAll('.opt').forEach(o=>o.classList.add('locked'));
+  el.classList.add(correct?'correct':'wrong');
+  const fb=document.getElementById('fb-'+qid);
+  fb.textContent=feedback;
+  fb.className='fb show '+(correct?'cfb':'wfb');
+  if(correct) addXP(30);
+  // track progress
+  const page=qid.replace(/q\d+/,'');
+  S.progress[qid]=correct;
+  updateProgress();
+}
+
+function updateProgress(){
+  const counts={};
+  Object.entries(S.progress).forEach(([q,c])=>{
+    const pg=quizPageMap[q];
+    if(c&&pg){counts[pg]=(counts[pg]||0)+1;}
+  });
+  Object.entries(counts).forEach(([pg,c])=>{
+    const total=quizTotals[pg]||1;
+    const pct=Math.round(c/total*100);
+    const el=document.getElementById('p-'+pg);
+    if(el) el.style.width=pct+'%';
+  });
+}
+
+// ── Scenario reveal ──
+function revealScenario(el, type, msg){
+  if(el.dataset.revealed) return;
+  el.dataset.revealed='1';
+  const ans=el.querySelector('.scenario-answer');
+  ans.textContent=(type==='supervised'?'✅ Supervised — ':'🔍 Unsupervised — ')+msg.replace(/^[✅🔍]\s*/,'');
+  ans.style.display='block';
+  el.style.cursor='default';
+  addXP(10);
+}
+
+// ── Copy code ──
+function cp(btn){
+  const code=btn.closest('.code-wrap').querySelector('pre').innerText;
+  navigator.clipboard.writeText(code).then(()=>{btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy',1500);});
+}
+
+// ── K-Means Canvas Animation ──
+const KM = {
+  colors:['#0891b2','#06d6a0','#f59e0b'],
+  K:3, step:0, running:false,
+  points:[], centroids:[], assignments:[],
+  converged:false
+};
+
+function kmGenPoints(){
+  KM.points=[];
+  const clusters=[{cx:140,cy:100,r:55},{cx:320,cy:180,r:60},{cx:430,cy:80,r:50}];
+  clusters.forEach(c=>{
+    for(let i=0;i<28;i++){
+      const a=Math.random()*2*Math.PI, r=Math.random()*c.r;
+      KM.points.push({x:c.cx+r*Math.cos(a), y:c.cy+r*Math.sin(a)});
+    }
+  });
+}
+
+function kmReset(){
+  KM.step=0; KM.converged=false; KM.running=false;
+  kmGenPoints();
+  KM.centroids=[{x:200,y:60},{x:280,y:220},{x:420,y:140}];
+  KM.assignments=new Array(KM.points.length).fill(0);
+  document.getElementById('km-status').textContent='Step 0 — Initial data. Centroids placed randomly. Click Step to begin.';
+  document.getElementById('km-step-btn').disabled=false;
+  kmDraw();
+}
+
+function kmDist(a,b){return Math.hypot(a.x-b.x,a.y-b.y);}
+
+function kmAssign(){
+  let changed=false;
+  KM.points.forEach((p,i)=>{
+    let best=0, bd=Infinity;
+    KM.centroids.forEach((c,k)=>{const d=kmDist(p,c);if(d<bd){bd=d;best=k;}});
+    if(KM.assignments[i]!==best){KM.assignments[i]=best;changed=true;}
+  });
+  return changed;
+}
+
+function kmUpdate(){
+  KM.centroids=KM.centroids.map((_,k)=>{
+    const pts=KM.points.filter((_,i)=>KM.assignments[i]===k);
+    if(!pts.length) return KM.centroids[k];
+    return {x:pts.reduce((s,p)=>s+p.x,0)/pts.length, y:pts.reduce((s,p)=>s+p.y,0)/pts.length};
+  });
+}
+
+function kmStep(){
+  if(KM.converged) return;
+  KM.step++;
+  if(KM.step===1){
+    kmAssign();
+    document.getElementById('km-status').textContent=`Step ${KM.step} — Assigned each point to nearest centroid (by colour).`;
+  } else if(KM.step%2===0){
+    kmUpdate();
+    document.getElementById('km-status').textContent=`Step ${KM.step} — Moved centroids (✕) to mean of their cluster.`;
+  } else {
+    const changed=kmAssign();
+    if(!changed){
+      KM.converged=true;
+      document.getElementById('km-status').textContent=`✅ Converged after ${KM.step} steps! Centroids stopped moving.`;
+      document.getElementById('km-step-btn').disabled=true;
+      addXP(20);
+      toast('🎉 K-Means converged! +20 XP');
+    } else {
+      document.getElementById('km-status').textContent=`Step ${KM.step} — Re-assigned points to nearest centroid.`;
+    }
+  }
+  kmDraw();
+}
+
+function kmRun(){
+  if(KM.converged || KM.running) return;
+  KM.running=true;
+  const interval=setInterval(()=>{
+    kmStep();
+    if(KM.converged || KM.step>30){clearInterval(interval);KM.running=false;}
+  },600);
+}
+
+function kmDraw(){
+  const cv=document.getElementById('km-canvas');
+  if(!cv) return;
+  const ctx=cv.getContext('2d');
+  const W=cv.width, H=cv.height;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#010a0e'; ctx.fillRect(0,0,W,H);
+
+  // Draw points
+  KM.points.forEach((p,i)=>{
+    const col=KM.colors[KM.assignments[i]];
+    ctx.beginPath(); ctx.arc(p.x,p.y,6,0,Math.PI*2);
+    ctx.fillStyle=col+'99'; ctx.fill();
+    ctx.strokeStyle=col; ctx.lineWidth=1.5; ctx.stroke();
+  });
+
+  // Draw centroids
+  KM.centroids.forEach((c,k)=>{
+    const col=KM.colors[k];
+    ctx.strokeStyle=col; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.moveTo(c.x-10,c.y-10); ctx.lineTo(c.x+10,c.y+10); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(c.x+10,c.y-10); ctx.lineTo(c.x-10,c.y+10); ctx.stroke();
+    ctx.beginPath(); ctx.arc(c.x,c.y,14,0,Math.PI*2);
+    ctx.strokeStyle=col+'66'; ctx.lineWidth=1.5; ctx.stroke();
+  });
+}
+
+// Init K-Means on load
+window.addEventListener('load',()=>{ kmReset(); initElbow(); });
+
+// ── Elbow Chart ──
+function initElbow(){
+  const cv=document.getElementById('elbow-canvas');
+  if(!cv) return;
+  const ctx=cv.getContext('2d');
+  const W=cv.width, H=cv.height;
+  const pad={l:50,r:20,t:20,b:40};
+  const inertias=[18200,10400,5800,3100,2950,2900,2880,2870,2865];
+  const Ks=[2,3,4,5,6,7,8,9,10];
+  const maxI=inertias[0], minI=inertias[inertias.length-1];
+  const chartW=W-pad.l-pad.r, chartH=H-pad.t-pad.b;
+
+  function xPos(k){return pad.l+((k-2)/(Ks.length-1))*chartW;}
+  function yPos(v){return pad.t+chartH-(((v-minI)/(maxI-minI))*chartH);}
+
+  function draw(hovIdx){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#010a0e'; ctx.fillRect(0,0,W,H);
+
+    // Grid lines
+    ctx.strokeStyle='#0e3a4a'; ctx.lineWidth=1;
+    for(let i=0;i<=4;i++){
+      const y=pad.t+(i/4)*chartH;
+      ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(W-pad.r,y); ctx.stroke();
+    }
+
+    // Axes
+    ctx.strokeStyle='#5b9aaa'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,pad.t+chartH); ctx.lineTo(W-pad.r,pad.t+chartH); ctx.stroke();
+
+    // Axis labels
+    ctx.fillStyle='#5b9aaa'; ctx.font='11px Segoe UI'; ctx.textAlign='center';
+    Ks.forEach((k,i)=>{ctx.fillText('K='+k,xPos(k),H-8);});
+    ctx.textAlign='right'; ctx.font='10px Segoe UI';
+    [18000,12000,6000,0].forEach((v,i)=>{
+      const y=pad.t+(i/3)*chartH;
+      ctx.fillText((v/1000)+'k',pad.l-6,y+4);
+    });
+    ctx.save(); ctx.translate(14,H/2); ctx.rotate(-Math.PI/2);
+    ctx.textAlign='center'; ctx.fillText('Inertia',0,0); ctx.restore();
+
+    // Curve
+    ctx.beginPath(); ctx.strokeStyle='#0891b2'; ctx.lineWidth=2.5;
+    inertias.forEach((v,i)=>{ i===0?ctx.moveTo(xPos(Ks[i]),yPos(v)):ctx.lineTo(xPos(Ks[i]),yPos(v)); });
+    ctx.stroke();
+
+    // Elbow annotation at K=4
+    ctx.strokeStyle='rgba(6,214,160,0.4)'; ctx.setLineDash([4,3]); ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(xPos(4),pad.t); ctx.lineTo(xPos(4),pad.t+chartH); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#06d6a0'; ctx.font='bold 10px Segoe UI'; ctx.textAlign='center';
+    ctx.fillText('← Elbow',xPos(4)+28,pad.t+14);
+
+    // Points
+    inertias.forEach((v,i)=>{
+      const hov=(i===hovIdx);
+      ctx.beginPath(); ctx.arc(xPos(Ks[i]),yPos(v),hov?8:5,0,Math.PI*2);
+      ctx.fillStyle=hov?'#06d6a0':'#0891b2';
+      ctx.fill();
+      if(hov){
+        ctx.strokeStyle='#06d6a0'; ctx.lineWidth=2;
+        ctx.stroke();
+        // Tooltip
+        const tx=xPos(Ks[i]), ty=yPos(v)-20;
+        ctx.fillStyle='rgba(6,30,40,0.95)';
+        ctx.beginPath(); ctx.roundRect(tx-42,ty-22,84,22,6); ctx.fill();
+        ctx.fillStyle='#e0f7fa'; ctx.font='11px Segoe UI'; ctx.textAlign='center';
+        ctx.fillText('K='+Ks[i]+' | '+v.toLocaleString(),tx,ty-6);
+      }
+    });
+  }
+
+  draw(-1);
+  const msgs=['K=2: Two large blobs — probably under-segmented. Useful only if you truly have 2 groups.','K=3: Still a large drop from K=2. May still be under-segmented.','K=4: ⭐ ELBOW HERE — the drop flattens dramatically after this point. Best choice!','K=5: Small improvement over K=4. Marginal gain may not justify extra complexity.','K=6: Curve nearly flat. Adding more clusters gives diminishing returns.','K=7: Well past the elbow. Over-segmenting the data.','K=8: Very little gain. Clusters becoming arbitrary.','K=9: Essentially no improvement.','K=10: Inertia nearly zero — but clusters are meaningless at this granularity.'];
+
+  cv.addEventListener('mousemove',e=>{
+    const rect=cv.getBoundingClientRect();
+    const mx=(e.clientX-rect.left)*(W/rect.width);
+    let best=-1, bd=30;
+    Ks.forEach((k,i)=>{const d=Math.abs(mx-xPos(k));if(d<bd){bd=d;best=i;}});
+    draw(best);
+    document.getElementById('elbow-info').textContent=best>=0?msgs[best]:'Hover over a point to see what K=N means for your data.';
+  });
+  cv.addEventListener('mouseleave',()=>{draw(-1);document.getElementById('elbow-info').textContent='Hover over a point to see what K=N means for your data.';});
+}
+
+// ── Dendrogram Canvas ──
+function initDendrogram(){
+  const cv=document.getElementById('dend-canvas');
+  if(!cv) return;
+  const ctx=cv.getContext('2d');
+  const W=cv.width, H=cv.height;
+  const pad={l:40,r:20,t:20,b:50};
+
+  // Pre-computed merge tree: [leftX, rightX, height, label]
+  const leaves=[{x:60,lbl:'A'},{x:110,lbl:'B'},{x:170,lbl:'C'},{x:230,lbl:'D'},{x:310,lbl:'E'},{x:370,lbl:'F'},{x:430,lbl:'G'},{x:490,lbl:'H'}];
+  const merges=[
+    {lx:60,rx:110,h:20,cx:85},    // A+B → AB
+    {lx:170,rx:230,h:25,cx:200},  // C+D → CD
+    {lx:310,rx:370,h:18,cx:340},  // E+F → EF
+    {lx:430,rx:490,h:22,cx:460},  // G+H → GH
+    {lx:85,rx:200,h:55,cx:142},   // AB+CD → ABCD
+    {lx:340,rx:460,h:50,cx:400},  // EF+GH → EFGH
+    {lx:142,rx:400,h:110,cx:271}, // ABCD+EFGH → ALL
+  ];
+  const maxH=120;
+  function yOf(h){return pad.t+(H-pad.t-pad.b)*(1-(h/maxH));}
+
+  function clusterCount(cutH){
+    // Count merges that happen ABOVE cutH (those are blocked)
+    const blocked=merges.filter(m=>m.h>cutH).length;
+    return Math.min(leaves.length, 1+blocked);
+  }
+
+  function draw(cutH){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#010a0e'; ctx.fillRect(0,0,W,H);
+
+    // Cluster colours based on cut
+    const clusterColors=['#0891b2','#06d6a0','#f59e0b','#8b5cf6','#ef4444','#ec4899','#14b8a6','#f97316'];
+
+    // Draw merges
+    merges.forEach((m,i)=>{
+      const col=m.h>cutH?'#0e3a4a':'#0891b2';
+      ctx.strokeStyle=col; ctx.lineWidth=2;
+      // Horizontal bar
+      ctx.beginPath(); ctx.moveTo(m.lx,yOf(m.h)); ctx.lineTo(m.rx,yOf(m.h)); ctx.stroke();
+      // Left leg
+      const leftMerge=merges.slice(0,i).find(mm=>mm.cx===m.lx);
+      const leftY=leftMerge?yOf(leftMerge.h):yOf(0);
+      ctx.beginPath(); ctx.moveTo(m.lx,yOf(m.h)); ctx.lineTo(m.lx,leftY); ctx.stroke();
+      // Right leg
+      const rightMerge=merges.slice(0,i).find(mm=>mm.cx===m.rx);
+      const rightY=rightMerge?yOf(rightMerge.h):yOf(0);
+      ctx.beginPath(); ctx.moveTo(m.rx,yOf(m.h)); ctx.lineTo(m.rx,rightY); ctx.stroke();
+    });
+
+    // Leaf stems
+    leaves.forEach(l=>{
+      ctx.strokeStyle='#0891b2'; ctx.lineWidth=2;
+      ctx.beginPath(); ctx.moveTo(l.x,yOf(0)); ctx.lineTo(l.x,H-pad.b); ctx.stroke();
+      ctx.fillStyle='#5b9aaa'; ctx.font='12px Segoe UI'; ctx.textAlign='center';
+      ctx.fillText(l.lbl,l.x,H-pad.b+16);
+    });
+
+    // Y-axis labels
+    ctx.fillStyle='#5b9aaa'; ctx.font='10px Segoe UI'; ctx.textAlign='right';
+    [0,30,60,90,120].forEach(v=>{
+      ctx.fillText(v,35,yOf(v)+4);
+      ctx.strokeStyle='#0e3a4a'; ctx.lineWidth=0.5;
+      ctx.beginPath(); ctx.moveTo(38,yOf(v)); ctx.lineTo(W-pad.r,yOf(v)); ctx.stroke();
+    });
+    ctx.save(); ctx.translate(12,H/2); ctx.rotate(-Math.PI/2);
+    ctx.textAlign='center'; ctx.fillStyle='#5b9aaa'; ctx.font='11px Segoe UI';
+    ctx.fillText('Distance',0,0); ctx.restore();
+
+    // Cut line
+    if(cutH>0 && cutH<maxH){
+      ctx.strokeStyle='rgba(6,214,160,0.8)'; ctx.lineWidth=2; ctx.setLineDash([6,4]);
+      ctx.beginPath(); ctx.moveTo(38,yOf(cutH)); ctx.lineTo(W-pad.r,yOf(cutH)); ctx.stroke();
+      ctx.setLineDash([]);
+      const nc=clusterCount(cutH);
+      ctx.fillStyle='#06d6a0'; ctx.font='bold 11px Segoe UI'; ctx.textAlign='left';
+      ctx.fillText('Cut → '+nc+' cluster'+(nc!==1?'s':''),42,yOf(cutH)-6);
+    }
+  }
+
+  draw(0);
+
+  cv.addEventListener('click',e=>{
+    const rect=cv.getBoundingClientRect();
+    const my=(e.clientY-rect.top)*(H/rect.height);
+    const cutH=maxH*(1-(my-pad.t)/(H-pad.t-pad.b));
+    const clamped=Math.max(1,Math.min(maxH-1,cutH));
+    draw(clamped);
+    const nc=clusterCount(clamped);
+    document.getElementById('dend-info').textContent=`Cut at height ≈${Math.round(clamped)} → ${nc} cluster${nc!==1?'s':''} found. ${nc===1?'Too high — all merged into one.':nc>=8?'Too low — every point is its own cluster.':''}`;
+    addXP(5);
+  });
+}
+
+// ── Linkage Explorer ──
+const linkageData={
+  single:{name:'Single Linkage',formula:'d(A,B) = min distance between any point in A and any point in B',shape:'Elongated, chaining — a single close pair can bridge two clusters',outlier:'Very sensitive — one outlier can link distant clusters',use:'Rarely used in practice. Only works well when clusters are genuinely elongated.',color:'#ef4444'},
+  complete:{name:'Complete Linkage',formula:'d(A,B) = max distance between any point in A and any point in B',shape:'Compact, spherical — conservative about merging',outlier:'High — outliers create large max-distances that delay merges',use:'Good for compact clusters. Better than single, but Ward usually beats it.',color:'#f59e0b'},
+  average:{name:'Average Linkage (UPGMA)',formula:'d(A,B) = mean distance between all pairs (one from A, one from B)',shape:'Balanced — between single and complete',outlier:'Moderate — outliers are averaged out somewhat',use:'A solid middle ground. Common in bioinformatics (phylogenetic trees).',color:'#0891b2'},
+  ward:{name:'Ward Linkage ⭐ (Recommended)',formula:'d(A,B) = increase in total within-cluster variance after merging A and B',shape:'Compact, roughly equal-sized clusters',outlier:'Low — focuses on variance, not individual distances',use:'Default choice for most problems. Minimises within-cluster variance at every step.',color:'#06d6a0'}
+};
+
+function setLinkage(type){
+  const d=linkageData[type];
+  document.getElementById('linkage-display').innerHTML=`
+    <div style="font-size:1rem;font-weight:700;color:${d.color};margin-bottom:10px;">${d.name}</div>
+    <div style="display:grid;gap:8px;font-size:0.85rem;">
+      <div><span style="color:var(--txm);">📐 Formula:</span> <span style="color:var(--tx);">${d.formula}</span></div>
+      <div><span style="color:var(--txm);">🔷 Cluster shape:</span> <span style="color:var(--tx);">${d.shape}</span></div>
+      <div><span style="color:var(--txm);">⚠️ Outlier sensitivity:</span> <span style="color:var(--tx);">${d.outlier}</span></div>
+      <div><span style="color:var(--txm);">💡 When to use:</span> <span style="color:${d.color};">${d.use}</span></div>
+    </div>`;
+  ['single','complete','average','ward'].forEach(t=>{
+    const b=document.getElementById('lnk-'+t);
+    b.className=t===type?'btn btn-p':'btn btn-o';
+    b.style.padding='7px 14px'; b.style.fontSize='0.8rem';
+  });
+}
+
+// ── DBSCAN Point-Type Canvas ──
+function initDBSCANCanvas(){
+  const cv=document.getElementById('dbscan-canvas');
+  if(!cv) return;
+  const ctx=cv.getContext('2d');
+  const W=cv.width, H=cv.height;
+
+  // Pre-defined points with types
+  const pts=[
+    // Core cluster (dense centre)
+    {x:140,y:130,type:'core',label:'Core — 7 neighbours within ε (≥ MinPts=4). Forms the dense heart of Cluster 1.'},
+    {x:165,y:110,type:'core',label:'Core — 5 neighbours within ε. Part of Cluster 1 dense region.'},
+    {x:120,y:155,type:'core',label:'Core — 6 neighbours within ε. Part of Cluster 1 dense region.'},
+    {x:160,y:150,type:'core',label:'Core — 5 neighbours within ε. Part of Cluster 1.'},
+    {x:185,y:130,type:'core',label:'Core — 4 neighbours within ε (exactly MinPts). Just qualifies as a core point.'},
+    // Border points
+    {x:105,y:125,type:'border',label:'Border — only 2 neighbours within ε (< MinPts=4), but within ε of a core point. Part of Cluster 1, but not a seed.'},
+    {x:200,y:155,type:'border',label:'Border — 1 neighbour within ε, but reachable from a core point. Assigned to Cluster 1.'},
+    {x:140,y:175,type:'border',label:'Border — on the edge of Cluster 1\'s dense region.'},
+    // Second cluster
+    {x:380,y:140,type:'core',label:'Core — 5 neighbours within ε. Forms Cluster 2 in the right region.'},
+    {x:410,y:120,type:'core',label:'Core — 4 neighbours within ε. Part of Cluster 2.'},
+    {x:400,y:160,type:'core',label:'Core — 5 neighbours within ε. Part of Cluster 2.'},
+    {x:430,y:145,type:'border',label:'Border — 2 neighbours within ε, but reachable from Cluster 2 core points.'},
+    {x:360,y:155,type:'border',label:'Border — on the edge of Cluster 2.'},
+    // Noise points
+    {x:270,y:80,type:'noise',label:'Noise (label=-1) — only 0 neighbours within ε. Isolated point, not part of any cluster. In fraud detection, this is your anomaly to investigate!'},
+    {x:310,y:230,type:'noise',label:'Noise (label=-1) — 1 neighbour within ε but < MinPts=4. Too sparse to form or join a cluster. Classic outlier.'},
+    {x:480,y:60,type:'noise',label:'Noise (label=-1) — completely isolated. 0 neighbours within ε.'},
+    {x:60,y:220,type:'noise',label:'Noise (label=-1) — sparse region, not reachable from any core point.'},
+  ];
+
+  const colors={core:'#0891b2',border:'#06d6a0',noise:'#ef4444'};
+  const EPS=52;
+
+  function draw(hovIdx){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#010a0e'; ctx.fillRect(0,0,W,H);
+
+    // Draw ε circle for hovered point
+    if(hovIdx>=0){
+      const p=pts[hovIdx];
+      ctx.beginPath(); ctx.arc(p.x,p.y,EPS,0,Math.PI*2);
+      ctx.fillStyle='rgba(8,145,178,0.07)'; ctx.fill();
+      ctx.strokeStyle='rgba(8,145,178,0.4)'; ctx.lineWidth=1.5; ctx.setLineDash([4,3]); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle='rgba(8,145,178,0.6)'; ctx.font='10px Segoe UI'; ctx.textAlign='left';
+      ctx.fillText('ε',p.x+EPS+3,p.y+4);
+    }
+
+    // Draw points
+    pts.forEach((p,i)=>{
+      const col=colors[p.type];
+      const hov=(i===hovIdx);
+      ctx.beginPath(); ctx.arc(p.x,p.y,hov?9:6,0,Math.PI*2);
+      ctx.fillStyle=hov?col:col+'aa'; ctx.fill();
+      ctx.strokeStyle=col; ctx.lineWidth=hov?2:1; ctx.stroke();
+    });
+
+    // Legend
+    const leg=[['Core','#0891b2'],['Border','#06d6a0'],['Noise','#ef4444']];
+    leg.forEach(([lbl,col],i)=>{
+      ctx.beginPath(); ctx.arc(30,H-50+i*22,6,0,Math.PI*2);
+      ctx.fillStyle=col+'aa'; ctx.fill(); ctx.strokeStyle=col; ctx.lineWidth=1; ctx.stroke();
+      ctx.fillStyle='#5b9aaa'; ctx.font='11px Segoe UI'; ctx.textAlign='left';
+      ctx.fillText(lbl,42,H-46+i*22);
+    });
+  }
+
+  draw(-1);
+  cv.addEventListener('mousemove',e=>{
+    const rect=cv.getBoundingClientRect();
+    const mx=(e.clientX-rect.left)*(W/rect.width), my=(e.clientY-rect.top)*(H/rect.height);
+    let best=-1, bd=18;
+    pts.forEach((p,i)=>{const d=Math.hypot(mx-p.x,my-p.y);if(d<bd){bd=d;best=i;}});
+    draw(best);
+    document.getElementById('dbscan-info').textContent=best>=0?`${pts[best].type.toUpperCase()}: ${pts[best].label}`:'Hover over a point to learn its classification.';
+  });
+  cv.addEventListener('mouseleave',()=>{ draw(-1); document.getElementById('dbscan-info').textContent='Hover over a point to learn its classification.'; });
+}
+
+// ── DBSCAN Parameter Canvas ──
+function initDBSCANParam(){
+  const cv=document.getElementById('dbscan-param-canvas');
+  if(!cv) return;
+  const ctx=cv.getContext('2d');
+  const W=cv.width, H=cv.height;
+
+  // Fixed dataset: two irregular blobs + outliers
+  const dataset=(()=>{
+    const rng=(s)=>{let x=s;return()=>{x=Math.sin(x*127.1+311.7)*43758.5453;return x-Math.floor(x);}};
+    const r=rng(42); const pts=[];
+    // Blob 1 – crescent shape
+    for(let i=0;i<35;i++){const a=Math.PI*(0.2+r()*0.6),rad=55+r()*20;pts.push({x:140+rad*Math.cos(a),y:130+rad*Math.sin(a)*0.5});}
+    // Blob 2 – compact
+    for(let i=0;i<30;i++){const a=r()*2*Math.PI,rad=r()*30;pts.push({x:400+rad*Math.cos(a),y:160+rad*Math.sin(a)});}
+    // Noise
+    for(let i=0;i<12;i++){pts.push({x:40+r()*480,y:30+r()*220});}
+    return pts;
+  })();
+
+  function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y);}
+
+  function dbscan(eps,minPts){
+    const n=dataset.length;
+    const labels=new Array(n).fill(-1);
+    const visited=new Array(n).fill(false);
+    let cluster=0;
+
+    function expand(idx,cid){
+      const queue=[idx];
+      while(queue.length){
+        const p=queue.shift();
+        if(visited[p]) continue;
+        visited[p]=true; labels[p]=cid;
+        const nbrs=dataset.map((_,j)=>j).filter(j=>dist(dataset[p],dataset[j])<=eps);
+        if(nbrs.length>=minPts) nbrs.forEach(j=>{if(!visited[j]) queue.push(j);});
+      }
+    }
+
+    dataset.forEach((_,i)=>{
+      if(visited[i]) return;
+      const nbrs=dataset.map((_,j)=>j).filter(j=>dist(dataset[i],dataset[j])<=eps);
+      if(nbrs.length<minPts){ visited[i]=true; return; }
+      expand(i,cluster++);
+    });
+    return labels;
+  }
+
+  window.runDBSCAN=function(){
+    const eps=+document.getElementById('eps-slider').value;
+    const minPts=+document.getElementById('mpts-slider').value;
+    const labels=dbscan(eps,minPts);
+    const nClusters=Math.max(...labels)+1;
+    const nNoise=labels.filter(l=>l===-1).length;
+    const clColors=['#0891b2','#06d6a0','#f59e0b','#8b5cf6','#ec4899','#14b8a6'];
+
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#010a0e'; ctx.fillRect(0,0,W,H);
+    dataset.forEach((p,i)=>{
+      const col=labels[i]===-1?'#ef4444':clColors[labels[i]%clColors.length];
+      ctx.beginPath(); ctx.arc(p.x,p.y,labels[i]===-1?4:6,0,Math.PI*2);
+      ctx.fillStyle=col+'99'; ctx.fill(); ctx.strokeStyle=col; ctx.lineWidth=1.5; ctx.stroke();
+      if(labels[i]===-1){ctx.fillStyle='#ef4444';ctx.font='9px Segoe UI';ctx.textAlign='center';ctx.fillText('✕',p.x,p.y+3);}
+    });
+    document.getElementById('dbscan-param-info').textContent=`ε=${eps}, MinPts=${minPts} → ${nClusters} cluster${nClusters!==1?'s':''} found, ${nNoise} noise point${nNoise!==1?'s':''}.${nNoise>20?' ↑ ε is too small — too much noise.':nClusters===1&&nNoise<5?' ↑ ε is too large — everything merged.':' ✅ Looks reasonable!'}`;
+    addXP(5);
+  };
+
+  // Initial draw (unclassified)
+  ctx.clearRect(0,0,W,H); ctx.fillStyle='#010a0e'; ctx.fillRect(0,0,W,H);
+  dataset.forEach(p=>{
+    ctx.beginPath(); ctx.arc(p.x,p.y,5,0,Math.PI*2);
+    ctx.fillStyle='#5b9aaa55'; ctx.fill(); ctx.strokeStyle='#5b9aaa'; ctx.lineWidth=1; ctx.stroke();
+  });
+}
+
+window.addEventListener('load',()=>{ kmReset(); initElbow(); initDendrogram(); setLinkage('single'); initDBSCANCanvas(); initDBSCANParam(); });
+
+// ── t-SNE Perplexity Canvas ──
+function initTSNECanvas(){
+  const cv=document.getElementById('tsne-canvas');
+  if(!cv) return;
+  const ctx=cv.getContext('2d');
+  const W=cv.width, H=cv.height;
+
+  // Pre-computed "simulation" of t-SNE at different perplexities
+  // Three true clusters in high-D, represented here as pre-baked 2D coords
+  const seed=(s)=>{let x=s;return()=>{x=Math.sin(x*127.1+311.7)*43758.5;return x-Math.floor(x);}};
+
+  const trueGroups=[
+    {cx:160,cy:130,col:'#0891b2',n:30},
+    {cx:370,cy:100,col:'#06d6a0',n:28},
+    {cx:280,cy:210,col:'#f59e0b',n:25}
+  ];
+
+  function genPoints(perp){
+    const r=seed(42+perp);
+    const spread=perp<8?120:perp<20?55:35;
+    const globalNoise=perp>40?0.6:0.15;
+    const pts=[];
+    trueGroups.forEach((g,gi)=>{
+      for(let i=0;i<g.n;i++){
+        const a=r()*2*Math.PI, rad=(r()*spread);
+        // At very low perp, add extra fragmentation noise
+        const fragX=perp<8?(r()-0.5)*80:0;
+        const fragY=perp<8?(r()-0.5)*80:0;
+        pts.push({
+          x:g.cx+rad*Math.cos(a)+fragX,
+          y:g.cy+rad*Math.sin(a)*0.7+fragY,
+          col:g.col, gi
+        });
+      }
+    });
+    return pts;
+  }
+
+  function draw(perp){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#010a0e'; ctx.fillRect(0,0,W,H);
+    const pts=genPoints(perp);
+    pts.forEach(p=>{
+      ctx.beginPath(); ctx.arc(
+        Math.max(12,Math.min(W-12,p.x)),
+        Math.max(12,Math.min(H-12,p.y)),
+        5,0,Math.PI*2);
+      ctx.fillStyle=p.col+'99'; ctx.fill();
+      ctx.strokeStyle=p.col; ctx.lineWidth=1.5; ctx.stroke();
+    });
+    // Axis labels
+    ctx.fillStyle='#5b9aaa'; ctx.font='10px Segoe UI'; ctx.textAlign='center';
+    ctx.fillText('t-SNE dimension 1',W/2,H-6);
+    ctx.save(); ctx.translate(12,H/2); ctx.rotate(-Math.PI/2);
+    ctx.fillText('t-SNE dimension 2',0,0); ctx.restore();
+  }
+
+  const msgs={
+    low:'⚠️ Perplexity too low (<8): each point only considers its immediate neighbours. Results fragment into many tiny isolated blobs — likely artificial.',
+    mid:'✅ Good perplexity (8–30): balances local and some global structure. Three real clusters are visible and well-separated. Most reliable range.',
+    high:'⚠️ Perplexity high (>35): too many neighbours considered globally. Clusters begin merging — sub-structure is lost. May over-smooth real boundaries.'
+  };
+
+  window.updatePerplexity=function(v){
+    const perp=+v;
+    document.getElementById('perp-val').textContent=perp;
+    draw(perp);
+    const zone=perp<8?'low':perp<=35?'mid':'high';
+    document.getElementById('tsne-info').textContent=`Perplexity=${perp}: ${msgs[zone]}`;
+  };
+
+  draw(10);
+  document.getElementById('tsne-info').textContent=`Perplexity=10: ${msgs['mid']}`;
+}
+
+// ── Myth card reveal ──
+function revealMyth(el, id){
+  if(el.dataset.revealed) return;
+  el.dataset.revealed='1';
+  document.getElementById(id+'-front').style.display='none';
+  document.getElementById(id+'-back').style.display='block';
+  el.style.borderColor='var(--ok)';
+  el.style.cursor='default';
+  addXP(8);
+}
+
+window.addEventListener('load',()=>{
+  kmReset();
+  initElbow();
+  initDendrogram();
+  setLinkage('single');
+  initDBSCANCanvas();
+  initDBSCANParam();
+  initTSNECanvas();
+});
+
+// Quiz progress tracking
+const quizPageMap = {q1:'in',q2:'in',q3:'km',q4:'km',q5:'hc',q6:'hc',q7:'db',q8:'db',q9:'ts',q10:'ts'};
+const quizTotals  = {in:2, km:2, hc:2, db:2, ts:2};
+</script>
+</body>
+</html>
+.Groups[1].Value
+    
 
 function done(id){
   if(S.done[id]) return;
