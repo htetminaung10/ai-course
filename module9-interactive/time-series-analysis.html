@@ -747,7 +747,6 @@ auto = pm.<span class="fn">auto_arima</span>(df[<span class="str">'sales'</span>
       <div class="rwt">NHS England — predicting A&amp;E demand to schedule the right number of nurses</div>
       <div class="rwb">NHS England uses Holt-Winters exponential smoothing to forecast A&amp;E attendance 7 days ahead. The model tracks: <strong>Level</strong> (baseline daily attendance ~400 patients/day at a large trust), <strong>Trend</strong> (gradual year-on-year increase as the population ages), and <strong>Seasonality</strong> (Mondays are 30% busier than Thursdays; winter sees a 40% surge). This forecast drives nurse and doctor rostering. Before time series forecasting, rosters were set 6 weeks in advance using last year's actuals — leading to costly overtime or dangerous understaffing. The model reduced roster-related overspend by £12 million per year across 20 NHS trusts in a 2019 pilot.</div>
     </div>
-    </div>
 
     <div class="three-col">
       <div class="card">
@@ -890,7 +889,6 @@ auto = pm.<span class="fn">auto_arima</span>(df[<span class="str">'sales'</span>
       <div class="rwl">🌍 Real World Example</div>
       <div class="rwt">Goldman Sachs — why stationarity matters in algorithmic trading</div>
       <div class="rwb">Quantitative analysts at Goldman Sachs run the Augmented Dickey-Fuller test on every price series before fitting an ARIMA model. Share prices are almost always <strong>non-stationary</strong> — they follow a random walk with a unit root. A quant who fits ARIMA directly to raw prices will find spurious relationships: two unrelated stocks may appear statistically correlated just because they both trend upward. Goldman's rule: if ADF p-value &gt; 0.05, difference the series first. Log returns (today's price ÷ yesterday's price) are typically stationary — and that is what all serious financial time series models use. Ignoring this test contributed to several hedge fund collapses in the 2000s.</div>
-    </div>
     </div>
 
     <!-- Interactive ADF demo -->
